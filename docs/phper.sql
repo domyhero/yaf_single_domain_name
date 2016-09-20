@@ -1130,3 +1130,212 @@ CREATE TABLE ms_cache (
   cache_data blob,
   UNIQUE KEY `cache_key` (`cache_key`)
 )ENGINE = MyISAM DEFAULT CHARSET=utf8 COMMENT '缓存表';
+
+# --------------- 游戏相关 start ------------#
+
+### 初始化游戏模型需要的字典数据
+INSERT INTO `ms_dict_type` (`dict_type_id`, `type_code`, `type_name`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) 
+VALUES ('20', 'game_ledou_consume_code', '游戏乐豆消费编码', '游戏乐豆消费编码：通过此编码可以知道乐豆是在何种情况下消费。比如：add_ssq_reward 代表双色球中奖增加。', '1', '1', unix_timestamp(now()), '0', '0');
+
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_ssq_reward', '双色球中奖', '双色球中奖', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_dlt_reward', '大乐透中奖', '大乐透中奖', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_ssc_reward', '时时彩中奖', '时时彩中奖', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_ssq_bet', '双色球投注', '双色球投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_dlt_bet', '大乐透投注', '大乐透投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_ssc_bet', '时时彩投注', '时时彩投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_checkin', '每日签到', '每日签到', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_buy_goods', '购买商品赠送', '购买商品赠送', '0', '1', '1', unix_timestamp(now()), '0', '0');
+
+
+DROP TABLE IF EXISTS `gm_ledou`;
+CREATE TABLE gm_ledou(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
+ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '乐豆数量。包含未用完的赠送的乐豆。',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '玩家乐豆表';
+
+DROP TABLE IF EXISTS `gm_ledou_consume`;
+CREATE TABLE gm_ledou_consume(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
+consume_type TINYINT(1) NOT NULL COMMENT '消费类型：1增加、2扣减',
+consume_code CHAR(20) NOT NULL COMMENT '类型编码。通过编码可以知晓是因何产生的。编码通过字典配置。',
+ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '影响的乐豆数量',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '乐豆消费记录';
+
+
+DROP TABLE IF EXISTS `gm_bet_record`;
+CREATE TABLE gm_bet_record(
+bet_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
+game_id INT(11) UNSIGNED NOT NULL COMMENT '游戏ID',
+bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
+bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
+reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
+PRIMARY KEY(bet_id),
+KEY(user_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注记录';
+
+
+DROP TABLE IF EXISTS `gm_bet_record_number`;
+CREATE TABLE gm_bet_record_number(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+bet_id INT(11) UNSIGNED NOT NULL COMMENT '投注记录ID。对应ms_bet_record.bet_id',
+bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
+bet_number CHAR(100) NOT NULL COMMENT '投注号码',
+bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
+bet_level SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '中奖等级。有些游戏是没有等级的。默认就是0。根据游戏特点选择是否使用此字段。',
+reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
+PRIMARY KEY(id),
+KEY(bet_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注号码记录表';
+
+
+DROP TABLE IF EXISTS `gm_game`;
+CREATE TABLE gm_game(
+game_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '游戏ID',
+game_name CHAR(50) NOT NULL COMMENT '游戏名称',
+game_code CHAR(20) NOT NULL COMMENT '游戏编码',
+modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+created_by INT(11) UNSIGNED NOT NULL COMMENT '管理员账号ID',
+PRIMARY KEY(game_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '游戏种类表';
+INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('1', '双色球', 'ssq', '0', '0', unix_timestamp(now()), '1');
+INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('2', '大乐透', 'dlt', '0', '0', unix_timestamp(now()), '1');
+INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('3', '时时彩', 'ssc', '0', '0', unix_timestamp(now()), '1');
+
+
+# 一元购只有点击开启才会创建第一期的期号数据。
+# 如果是中途停止之后再开启的，则判断之前的期号再后延。
+DROP TABLE IF EXISTS `gm_yyg`;
+CREATE TABLE gm_yyg(
+yyg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+qh_number INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '当前正在进行的期号',
+yyg_name CHAR(50) NOT NULL COMMENT '一元购活动名称',
+yyg_image_url CHAR(80) NOT NULL COMMENT '活动主图',
+yyg_desc CHAR(250) NOT NULL COMMENT '一元购活动介绍',
+yyg_price INT(11) UNSIGNED NOT NULL COMMENT '一元购价格',
+yyg_richtext VARCHAR(1000) NOT NULL COMMENT '一元购图文详情',
+listorder SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '排序。小在前',
+yyg_start TINYINT(1) NOT NULL COMMENT '一元购开启状态：1开启、0关闭',
+status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+PRIMARY KEY(yyg_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购活动列表';
+
+
+# 一元购期号表
+DROP TABLE IF EXISTS `gm_yyg_qh`;
+CREATE TABLE gm_yyg_qh(
+qh_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+ok_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '已参与人次',
+winner_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖用户ID',
+winner_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖时间',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(qh_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购期号表';
+
+
+# 一元购活动相册图片最多允许5张。
+DROP TABLE IF EXISTS gm_yyg_image;
+CREATE TABLE gm_yyg_image(
+image_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购活动ID',
+image_url VARCHAR(100) NOT NULL COMMENT '图片URL',
+status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+PRIMARY KEY(image_id),
+KEY(yyg_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购活动相册';
+
+
+# 一元购参与记录
+# 参与记录按照时间分表
+DROP TABLE IF EXISTS `gm_yyg_history_1`;
+CREATE TABLE gm_yyg_history_1(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id),
+KEY(yyg_id, qh_number)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
+
+DROP TABLE IF EXISTS `gm_yyg_history_2`;
+CREATE TABLE gm_yyg_history_2(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id),
+KEY(yyg_id, qh_number)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
+
+DROP TABLE IF EXISTS `gm_yyg_history_3`;
+CREATE TABLE gm_yyg_history_3(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id),
+KEY(yyg_id, qh_number)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
+
+DROP TABLE IF EXISTS `gm_yyg_history_4`;
+CREATE TABLE gm_yyg_history_4(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id),
+KEY(yyg_id, qh_number)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
+
+DROP TABLE IF EXISTS `gm_yyg_history_5`;
+CREATE TABLE gm_yyg_history_5(
+id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+PRIMARY KEY(id),
+KEY(user_id),
+KEY(yyg_id, qh_number)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
+
+# --------------- 游戏相关 end   ------------#

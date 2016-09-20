@@ -1,7 +1,7 @@
 <?php
 use common\YUrl;
-require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/header.php');
-require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/left.php');
+require_once (dirname(__DIR__) . DIRECTORY_SEPARATOR . 'common/header.php');
+require_once (dirname(__DIR__) . DIRECTORY_SEPARATOR . 'common/left.php');
 ?>
 
         <div class="banner-bg" id="top">
@@ -142,5 +142,5 @@ require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/left.php');
                     <hr>
 
 <?php
-require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/footer.php');
+require_once (dirname(__DIR__) . DIRECTORY_SEPARATOR . 'common/footer.php');
 ?>

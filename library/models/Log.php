@@ -17,24 +17,15 @@ class Log extends DbBase {
      */
     protected $_table_name = 'ms_log';
 
-    const LOG_TYPE_BUSY = - 1;
-    // 服务器繁忙(所有未知的错误或异常)。
-    const LOG_TYPE_SYSTEM = 1;
-    // 系统底层级别日志。
-    const LOG_TYPE_FRAMEWORK = 2;
-    // WEB框架级别日志。
-    const LOG_TYPE_PACKAGE = 3;
-    // 扩展包组件级别日志。
-    const LOG_TYPE_LANG = 4;
-    // 语言级别的日志。
-    const LOG_TYPE_VALIDATOR = 5;
-    // 验证器级别的日志。
-    const LOG_TYPE_SERVICES = 6;
-    // 验证级别。
-    const LOG_TYPE_USER = 7;
-    // 用户级别。
-    CONST LOG_TYPE_DEBUG = 8;
-    // 调试级别。
+    const LOG_TYPE_BUSY      = - 1;     // 服务器繁忙(所有未知的错误或异常)。
+    const LOG_TYPE_SYSTEM    = 1;       // 系统底层级别日志。
+    const LOG_TYPE_FRAMEWORK = 2;       // WEB框架级别日志。
+    const LOG_TYPE_PACKAGE   = 3;       // 扩展包组件级别日志。
+    const LOG_TYPE_LANG      = 4;       // 语言级别的日志。
+    const LOG_TYPE_VALIDATOR = 5;       // 验证器级别的日志。
+    const LOG_TYPE_SERVICES  = 6;       // 验证级别。
+    const LOG_TYPE_USER      = 7;       // 用户级别。
+    CONST LOG_TYPE_DEBUG     = 8;       // 调试级别。
 
     /**
      * 添加日志。

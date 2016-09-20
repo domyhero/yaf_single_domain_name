@@ -111,15 +111,15 @@ CREATE TABLE ms_user_bind(
 
 DROP TABLE IF EXISTS `ms_sms_log`;
 CREATE TABLE ms_sms_log (
-log_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '日志ID',
-op_type TINYINT(1) NOT NULL COMMENT '操作类型：1发送、2验证',
-mobilephone CHAR(11) NOT NULL COMMENT '手机号码',
-sms_txt CHAR(200) NOT NULL COMMENT '短信内容',
-sms_code CHAR(6) NOT NULL DEFAULT '' COMMENT '验证码。如果是非验证码短信，此值为空字符串',
-is_destroy TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否验证成功立即销毁。1是、0否',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-PRIMARY KEY(log_id),
-KEY(mobilephone)
+	log_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '日志ID',
+	op_type TINYINT(1) NOT NULL COMMENT '操作类型：1发送、2验证',
+	mobilephone CHAR(11) NOT NULL COMMENT '手机号码',
+	sms_txt CHAR(200) NOT NULL COMMENT '短信内容',
+	sms_code CHAR(6) NOT NULL DEFAULT '' COMMENT '验证码。如果是非验证码短信，此值为空字符串',
+	is_destroy TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否验证成功立即销毁。1是、0否',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(log_id),
+	KEY(mobilephone)
 )ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT '短信发送/验证日志表';
 
 
@@ -150,43 +150,6 @@ CREATE TABLE ms_ip_ban(
 	PRIMARY KEY(id),
 	KEY(ip)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'IP黑名单表';
-
-DROP TABLE IF EXISTS ms_remind;
-CREATE TABLE ms_remind(
-	remind_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '提醒ID',
-	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-	remind_type SMALLINT(3) NOT NULL COMMENT '提醒类型:1、一次性提醒、2、每天提醒、3、每周提醒、4、每月提醒、5、每年提醒',
-	title CHAR(20) NOT NULL COMMENT '提醒标题',
-	content VARCHAR(255) NOT NULL DEFAULT '' COMMENT '提醒内容',
-	remind_year SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '提醒时间的年份',
-	remind_month SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '提醒时间的月份',
-	remind_day SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '提醒时间的日',
-	remind_hour SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '提醒时间的时',
-	remind_minute SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '提醒时间的分',
-	remind_second SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '提醒时间的秒',
-	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '记录状态：1生效、0失效',
-	is_deleted TINYINT(1) NOT NULL DEFAULT '0' COMMENT '删除状态：1已删除、0未删除',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-	PRIMARY KEY(remind_id),
-	KEY(user_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '提醒表';
-
-# 此表会保存目前需要提醒的数据。定时器会定时处理。
-# 此表每天保存最新的定时数据。
-# 前一天的定时数据通过更换表象来备份。
-DROP TABLE IF EXISTS ms_remind_data;
-CREATE TABLE ms_remind_data(
-	once_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-	remind_id INT(11) UNSIGNED NOT NULL COMMENT '提醒ID',
-	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-	title CHAR(20) NOT NULL COMMENT '提醒标题',
-	content CHAR(255) NOT NULL DEFAULT '' COMMENT '提醒内容',
-	remind_time INT(11) UNSIGNED NOT NULL COMMENT '提醒时间',
-	is_ok TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否已经提醒：1是、0否',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-	PRIMARY KEY(once_id),
-	KEY(user_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '提醒处理表';
 
 
 # 记录周更新备份一次，按月份保存历史数据。

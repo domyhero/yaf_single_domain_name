@@ -54,7 +54,7 @@ class YCore {
         if (\Yaf\Registry::has($name)) {
             return \Yaf\Registry::get($name);
         }
-        $config = new \Yaf\Config_Ini(APP_PATH . DIRECTORY_SEPARATOR . '/conf/wxpay/wechat.ini', 'public');
+        $config  = new \Yaf\Config\Ini(APP_PATH . DIRECTORY_SEPARATOR . '/conf/wxpay/wechat.ini', 'public');
         $options = $config->wechat->toArray();
         $app = new WeChatApp($options);
         \Yaf\Registry::set($name, $app);

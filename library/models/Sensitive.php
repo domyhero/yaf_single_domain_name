@@ -45,12 +45,12 @@ class Sensitive extends DbBase {
         $sth->execute($params);
         $count_data = $sth->fetch();
         $total = $count_data ? $count_data['count'] : 0;
-        $sql = "SELECT {$columns} FROM {$this->_table_name} {$where} {$order_by} LIMIT {$offset},{$count}";
-        $sth = $this->link->prepare($sql);
+        $sql   = "SELECT {$columns} FROM {$this->_table_name} {$where} {$order_by} LIMIT {$offset},{$count}";
+        $sth   = $this->link->prepare($sql);
         $sth->execute($params);
         $list = $sth->fetchAll();
         foreach ($list as $k => $item) {
-            $item['created_time'] = YCore::format_timestamp($item['created_time']);
+            $item['created_time']  = YCore::format_timestamp($item['created_time']);
             $item['modified_time'] = YCore::format_timestamp($item['modified_time']);
             $list[$k] = $item;
         }
@@ -95,9 +95,9 @@ class Sensitive extends DbBase {
             YCore::exception(8500001, '敏感词已经存在,请勿重复添加');
         }
         $data = [
-            'lv' => $lv,
-            'val' => $val,
-            'created_by' => $admin_id,
+            'lv'           => $lv,
+            'val'          => $val,
+            'created_by'   => $admin_id,
             'created_time' => $_SERVER['REQUEST_TIME']
         ];
         $id = $this->insert($data);
@@ -115,9 +115,9 @@ class Sensitive extends DbBase {
      */
     public function editSensitive($id, $admin_id, $lv, $val) {
         $data = [
-            'lv' => $lv,
-            'val' => $val,
-            'modified_by' => $admin_id,
+            'lv'            => $lv,
+            'val'           => $val,
+            'modified_by'   => $admin_id,
             'modified_time' => $_SERVER['REQUEST_TIME']
         ];
         $where = [

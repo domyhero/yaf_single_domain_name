@@ -40,9 +40,7 @@ class DbBase {
      *
      * @var array
      */
-    protected $prepare_attr = [
-        \PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY
-    ];
+    protected $prepare_attr = [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY];
 
     /**
      *
@@ -104,7 +102,6 @@ class DbBase {
         $mysql_dbname = $config->database->mysql->$db_options->dbname;
         $dsn = "mysql:dbname={$mysql_dbname};host={$mysql_host};port={$mysql_port}";
         $dbh = new \PDO($dsn, $mysql_username, $mysql_password);
-
         // MySQL操作出错，抛出异常。
         $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         // $dbh->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);

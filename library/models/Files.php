@@ -29,10 +29,10 @@ class Files extends DbBase {
      * @return array
      */
     public function getList($user_type, $user_id, $file_md5, $file_type, $start_time, $end_time, $page, $count) {
-        $offset = $this->getPaginationOffset($page, $count);
+        $offset  = $this->getPaginationOffset($page, $count);
         $columns = ' * ';
-        $where = ' WHERE status = :status ';
-        $params = [
+        $where   = ' WHERE status = :status ';
+        $params  = [
             ':status' => 1
         ];
         if (strlen($file_md5) > 0) {
@@ -56,7 +56,7 @@ class Files extends DbBase {
             case 2 :
                 $where .= ' AND user_type = :user_type AND user_id = :user_id ';
                 $params[':user_type'] = $user_type;
-                $params[':user_id'] = $user_id;
+                $params[':user_id']   = $user_id;
                 break;
             case - 1 :
                 break;

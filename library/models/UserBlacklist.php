@@ -23,8 +23,8 @@ class UserBlacklist extends DbBase {
      * @param number $user_id 用户ID。
      * @return array
      * [
-     *         'status' => 0或1,1被封禁。0未封禁。
-     *         'message' => '封禁数据。如：您已经被永久封禁。',
+     *      'status' => 0或1,1被封禁。0未封禁。
+     *      'message' => '封禁数据。如：您已经被永久封禁。',
      * ]
      */
     public function isForbidden($user_id) {
@@ -32,10 +32,7 @@ class UserBlacklist extends DbBase {
             'status'  => 0,
             'message' => '正常使用'
         ];
-        $result = $this->fetchOne([], [
-            'user_id' => $user_id,
-            'status'  => 1
-        ]);
+        $result = $this->fetchOne([], ['user_id' => $user_id, 'status'  => 1]);
         if (empty($result)) {
             return $ret_data; // 没有封禁记录。
         }
@@ -50,7 +47,7 @@ class UserBlacklist extends DbBase {
         if ($result['ban_type'] == 2 && ($result['ban_end_time'] < $current_timestamp || $result['ban_start_time'] > $current_timestamp)) {
             return $ret_data; // 过了封禁时间限制。
         } else {
-            $ban_date = date('Y-m-d H:i:s', $result['ban_end_time']);
+            $ban_date            = date('Y-m-d H:i:s', $result['ban_end_time']);
             $ret_data['status']  = 1;
             $ret_data['message'] = "您当前被禁止登录。解禁日期：{$ban_date}";
             return $ret_data;
@@ -108,10 +105,7 @@ class UserBlacklist extends DbBase {
      * @return bool
      */
     public function unforbiddenUser($user_id, $admin_id) {
-        $data = $this->fetchOne([], [
-            'user_id' => $user_id,
-            'status'  => 1
-        ]);
+        $data = $this->fetchOne([], ['user_id' => $user_id, 'status'  => 1]);
         if ($data) {
             $update_data = [
                 'status'        => 0,

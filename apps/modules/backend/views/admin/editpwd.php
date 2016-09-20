@@ -1,6 +1,6 @@
 <?php
 use common\YUrl;
-require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/header.php');
+require_once(dirname(__DIR__) . '/common/header.php');
 ?>
 
 <style type="text/css">
@@ -10,9 +10,7 @@ html {
 </style>
 
 <div class="pad_10">
-	<form
-		action="<?php echo YUrl::createBackendUrl('Admin', 'editPwd'); ?>"
-		method="post" name="myform" id="myform" autocomplete="off">
+	<form action="<?php echo YUrl::createBackendUrl('Admin', 'editPwd'); ?>" method="post" name="myform" id="myform" autocomplete="off">
 		<table cellpadding="2" cellspacing="1" class="table_form" width="100%">
 			<tr>
 				<th width="80">用户名：</th>

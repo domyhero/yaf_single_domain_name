@@ -1,5 +1,5 @@
 <?php
-require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/header.php');
+require_once (dirname(__DIR__) . '/common/header.php');
 ?>
 <style type="text/css">
 html {

@@ -15,28 +15,28 @@ class Common extends \Yaf\Controller_Abstract {
     /**
      * 配置文件对象。
      *
-     * @var \\Yaf\Config_Abstract
+     * @var \Yaf\Config_Abstract
      */
     protected $_config = null;
 
     /**
      * 请求对象。
      *
-     * @var \\Yaf\Request_Http
+     * @var \Yaf\Request_Http
      */
     protected $_request = null;
 
     /**
      * 视图对象。
      *
-     * @var \\Yaf\View_Simple
+     * @var \Yaf\View_Simple
      */
     protected $_view = null;
 
     /**
      * session对象。
      *
-     * @var \\Yaf\Session
+     * @var \Yaf\Session
      */
     protected $_session = null;
 

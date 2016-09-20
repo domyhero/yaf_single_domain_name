@@ -1,6 +1,6 @@
 <?php
 use common\YUrl;
-require_once (APP_VIEW_PATH . DIRECTORY_SEPARATOR . 'common/header.php');
+require_once (dirname(__DIR__) . '/common/header.php');
 ?>
 <div class="subnav">
 	<div class="content-menu ib-a blue line-x">

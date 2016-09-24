@@ -314,7 +314,7 @@ class Validator {
      * @return bool
      */
     public static function is_idcard($vStr) {
-        $vCity = array(
+        $vCity = [
             '11',
             '12',
             '13',
@@ -350,7 +350,7 @@ class Validator {
             '81',
             '82',
             '91'
-        );
+        ];
         if (! preg_match('/^([\d]{17}[xX\d]|[\d]{15})$/', $vStr)) {
             return false;
         }

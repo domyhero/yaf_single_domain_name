@@ -137,21 +137,22 @@ class GameService extends BaseService {
         $default_db = new DbBase();
         $count_data = $default_db->rawQuery($sql, $params)->rawFetchOne();
         $total = $count_data ? $count_data['count'] : 0;
-        $sql = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
-        $list = $default_db->rawQuery($sql, $params)->rawFetchAll();
+        $sql   = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
+        $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
         $user_model = new User();
         foreach ($list as $key => $item) {
-            $userinfo = $user_model->fetchOne([], [
-                    'user_id' => $item['user_id']
-            ]);
-            $item['username'] = $userinfo ? $userinfo['username'] : '-';
+            $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
+            $item['username']    = $userinfo ? $userinfo['username'] : '-';
             $item['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '-';
-            $item['email'] = $userinfo ? $userinfo['email'] : '-';
+            $item['email']       = $userinfo ? $userinfo['email'] : '-';
         }
-        $result = array(
-                'list' => $list,'total' => $total,'page' => $page,'count' => $count,
-                'isnext' => self::IsHasNextPage($total, $page, $count)
-        );
+        $result = [
+            'list'   => $list,
+            'total'  => $total,
+            'page'   => $page,
+            'count'  => $count,
+            'isnext' => self::IsHasNextPage($total, $page, $count)
+        ];
         return $result;
     }
 
@@ -163,7 +164,7 @@ class GameService extends BaseService {
     public static function getAllGame() {
         $game_model = new GmGame();
         $columns = [
-                'game_id','game_name','game_code'
+                'game_id', 'game_name', 'game_code'
         ];
         return $game_model->fetchAll($columns);
     }
@@ -181,8 +182,8 @@ class GameService extends BaseService {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM ms_ledou_consume ';
         $columns = ' * ';
-        $where = ' WHERE 1 ';
-        $params = [];
+        $where   = ' WHERE 1 ';
+        $params  = [];
         if ($user_id != - 1) {
             $where .= ' AND user_id = :user_id ';
             $params[':user_id'] = $user_id;
@@ -196,21 +197,22 @@ class GameService extends BaseService {
         $default_db = new DbBase();
         $count_data = $default_db->rawQuery($sql, $params)->rawFetchOne();
         $total = $count_data ? $count_data['count'] : 0;
-        $sql = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
-        $list = $default_db->rawQuery($sql, $params)->rawFetchAll();
+        $sql   = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
+        $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
         $user_model = new User();
         foreach ($list as $key => $item) {
-            $userinfo = $user_model->fetchOne([], [
-                    'user_id' => $item['user_id']
-            ]);
+            $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
             $item['username'] = $userinfo ? $userinfo['username'] : '-';
             $item['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '-';
             $item['email'] = $userinfo ? $userinfo['email'] : '-';
         }
-        $result = array(
-                'list' => $list,'total' => $total,'page' => $page,'count' => $count,
-                'isnext' => self::IsHasNextPage($total, $page, $count)
-        );
+        $result = [
+            'list'   => $list,
+            'total'  => $total,
+            'page'   => $page,
+            'count'  => $count,
+            'isnext' => self::IsHasNextPage($total, $page, $count)
+        ];
         return $result;
     }
 
@@ -235,9 +237,7 @@ class GameService extends BaseService {
      */
     public static function userBet($user_id, $game_id, $bet_ledou, $bet_number_or_money) {
         $game_model = new GmGame();
-        $game_info = $game_model->fetchOne([], [
-                'game_id' => $game_id
-        ]);
+        $game_info  = $game_model->fetchOne([], ['game_id' => $game_id]);
         if (empty($game_info)) {
             YCore::exception(- 1, '游戏不存在');
         }
@@ -258,8 +258,12 @@ class GameService extends BaseService {
         $default_db = new DbBase();
         $bet_record_model = new GmBetRecord();
         $data = [
-                'user_id' => $user_id,'game_id' => $game_id,'bet_ledou' => $bet_ledou,'bet_status' => 0,
-                'reward_ledou' => 0,'created_time' => $_SERVER['REQUEST_TIME']
+            'user_id'      => $user_id,
+            'game_id'      => $game_id,
+            'bet_ledou'    => $bet_ledou,
+            'bet_status'   => 0,
+            'reward_ledou' => 0,
+            'created_time' => $_SERVER['REQUEST_TIME']
         ];
         $default_db->beginTransaction();
         $bet_id = $bet_record_model->insert($data);
@@ -270,8 +274,12 @@ class GameService extends BaseService {
         $bet_record_number_model = new GmBetRecordNumber();
         foreach ($bet_number_or_money as $bet) {
             $data = [
-                    'bet_id' => $bet_id,'bet_ledou' => $bet['bet_ledou'],'bet_number' => $bet['bet_number'],
-                    'bet_status' => 0,'bet_level' => 0,'created_time' => $_SERVER['REQUEST_TIME']
+                'bet_id'       => $bet_id,
+                'bet_ledou'    => $bet['bet_ledou'],
+                'bet_number'   => $bet['bet_number'],
+                'bet_status'   => 0,
+                'bet_level'    => 0,
+                'created_time' => $_SERVER['REQUEST_TIME']
             ];
             $ok = $bet_record_number_model->insert($data);
             if (! $ok) {
@@ -353,7 +361,7 @@ class GameService extends BaseService {
             $_arr_blue_ball[] = $ball;
         }
         // 去除重复号码
-        $_arr_red_ball = array_unique($_arr_red_ball);
+        $_arr_red_ball  = array_unique($_arr_red_ball);
         $_arr_blue_ball = array_unique($_arr_blue_ball);
         // 去重后号码的数量。
         $red_ball_count = count($_arr_red_ball);
@@ -365,10 +373,10 @@ class GameService extends BaseService {
         if (count($arr_blue_ball) != $blue_ball_count || $blue_ball_count > 16) {
             return 0;
         }
-        $arr_red_ball = $_arr_red_ball;
+        $arr_red_ball  = $_arr_red_ball;
         $arr_blue_ball = $_arr_blue_ball;
-        $cycle_times = 6; // 循环次数。
-        $left_val = $red_ball_count;
+        $cycle_times   = 6; // 循环次数。
+        $left_val      = $red_ball_count;
         for($i = 1; $i < $cycle_times; $i ++) {
             $_val = $red_ball_count - $i;
             $left_val = $left_val * $_val;
@@ -392,10 +400,10 @@ class GameService extends BaseService {
         if (count($ball) != 2) {
             return 0;
         }
-        $str_red_ball = $ball[0];
+        $str_red_ball  = $ball[0];
         $str_blue_ball = $ball[1];
 
-        $arr_red_ball = explode(',', $str_red_ball);
+        $arr_red_ball  = explode(',', $str_red_ball);
         $arr_blue_ball = explode(',', $str_blue_ball);
 
         // 红色球取整调整。
@@ -417,7 +425,7 @@ class GameService extends BaseService {
             $_arr_blue_ball[] = $ball;
         }
         // 去除重复号码
-        $_arr_red_ball = array_unique($_arr_red_ball);
+        $_arr_red_ball  = array_unique($_arr_red_ball);
         $_arr_blue_ball = array_unique($_arr_blue_ball);
         // 去重后号码的数量。
         $red_ball_count = count($_arr_red_ball);
@@ -429,7 +437,7 @@ class GameService extends BaseService {
         if (count($arr_blue_ball) != $blue_ball_count || $blue_ball_count > 12) {
             return 0;
         }
-        $arr_red_ball = $_arr_red_ball;
+        $arr_red_ball  = $_arr_red_ball;
         $arr_blue_ball = $_arr_blue_ball;
 
         // 红球组合数量。
@@ -458,7 +466,7 @@ class GameService extends BaseService {
      * @return number
      */
     function ssc_check_be_number($bet_number) {
-        $arr_ball = explode(',', $bet_number);
+        $arr_ball  = explode(',', $bet_number);
         $_arr_ball = [];
         foreach ($arr_ball as $ball) {
             $ball = intval($ball);

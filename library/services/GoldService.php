@@ -32,13 +32,13 @@ class GoldService extends BaseService {
      */
     public static function goldConsume($user_id, $gold, $consume_type, $consume_code) {
         $gold_model = new GmGold();
-        $user_gold_info = $gold_model->fetchOne([], [
-                'user_id' => $user_id
-        ]);
+        $user_gold_info = $gold_model->fetchOne([], ['user_id' => $user_id]);
         if ($consume_type == self::CONSUME_TYPE_ADD) {
             if (empty($user_gold_info)) {
                 $data = [
-                        'user_id' => $user_id,'gold' => $gold,'created_time' => $_SERVER['REQUEST_TIME']
+                    'user_id'      => $user_id,
+                    'gold'         => $gold,
+                    'created_time' => $_SERVER['REQUEST_TIME']
                 ];
                 $ok = $gold_model->insert($data);
                 if (! $ok) {
@@ -46,11 +46,13 @@ class GoldService extends BaseService {
                 }
             } else {
                 $data = [
-                        'v' => $user_gold_info['v'] + 1,'gold' => $user_gold_info['gold'] + $gold,
-                        'modified_time' => $_SERVER['REQUEST_TIME']
+                    'v'             => $user_gold_info['v'] + 1,
+                    'gold'          => $user_gold_info['gold'] + $gold,
+                    'modified_time' => $_SERVER['REQUEST_TIME']
                 ];
                 $where = [
-                        'user_id' => $user_id,'v' => $user_gold_info['v']
+                    'user_id' => $user_id,
+                    'v'       => $user_gold_info['v']
                 ];
                 $ok = $gold_model->update($data, $where);
                 if (! $ok) {
@@ -62,11 +64,13 @@ class GoldService extends BaseService {
                 YCore::exception(- 1, '金币数量不足');
             }
             $data = [
-                    'v' => $user_gold_info['v'] + 1,'gold' => $user_gold_info['gold'] - $gold,
-                    'modified_time' => $_SERVER['REQUEST_TIME']
+                'v'             => $user_gold_info['v'] + 1,
+                'gold'          => $user_gold_info['gold'] - $gold,
+                'modified_time' => $_SERVER['REQUEST_TIME']
             ];
             $where = [
-                    'user_id' => $user_id,'v' => $user_gold_info['v']
+                'user_id' => $user_id,
+                'v'       => $user_gold_info['v']
             ];
             $ok = $gold_model->update($data, $where);
             if (! $ok) {
@@ -75,8 +79,11 @@ class GoldService extends BaseService {
         }
         $gold_consume_model = new GmGoldConsume();
         $data = [
-                'user_id' => $user_id,'consume_type' => $consume_type,'consume_code' => $consume_code,
-                'gold' => $gold,'created_time' => $_SERVER['REQUEST_TIME']
+            'user_id'      => $user_id,
+            'consume_type' => $consume_type,
+            'consume_code' => $consume_code,
+            'gold'         => $gold,
+            'created_time' => $_SERVER['REQUEST_TIME']
         ];
         $ok = $gold_consume_model->insert($data);
         if (! $ok) {
@@ -98,8 +105,8 @@ class GoldService extends BaseService {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM ms_ledou_consume ';
         $columns = ' * ';
-        $where = ' WHERE 1 ';
-        $params = [];
+        $where   = ' WHERE 1 ';
+        $params  = [];
         if ($user_id != - 1) {
             $where .= ' AND user_id = :user_id ';
             $params[':user_id'] = $user_id;
@@ -113,20 +120,21 @@ class GoldService extends BaseService {
         $default_db = new DbBase();
         $count_data = $default_db->rawQuery($sql, $params)->rawFetchOne();
         $total = $count_data ? $count_data['count'] : 0;
-        $sql = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
-        $list = $default_db->rawQuery($sql, $params)->rawFetchAll();
+        $sql   = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
+        $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
         $user_model = new User();
         foreach ($list as $key => $item) {
-            $userinfo = $user_model->fetchOne([], [
-                    'user_id' => $item['user_id']
-            ]);
-            $item['username'] = $userinfo ? $userinfo['username'] : '-';
+            $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
+            $item['username']    = $userinfo ? $userinfo['username'] : '-';
             $item['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '-';
-            $item['email'] = $userinfo ? $userinfo['email'] : '-';
+            $item['email']       = $userinfo ? $userinfo['email'] : '-';
         }
         $result = [
-                'list' => $list,'total' => $total,'page' => $page,'count' => $count,
-                'isnext' => self::IsHasNextPage($total, $page, $count)
+            'list'   => $list,
+            'total'  => $total,
+            'page'   => $page,
+            'count'  => $count,
+            'isnext' => self::IsHasNextPage($total, $page, $count)
         ];
         return $result;
     }

@@ -1,6 +1,7 @@
 <?php
 /**
  * MySQL缓存。
+ * 将缓存存储到MySQL。
  * @author winerQin
  * @date 2016-09-11
  */

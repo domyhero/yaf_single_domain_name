@@ -11,6 +11,7 @@ use common\YCore;
 use winer\Validator;
 use models\Files;
 use common\YDir;
+use common\YUrl;
 
 class UploadService extends BaseService {
 
@@ -151,11 +152,11 @@ class UploadService extends BaseService {
         if (!Validator::is_alpha_dash($dirname)) {
             YCore::exception(6002002, 'The dirname parameter must be wrong');
         }
-        $max_size = $file_size * 1024 * 1024;
-        $root_dir = YCore::appconfig('upload.root_dir');
-        $root_dir = realpath($root_dir) . DIRECTORY_SEPARATOR; // 去除结尾处的目录分隔钱并重新拼接上当前运行系统的目录分隔线。
+        $max_size  = $file_size * 1024 * 1024;
+        $root_dir  = YCore::appconfig('upload.root_dir');
+        $root_dir  = realpath($root_dir) . DIRECTORY_SEPARATOR; // 去除结尾处的目录分隔钱并重新拼接上当前运行系统的目录分隔线。
         $root_path = $root_dir . 'images/';
-        $upload = new \winer\Upload(); // 实例化上传类
+        $upload    = new \winer\Upload(); // 实例化上传类
         $upload->maxSize = $max_size; // 设置附件上传大小
         // 设置附件上传类型
         $upload->exts = [
@@ -168,11 +169,11 @@ class UploadService extends BaseService {
         $upload->savePath = $dirname . '/'; // 设置附件上传（子）目录
         $info = $upload->upload();
         $fileinfo = [];
-        $statics_domain_name = YCore::config('files_domain_name');
+        $statics_domain_name  = YUrl::getDomainName();
         foreach ($info as $item) {
             $files_model = new Files();
-            $file_name = 'images' . '/' . $item['savepath'] . $item['savename'];
-            $file_id = $files_model->addFiles($file_name, self::FILE_TYPE_IMAGE, $item['size'], $item['md5'], $user_type, $user_id);
+            $file_name   = "/upload/images/{$item['savepath']}{$item['savename']}";
+            $file_id     = $files_model->addFiles($file_name, self::FILE_TYPE_IMAGE, $item['size'], $item['md5'], $user_type, $user_id);
             if ($file_id == 0) {
                 YCore::exception(6002003, '文件上传失败');
             }

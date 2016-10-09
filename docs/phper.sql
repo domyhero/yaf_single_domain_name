@@ -416,77 +416,77 @@ CREATE TABLE `ms_ad` (
 # 所有父分类ID为0的分类，都有一个共同的虚拟顶级父类ID为0。
 DROP TABLE IF EXISTS `ms_category`;
 CREATE TABLE ms_category(
-cat_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分类ID',
-cat_name VARCHAR(50) NOT NULL COMMENT '分类名称',
-cat_type SMALLINT(3) NOT NULL COMMENT '分类类型。见category_type_list字典。',
-parentid INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '父分类ID',
-lv SMALLINT(3) NOT NULL COMMENT '菜单层级',
-cat_code VARCHAR(50) NOT NULL COMMENT '分类code编',
-is_out_url TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否外部链接：1是、0否',
-out_url VARCHAR(255) NOT NULL DEFAULT '' COMMENT '外部链接地址',
-display TINYINT(1) NOT NULL DEFAULT '0' COMMENT '显示状态：1是、0否',
-tpl_name CHAR(50) NOT NULL DEFAULT '' COMMENT '模板名称',
-status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '状态：0无效、1正常、2删除',
-listorder SMALLINT(5) NOT NULL DEFAULT '0' COMMENT '排序值。小到大排列。',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '管理员账号ID',
-PRIMARY KEY(cat_id),
-KEY(cat_code)
+	cat_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+	cat_name VARCHAR(50) NOT NULL COMMENT '分类名称',
+	cat_type SMALLINT(3) NOT NULL COMMENT '分类类型。见category_type_list字典。',
+	parentid INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '父分类ID',
+	lv SMALLINT(3) NOT NULL COMMENT '菜单层级',
+	cat_code VARCHAR(50) NOT NULL COMMENT '分类code编',
+	is_out_url TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否外部链接：1是、0否',
+	out_url VARCHAR(255) NOT NULL DEFAULT '' COMMENT '外部链接地址',
+	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT '显示状态：1是、0否',
+	tpl_name CHAR(50) NOT NULL DEFAULT '' COMMENT '模板名称',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '状态：0无效、1正常、2删除',
+	listorder SMALLINT(5) NOT NULL DEFAULT '0' COMMENT '排序值。小到大排列。',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '管理员账号ID',
+	PRIMARY KEY(cat_id),
+	KEY(cat_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '分类表';
 
 DROP TABLE IF EXISTS ms_favorites;
 CREATE TABLE ms_favorites(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-obj_type TINYINT(1) NOT NULL COMMENT '收藏类型：1商品收藏、2文章收藏、3问答收藏、4IT题目收藏',
-obj_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID/文章ID/问答ID/IT题目ID',
-status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '状态：0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-PRIMARY KEY(id),
-KEY(user_id)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	obj_type TINYINT(1) NOT NULL COMMENT '收藏类型：1商品收藏、2文章收藏、3问答收藏、4IT题目收藏',
+	obj_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID/文章ID/问答ID/IT题目ID',
+	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(id),
+	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户收藏夹';
 
 # 提问之前一定要绑定微信或邮箱,便于提醒。
 DROP TABLE IF EXISTS qa_question;
 CREATE TABLE qa_question(
-ques_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '问题ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '提问人用户ID',
-ques_title CHAR(50) NOT NULL COMMENT '问题题目',
-cat_id INT(11) UNSIGNED NOT NULL COMMENT '分类ID',
-audit_status TINYINT(1) NOT NULL COMMENT '审核状态：0未审核、1审核通过、2审核未通过',
-refuse_reason CHAR(50) NOT NULL COMMENT '审核被拒绝原因',
-status TINYINT(1) NOT NULL COMMENT '状态:0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '提问时间',
-PRIMARY KEY(ques_id),
-KEY(user_id)
+	ques_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '问题ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '提问人用户ID',
+	ques_title CHAR(50) NOT NULL COMMENT '问题题目',
+	cat_id INT(11) UNSIGNED NOT NULL COMMENT '分类ID',
+	audit_status TINYINT(1) NOT NULL COMMENT '审核状态：0未审核、1审核通过、2审核未通过',
+	refuse_reason CHAR(50) NOT NULL COMMENT '审核被拒绝原因',
+	status TINYINT(1) NOT NULL COMMENT '状态:0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '提问时间',
+	PRIMARY KEY(ques_id),
+	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户问题表';
 
 DROP TABLE IF EXISTS qa_question_data;
 CREATE TABLE qa_question_data(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-ques_id INT(11) UNSIGNED NOT NULL COMMENT '问题ID',
-content TEXT COMMENT '问题详情', 
-PRIMARY KEY(id),
-KEY(ques_id)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	ques_id INT(11) UNSIGNED NOT NULL COMMENT '问题ID',
+	content TEXT COMMENT '问题详情', 
+	PRIMARY KEY(id),
+	KEY(ques_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户问题副表';
 
 DROP TABLE IF EXISTS qa_answer;
 CREATE TABLE qa_answer(
-answer_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '问题回答记录ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '回答者用户ID',
-ques_id INT(11) UNSIGNED NOT NULL COMMENT '问题ID',
-evaluate_level TINYINT(1) NOT NULL COMMENT '评价等级：0未评、1一般、2最佳',
-evaluate_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '评价时间',
-content TEXT NOT NULL COMMENT '回答内容',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '回答时间', 
-PRIMARY KEY(answer_id),
-KEY(ques_id)
+	answer_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '问题回答记录ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '回答者用户ID',
+	ques_id INT(11) UNSIGNED NOT NULL COMMENT '问题ID',
+	evaluate_level TINYINT(1) NOT NULL COMMENT '评价等级：0未评、1一般、2最佳',
+	evaluate_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '评价时间',
+	content TEXT NOT NULL COMMENT '回答内容',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '回答时间', 
+	PRIMARY KEY(answer_id),
+	KEY(ques_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '问题回答表';
 
 
@@ -511,77 +511,77 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 
 DROP TABLE IF EXISTS it_question;
 CREATE TABLE it_question(
-ques_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '题目ID',
-ques_title CHAR(255) NOT NULL COMMENT '题目标题',
-cat_id INT(11) UNSIGNED NOT NULL COMMENT '题目分类ID',
-ques_level TINYINT(1) NOT NULL COMMENT '难度等级：1初级、2中级、3高级',
-ques_a CHAR(255) NOT NULL DEFAULT '' COMMENT 'A答案',
-ques_b CHAR(255) NOT NULL DEFAULT '' COMMENT 'B答案',
-ques_c CHAR(255) NOT NULL DEFAULT '' COMMENT 'C答案',
-ques_d CHAR(255) NOT NULL DEFAULT '' COMMENT 'D答案',
-ques_e CHAR(255) NOT NULL DEFAULT '' COMMENT 'E答案',
-ques_f CHAR(255) NOT NULL DEFAULT '' COMMENT 'F答案',
-right_answer CHAR(10) NOT NULL COMMENT '正确答案:A、B、C、D、E、F',
-decipher TEXT COMMENT '题目解析',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
-modified_by INT(11) UNSIGNED NOT NULL COMMENT '修改人',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人', 
-PRIMARY KEY(ques_id)
+	ques_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '题目ID',
+	ques_title CHAR(255) NOT NULL COMMENT '题目标题',
+	cat_id INT(11) UNSIGNED NOT NULL COMMENT '题目分类ID',
+	ques_level TINYINT(1) NOT NULL COMMENT '难度等级：1初级、2中级、3高级',
+	ques_a CHAR(255) NOT NULL DEFAULT '' COMMENT 'A答案',
+	ques_b CHAR(255) NOT NULL DEFAULT '' COMMENT 'B答案',
+	ques_c CHAR(255) NOT NULL DEFAULT '' COMMENT 'C答案',
+	ques_d CHAR(255) NOT NULL DEFAULT '' COMMENT 'D答案',
+	ques_e CHAR(255) NOT NULL DEFAULT '' COMMENT 'E答案',
+	ques_f CHAR(255) NOT NULL DEFAULT '' COMMENT 'F答案',
+	right_answer CHAR(10) NOT NULL COMMENT '正确答案:A、B、C、D、E、F',
+	decipher TEXT COMMENT '题目解析',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
+	modified_by INT(11) UNSIGNED NOT NULL COMMENT '修改人',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人', 
+	PRIMARY KEY(ques_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'IT题库表';
 
 DROP TABLE IF EXISTS it_question_stats;
 CREATE TABLE it_question_stats(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '题目ID',
-ques_id INT(11) UNSIGNED NOT NULL COMMENT '题目ID',
-answer_times INT(11) UNSIGNED NOT NULL COMMENT '回答次数',
-error_times INT(11) UNSIGNED NOT NULL COMMENT '错误次数',
-favorites_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '收藏次数',
-modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间', 
-PRIMARY KEY(id),
-KEY(ques_id)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '题目ID',
+	ques_id INT(11) UNSIGNED NOT NULL COMMENT '题目ID',
+	answer_times INT(11) UNSIGNED NOT NULL COMMENT '回答次数',
+	error_times INT(11) UNSIGNED NOT NULL COMMENT '错误次数',
+	favorites_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '收藏次数',
+	modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间', 
+	PRIMARY KEY(id),
+	KEY(ques_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'IT题库统计表';
 
 DROP TABLE IF EXISTS it_test_paper;
 CREATE TABLE it_test_paper(
-paper_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '试卷ID',
-paper_title CHAR(50) NOT NULL COMMENT '试卷标题',
-paper_desc CHAR(255) NOT NULL DEFAULT '' COMMENT '试卷说明',
-cat_id INT(11) UNSIGNED NOT NULL COMMENT '题目分类ID',
-medal_code CHAR(30) NOT NULL COMMENT '勋章编码',
-question_count SMALLINT(3) UNSIGNED NOT NULL COMMENT '试卷试题数量',
-score SMALLINT(3) UNSIGNED NOT NULL COMMENT '每题分值',
-pass_score SMALLINT(5) UNSIGNED NOT NULL COMMENT '及格分值',
-total_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '试题允许时长(秒)',
-test_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '参与次数',
-pass_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '通过次数',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-PRIMARY KEY(paper_id),
-UNIQUE KEY(medal_code)
+	paper_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '试卷ID',
+	paper_title CHAR(50) NOT NULL COMMENT '试卷标题',
+	paper_desc CHAR(255) NOT NULL DEFAULT '' COMMENT '试卷说明',
+	cat_id INT(11) UNSIGNED NOT NULL COMMENT '题目分类ID',
+	medal_code CHAR(30) NOT NULL COMMENT '勋章编码',
+	question_count SMALLINT(3) UNSIGNED NOT NULL COMMENT '试卷试题数量',
+	score SMALLINT(3) UNSIGNED NOT NULL COMMENT '每题分值',
+	pass_score SMALLINT(5) UNSIGNED NOT NULL COMMENT '及格分值',
+	total_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '试题允许时长(秒)',
+	test_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '参与次数',
+	pass_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '通过次数',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(paper_id),
+	UNIQUE KEY(medal_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT 'IT试卷表';
 
 DROP TABLE IF EXISTS it_user_medal;
 CREATE TABLE it_user_medal(
-medal_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-paper_id INT(11) UNSIGNED NOT NULL COMMENT '试题ID',
-medal_code CHAR(30) NOT NULL COMMENT '勋章code',
-used_time INT(11) UNSIGNED NOT NULL COMMENT '用时多少秒',
-total_ques_count SMALLINT(3) NOT NULL COMMENT '试题总数量',
-total_right_count SMALLINT(3) NOT NULL COMMENT '试题答对数量',
-total_error_count SMALLINT(3) NOT NULL COMMENT '试题答错数量',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-PRIMARY KEY(medal_id),
-KEY(user_id),
-KEY(medal_code)
+	medal_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	paper_id INT(11) UNSIGNED NOT NULL COMMENT '试题ID',
+	medal_code CHAR(30) NOT NULL COMMENT '勋章code',
+	used_time INT(11) UNSIGNED NOT NULL COMMENT '用时多少秒',
+	total_ques_count SMALLINT(3) NOT NULL COMMENT '试题总数量',
+	total_right_count SMALLINT(3) NOT NULL COMMENT '试题答对数量',
+	total_error_count SMALLINT(3) NOT NULL COMMENT '试题答错数量',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL COMMENT '修改时间',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(medal_id),
+	KEY(user_id),
+	KEY(medal_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户IT试题闯关勋章表';
 
 
@@ -765,56 +765,56 @@ INSERT INTO `ms_config` (`ctitle`, `cname`, `cvalue`, `description`, `status`, `
 
 DROP TABLE IF EXISTS `mall_appraise`;
 CREATE TABLE mall_appraise (
-aid INT(11) UNSIGNED AUTO_INCREMENT COMMENT '评价ID',
-order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID。对应 mall_order.order_id',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应 ms_user.user_id',
-score1 DOUBLE(8,2) NOT NULL COMMENT '宝贝描述相符评分',
-score2 DOUBLE(8,2) NOT NULL COMMENT '卖家服务态度评分',
-score3 DOUBLE(8,2) NOT NULL COMMENT '物流服务质量评分',
-client_ip INT(11) UNSIGNED NOT NULL COMMENT '用户IP十进制数字',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
-PRIMARY KEY(aid),
-KEY(user_id),
-UNIQUE KEY(order_id)
+	aid INT(11) UNSIGNED AUTO_INCREMENT COMMENT '评价ID',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID。对应 mall_order.order_id',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应 ms_user.user_id',
+	score1 DOUBLE(8,2) NOT NULL COMMENT '宝贝描述相符评分',
+	score2 DOUBLE(8,2) NOT NULL COMMENT '卖家服务态度评分',
+	score3 DOUBLE(8,2) NOT NULL COMMENT '物流服务质量评分',
+	client_ip INT(11) UNSIGNED NOT NULL COMMENT '用户IP十进制数字',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',
+	PRIMARY KEY(aid),
+	KEY(user_id),
+	UNIQUE KEY(order_id)
 )ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT '评价表';
 
 DROP TABLE IF EXISTS `mall_comment`;
 CREATE TABLE mall_comment (
-cid INT(11) UNSIGNED AUTO_INCREMENT COMMENT '评论ID',
-order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID。对应mall_order.order_id',
-sub_order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID。对应mall_order_item.sub_order_id',
-goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID。对应mall_goods.goods_id',
-product_id INT(11) UNSIGNED NOT NULL COMMENT '货品ID。对应mall_product.product_id',
-evaluate_level TINYINT(1) NOT NULL COMMENT '商品好评等级：1好评、2中评、3差评',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应ms_user.user_id',
-content1 CHAR(200) NOT NULL COMMENT '主评',
-content1_time INT(11) UNSIGNED NOT NULL COMMENT '主评时间',
-reply1 CHAR(200) NOT NULL DEFAULT '' COMMENT '主评回复',
-reply1_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '主评回复时间',
-content2 CHAR(200) NOT NULL DEFAULT '' COMMENT '追评',
-content2_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '追评时间',
-reply2 CHAR(200) NOT NULL DEFAULT '' COMMENT '追评回复',
-reply2_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '追评回复时间',
-client_ip INT(11) UNSIGNED NOT NULL COMMENT '用户IP十进制数字',
-is_display TINYINT(1) NOT NULL DEFAULT '1' COMMENT '是否显示',
-PRIMARY KEY(cid),
-KEY(order_id),
-KEY(user_id),
-UNIQUE KEY(sub_order_id)
+	cid INT(11) UNSIGNED AUTO_INCREMENT COMMENT '评论ID',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID。对应mall_order.order_id',
+	sub_order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID。对应mall_order_item.sub_order_id',
+	goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID。对应mall_goods.goods_id',
+	product_id INT(11) UNSIGNED NOT NULL COMMENT '货品ID。对应mall_product.product_id',
+	evaluate_level TINYINT(1) NOT NULL COMMENT '商品好评等级：1好评、2中评、3差评',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应ms_user.user_id',
+	content1 CHAR(200) NOT NULL COMMENT '主评',
+	content1_time INT(11) UNSIGNED NOT NULL COMMENT '主评时间',
+	reply1 CHAR(200) NOT NULL DEFAULT '' COMMENT '主评回复',
+	reply1_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '主评回复时间',
+	content2 CHAR(200) NOT NULL DEFAULT '' COMMENT '追评',
+	content2_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '追评时间',
+	reply2 CHAR(200) NOT NULL DEFAULT '' COMMENT '追评回复',
+	reply2_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '追评回复时间',
+	client_ip INT(11) UNSIGNED NOT NULL COMMENT '用户IP十进制数字',
+	is_display TINYINT(1) NOT NULL DEFAULT '1' COMMENT '是否显示',
+	PRIMARY KEY(cid),
+	KEY(order_id),
+	KEY(user_id),
+	UNIQUE KEY(sub_order_id)
 )ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT '买家评论表';
 
 DROP TABLE IF EXISTS mall_cart;
 CREATE TABLE mall_cart(
-id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
-product_id INT(11) UNSIGNED NOT NULL COMMENT '货品ID',
-quantity INT(11) UNSIGNED NOT NULL COMMENT '购买数量',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id, product_id)
+	id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
+	product_id INT(11) UNSIGNED NOT NULL COMMENT '货品ID',
+	quantity INT(11) UNSIGNED NOT NULL COMMENT '购买数量',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id, product_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户购物车表';
 
 
@@ -825,259 +825,259 @@ KEY(user_id, product_id)
 # ];
 DROP TABLE IF EXISTS mall_goods;
 CREATE TABLE mall_goods(
-goods_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '商品ID',
-goods_name VARCHAR(100) NOT NULL COMMENT '商品名称',
-cat_code VARCHAR(50) NOT NULL COMMENT '商品分类编码。对应ms_category.cat_code',
-slogan VARCHAR(50) NOT NULL DEFAULT '' COMMENT '广告语、标识',
-min_market_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最低市场价格',
-max_market_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最高市场价格',
-min_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最低销售价格',
-max_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最高销售价格',
-is_exchange TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否允许金币兑换',
-goods_img VARCHAR(100) NOT NULL DEFAULT '' COMMENT '商品图片',
-weight INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '重量。单位(g)',
-buy_count INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '购买次数',
-month_buy_count INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '近30天购买次数',
-listorder SMALLINT(5) NOT NULL DEFAULT '0' COMMENT '排序值。小到大排列。',
-marketable TINYINT(1) NOT NULL COMMENT '上下架状态：1上架、0下架',
-marketable_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '上下架时间',
-freight_tpl_id INT(11) UNSIGNED NOT NULL COMMENT '运费模板ID。0表示卖家包邮。',
-status TINYINT(1) NOT NULL COMMENT '商品状态：0无效、1正常、2删除',
-spec_val_json VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '商品规格。json格式。',
-limit_count SMALLINT(10) NOT NULL DEFAULT '0' COMMENT '限购数量。0不限购。',
-description TEXT NOT NULL COMMENT '商品详情',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(goods_id),
-KEY(cat_code)
+	goods_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '商品ID',
+	goods_name VARCHAR(100) NOT NULL COMMENT '商品名称',
+	cat_code VARCHAR(50) NOT NULL COMMENT '商品分类编码。对应ms_category.cat_code',
+	slogan VARCHAR(50) NOT NULL DEFAULT '' COMMENT '广告语、标识',
+	min_market_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最低市场价格',
+	max_market_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最高市场价格',
+	min_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最低销售价格',
+	max_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '商品最高销售价格',
+	is_exchange TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否允许金币兑换',
+	goods_img VARCHAR(100) NOT NULL DEFAULT '' COMMENT '商品图片',
+	weight INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '重量。单位(g)',
+	buy_count INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '购买次数',
+	month_buy_count INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '近30天购买次数',
+	listorder SMALLINT(5) NOT NULL DEFAULT '0' COMMENT '排序值。小到大排列。',
+	marketable TINYINT(1) NOT NULL COMMENT '上下架状态：1上架、0下架',
+	marketable_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '上下架时间',
+	freight_tpl_id INT(11) UNSIGNED NOT NULL COMMENT '运费模板ID。0表示卖家包邮。',
+	status TINYINT(1) NOT NULL COMMENT '商品状态：0无效、1正常、2删除',
+	spec_val_json VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '商品规格。json格式。',
+	limit_count SMALLINT(10) NOT NULL DEFAULT '0' COMMENT '限购数量。0不限购。',
+	description TEXT NOT NULL COMMENT '商品详情',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(goods_id),
+	KEY(cat_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '商品表';
 
 DROP TABLE IF EXISTS mall_product;
 CREATE TABLE mall_product(
-product_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '货品ID',
-goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
-market_price DOUBLE(8,2) NOT NULL COMMENT '市场价格',
-sales_price DOUBLE(8,2) NOT NULL COMMENT '销售价格',
-stock INT(11) UNSIGNED NOT NULL COMMENT '货品库存',
-spec_val VARCHAR(100) NOT NULL DEFAULT '' COMMENT '规格值：颜色:红色|尺寸:35',
-status TINYINT(1) NOT NULL COMMENT '商品状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(product_id),
-KEY(goods_id)
+	product_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '货品ID',
+	goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
+	market_price DOUBLE(8,2) NOT NULL COMMENT '市场价格',
+	sales_price DOUBLE(8,2) NOT NULL COMMENT '销售价格',
+	stock INT(11) UNSIGNED NOT NULL COMMENT '货品库存',
+	spec_val VARCHAR(100) NOT NULL DEFAULT '' COMMENT '规格值：颜色:红色|尺寸:35',
+	status TINYINT(1) NOT NULL COMMENT '商品状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(product_id),
+	KEY(goods_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '货品表';
 
 DROP TABLE IF EXISTS mall_freight_tpl;
 CREATE TABLE mall_freight_tpl(
-tpl_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '运费模板ID',
-freight_name CHAR(20) NOT NULL COMMENT '运费模板名称',
-send_time SMALLINT(5) UNSIGNED NOT NULL DEFAULT '12' COMMENT '发货时间。单位(小时)。0代表立即发货。',
-bear_freight TINYINT(1) NOT NULL COMMENT '运费承担：1卖家包邮、2买家承担运费（通过规则运费可能为0）',
-freight_type TINYINT(1) NOT NULL DEFAULT '1' COMMENT '计费类型：1计件、2计重',
-base_step INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '基础计费步长',
-base_freight INT(11) UNSIGNED NOT NULL DEFAULT '0.00' COMMENT '基础步长运费。可以设置为0。',
-rate_step INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '计费步长。设置为0代表取消按步长记费',
-step_freight INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '每步长计费多少钱。设置为0代表不计费',
-no_area VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '不配送区域。格式：1111,222,333。一般不配送区域是只港澳台西藏内蒙古新疆。最多只允许设置100个。',
-baoyou_fee INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '商品满多少元包邮。设置为0取消此条件。',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人用户ID',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人用户ID',
-PRIMARY KEY(tpl_id)
+	tpl_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '运费模板ID',
+	freight_name CHAR(20) NOT NULL COMMENT '运费模板名称',
+	send_time SMALLINT(5) UNSIGNED NOT NULL DEFAULT '12' COMMENT '发货时间。单位(小时)。0代表立即发货。',
+	bear_freight TINYINT(1) NOT NULL COMMENT '运费承担：1卖家包邮、2买家承担运费（通过规则运费可能为0）',
+	freight_type TINYINT(1) NOT NULL DEFAULT '1' COMMENT '计费类型：1计件、2计重',
+	base_step INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '基础计费步长',
+	base_freight INT(11) UNSIGNED NOT NULL DEFAULT '0.00' COMMENT '基础步长运费。可以设置为0。',
+	rate_step INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '计费步长。设置为0代表取消按步长记费',
+	step_freight INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '每步长计费多少钱。设置为0代表不计费',
+	no_area VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '不配送区域。格式：1111,222,333。一般不配送区域是只港澳台西藏内蒙古新疆。最多只允许设置100个。',
+	baoyou_fee INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '商品满多少元包邮。设置为0取消此条件。',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人用户ID',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人用户ID',
+	PRIMARY KEY(tpl_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '商品运费模板';
 
 # 相册图片最多允许5张。
 DROP TABLE IF EXISTS mall_goods_image;
 CREATE TABLE mall_goods_image(
-image_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
-image_url VARCHAR(100) NOT NULL COMMENT '图片URL',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(image_id),
-KEY(goods_id)
+	image_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
+	image_url VARCHAR(100) NOT NULL COMMENT '图片URL',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(image_id),
+	KEY(goods_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '商品相册表';
 
 # 最多20个收货地址
 DROP TABLE IF EXISTS mall_user_address;
 CREATE TABLE mall_user_address(
-address_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '地址ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-realname CHAR(10) NOT NULL COMMENT '收货人姓名',
-zipcode CHAR(6) DEFAULT NULL COMMENT '收货人邮编',
-mobilephone CHAR(11) DEFAULT NULL COMMENT '收货人手机',
-district_id INT(11) UNSIGNED NOT NULL COMMENT '地区id,ms_district.district_id',
-address CHAR(50) NOT NULL COMMENT '收货人地址。除省市区街道后的部分',
-is_default TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否默认收货地址：0否、1是',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(address_id),
-KEY(user_id),
-KEY(mobilephone),
-KEY(district_id)
+	address_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '地址ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	realname CHAR(10) NOT NULL COMMENT '收货人姓名',
+	zipcode CHAR(6) DEFAULT NULL COMMENT '收货人邮编',
+	mobilephone CHAR(11) DEFAULT NULL COMMENT '收货人手机',
+	district_id INT(11) UNSIGNED NOT NULL COMMENT '地区id,ms_district.district_id',
+	address CHAR(50) NOT NULL COMMENT '收货人地址。除省市区街道后的部分',
+	is_default TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否默认收货地址：0否、1是',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(address_id),
+	KEY(user_id),
+	KEY(mobilephone),
+	KEY(district_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户收货地址表';
 
 DROP TABLE IF EXISTS mall_order;
 CREATE TABLE mall_order(
-order_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '订单ID',
-order_sn CHAR(50) NOT NULL COMMENT '订单号',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应ms_user.user_id',
-total_price DOUBLE(8,2) NOT NULL COMMENT '订单实付金额',
-payment_type TINYINT(1) NOT NULL COMMENT '支付类型。1RMB、2金币。',
-payment_price DOUBLE(8,2) NOT NULL COMMENT '订单实付金额',
-pay_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '支付状态：0未支付、1已支付',
-pay_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '支付时间戳',
-order_status SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '订单状态：0待付款、1已付款、2已发货、3交易成功、4交易关闭、5交易取消',
-shipping_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '发货时间戳',
-done_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '交易成功时间戳',
-closed_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '交易关闭时间戳',
-cancel_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '交易取消时间戳',
-need_invoice TINYINT(1) UNSIGNED NOT NULL COMMENT '是否需要发票：0不需要、1需要',
-invoice_type TINYINT(1) UNSIGNED NOT NULL COMMENT '发票类型：1个人、2公司',
-invoice_name CHAR(50) NOT NULL DEFAULT '' COMMENT '发票抬头',
-receiver_name CHAR(20) NOT NULL COMMENT '收货人姓名',
-receiver_province CHAR(20) DEFAULT NULL COMMENT '收货人省，存中文',
-receiver_city CHAR(20) DEFAULT NULL COMMENT '收货人市，存中文',
-receiver_district CHAR(20) DEFAULT NULL COMMENT '收货人区，存中文',
-receiver_street CHAR(20) DEFAULT NULL COMMENT '收货人街道，存中文',
-receiver_address CHAR(100) NOT NULL COMMENT '收货人地址',
-receiver_zip CHAR(6) DEFAULT NULL COMMENT '收货人邮编',
-receiver_mobile CHAR(11) DEFAULT NULL COMMENT '收货人手机',
-buyer_message CHAR(50) DEFAULT NULL COMMENT '买家留言，给卖家看的',
-freight_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '运费',
-jifen_pay INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '积分兑换花费数量',
-user_coupon_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '优惠券ID',
-user_coupon_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '优惠券减免的金额',
-comment_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '评论状态：0未评论、1已评论',
-reply_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '回复状态：0未回复、1已回复',
-refund_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '退款状态：0未退款、1部分退款中、2整单退款中、3卖家拒绝退款、4买家取消退款',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '下单时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(order_id),
-UNIQUE KEY(order_sn),
-KEY(user_id, order_status)
+	order_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '订单ID',
+	order_sn CHAR(50) NOT NULL COMMENT '订单号',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应ms_user.user_id',
+	total_price DOUBLE(8,2) NOT NULL COMMENT '订单实付金额',
+	payment_type TINYINT(1) NOT NULL COMMENT '支付类型。1RMB、2金币。',
+	payment_price DOUBLE(8,2) NOT NULL COMMENT '订单实付金额',
+	pay_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '支付状态：0未支付、1已支付',
+	pay_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '支付时间戳',
+	order_status SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '订单状态：0待付款、1已付款、2已发货、3交易成功、4交易关闭、5交易取消',
+	shipping_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '发货时间戳',
+	done_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '交易成功时间戳',
+	closed_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '交易关闭时间戳',
+	cancel_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '交易取消时间戳',
+	need_invoice TINYINT(1) UNSIGNED NOT NULL COMMENT '是否需要发票：0不需要、1需要',
+	invoice_type TINYINT(1) UNSIGNED NOT NULL COMMENT '发票类型：1个人、2公司',
+	invoice_name CHAR(50) NOT NULL DEFAULT '' COMMENT '发票抬头',
+	receiver_name CHAR(20) NOT NULL COMMENT '收货人姓名',
+	receiver_province CHAR(20) DEFAULT NULL COMMENT '收货人省，存中文',
+	receiver_city CHAR(20) DEFAULT NULL COMMENT '收货人市，存中文',
+	receiver_district CHAR(20) DEFAULT NULL COMMENT '收货人区，存中文',
+	receiver_street CHAR(20) DEFAULT NULL COMMENT '收货人街道，存中文',
+	receiver_address CHAR(100) NOT NULL COMMENT '收货人地址',
+	receiver_zip CHAR(6) DEFAULT NULL COMMENT '收货人邮编',
+	receiver_mobile CHAR(11) DEFAULT NULL COMMENT '收货人手机',
+	buyer_message CHAR(50) DEFAULT NULL COMMENT '买家留言，给卖家看的',
+	freight_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '运费',
+	jifen_pay INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '积分兑换花费数量',
+	user_coupon_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '优惠券ID',
+	user_coupon_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '优惠券减免的金额',
+	comment_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '评论状态：0未评论、1已评论',
+	reply_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '回复状态：0未回复、1已回复',
+	refund_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '退款状态：0未退款、1部分退款中、2整单退款中、3卖家拒绝退款、4买家取消退款',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '下单时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(order_id),
+	UNIQUE KEY(order_sn),
+	KEY(user_id, order_status)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单主表';
 
 DROP TABLE IF EXISTS mall_order_item;
 CREATE TABLE mall_order_item(
-sub_order_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '子订单ID',
-order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
-goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
-goods_name CHAR(100) NOT NULL COMMENT '商品名称',
-goods_image CHAR(80) NOT NULL COMMENT '商品图片',
-product_id INT(11) UNSIGNED NOT NULL COMMENT '货品ID',
-spec_val CHAR(100) NOT NULL DEFAULT '' COMMENT '规格值',
-market_price DOUBLE(8,2) NOT NULL COMMENT '市场价',
-sales_price DOUBLE(8,2) NOT NULL COMMENT '销售价',
-is_edit_price TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否改价。1是、0否。',
-old_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '改价前的价格',
-quantity SMALLINT(3) UNSIGNED NOT NULL COMMENT '购买数量',
-payment_price DOUBLE(8,2) NOT NULL COMMENT '实付金额=销售价*购买数量',
-total_price DOUBLE(8,2) NOT NULL COMMENT '商品总额=市场价*购买数量',
-comment_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '评论状态：0未评论、1已初评、2已追评',
-reply_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '回复状态：0未回复、1已回复、2已追加回复',
-refund_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '退款状态：0未退款、1退款中、2卖家拒绝退款、3买家取消退款',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(sub_order_id),
-KEY(order_id)
+	sub_order_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '子订单ID',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
+	goods_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID',
+	goods_name CHAR(100) NOT NULL COMMENT '商品名称',
+	goods_image CHAR(80) NOT NULL COMMENT '商品图片',
+	product_id INT(11) UNSIGNED NOT NULL COMMENT '货品ID',
+	spec_val CHAR(100) NOT NULL DEFAULT '' COMMENT '规格值',
+	market_price DOUBLE(8,2) NOT NULL COMMENT '市场价',
+	sales_price DOUBLE(8,2) NOT NULL COMMENT '销售价',
+	is_edit_price TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否改价。1是、0否。',
+	old_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '改价前的价格',
+	quantity SMALLINT(3) UNSIGNED NOT NULL COMMENT '购买数量',
+	payment_price DOUBLE(8,2) NOT NULL COMMENT '实付金额=销售价*购买数量',
+	total_price DOUBLE(8,2) NOT NULL COMMENT '商品总额=市场价*购买数量',
+	comment_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '评论状态：0未评论、1已初评、2已追评',
+	reply_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '回复状态：0未回复、1已回复、2已追加回复',
+	refund_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '退款状态：0未退款、1退款中、2卖家拒绝退款、3买家取消退款',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(sub_order_id),
+	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单明细表';
 
 DROP TABLE IF EXISTS mall_order_log;
 CREATE TABLE mall_order_log(
-log_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
-action_type VARCHAR(20) NOT NULL COMMENT '操作类型：canceled取消、closed关闭、edit_address修改收货地址、edit_logistics修改物流信息、trade_successed交易成功、shipped已发货、payment支付',
-log_content VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '操作内容。如果是修改地址要把新旧地址放里面。',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '操作人',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(log_id),
-KEY(order_id)
+	log_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
+	action_type VARCHAR(20) NOT NULL COMMENT '操作类型：canceled取消、closed关闭、edit_address修改收货地址、edit_logistics修改物流信息、trade_successed交易成功、shipped已发货、payment支付',
+	log_content VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '操作内容。如果是修改地址要把新旧地址放里面。',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '操作人',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(log_id),
+	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单操作日志表';
 
 # 物流单号在未确认收货之前均可修改。
 DROP TABLE IF EXISTS mall_logistics;
 CREATE TABLE mall_logistics(
-id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID',
-logistics_code VARCHAR(20) NOT NULL DEFAULT '' COMMENT '物流编码',
-logistics_number VARCHAR(50) NOT NULL DEFAULT '' COMMENT '物流单号',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(id)
+	id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID',
+	logistics_code VARCHAR(20) NOT NULL DEFAULT '' COMMENT '物流编码',
+	logistics_number VARCHAR(50) NOT NULL DEFAULT '' COMMENT '物流单号',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单物流信息表';
 
 DROP TABLE IF EXISTS mall_payment_log;
 CREATE TABLE mall_payment_log(
-payment_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。对应ms_payment_cfg.payment_code',
-order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
-serial_number VARCHAR(50) NOT NULL COMMENT '支付流水号',
-amount DOUBLE(8,2) NOT NULL COMMENT '支付金额',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(payment_id),
-KEY(order_id)
+	payment_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。对应ms_payment_cfg.payment_code',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
+	serial_number VARCHAR(50) NOT NULL COMMENT '支付流水号',
+	amount DOUBLE(8,2) NOT NULL COMMENT '支付金额',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(payment_id),
+	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '支付记录表';
 
 DROP TABLE IF EXISTS mall_payment_cfg;
 CREATE TABLE mall_payment_cfg(
-cfg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(cfg_id)
+	cfg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(cfg_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '支付配置表';
 
 DROP TABLE IF EXISTS mall_coupon;
 CREATE TABLE mall_coupon(
-coupon_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
-coupon_name VARCHAR(20) NOT NULL COMMENT '优惠券名称',
-money INT(11) UNSIGNED NOT NULL COMMENT '优惠券金额',
-order_money INT(11) UNSIGNED NOT NULL COMMENT '订单金额多少可用',
-get_start_time INT(11) UNSIGNED NOT NULL COMMENT '领取开始时间',
-get_end_time INT(11) UNSIGNED NOT NULL COMMENT '领取截止时间',
-limit_quantity SMALLINT(3) UNSIGNED NOT NULL COMMENT '每人限领优惠券数量',
-expiry_date INT(11) UNSIGNED NOT NULL COMMENT '使用有效期截止',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(coupon_id)
+	coupon_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
+	coupon_name VARCHAR(20) NOT NULL COMMENT '优惠券名称',
+	money INT(11) UNSIGNED NOT NULL COMMENT '优惠券金额',
+	order_money INT(11) UNSIGNED NOT NULL COMMENT '订单金额多少可用',
+	get_start_time INT(11) UNSIGNED NOT NULL COMMENT '领取开始时间',
+	get_end_time INT(11) UNSIGNED NOT NULL COMMENT '领取截止时间',
+	limit_quantity SMALLINT(3) UNSIGNED NOT NULL COMMENT '每人限领优惠券数量',
+	expiry_date INT(11) UNSIGNED NOT NULL COMMENT '使用有效期截止',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(coupon_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '优惠券表';
 
 DROP TABLE IF EXISTS mall_user_coupon;
 CREATE TABLE mall_user_coupon(
-id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-coupon_id INT(11) UNSIGNED NOT NULL COMMENT '优惠券ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-is_use TINYINT(1) NOT NULL COMMENT '是否使用',
-use_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '使用时间',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id),
-KEY(coupon_id)
+	id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	coupon_id INT(11) UNSIGNED NOT NULL COMMENT '优惠券ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	is_use TINYINT(1) NOT NULL COMMENT '是否使用',
+	use_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '使用时间',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(coupon_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户优惠券表';
 
 CREATE TABLE ms_session (
@@ -1112,69 +1112,69 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 
 DROP TABLE IF EXISTS `gm_ledou`;
 CREATE TABLE gm_ledou(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
-ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '乐豆数量。包含未用完的赠送的乐豆。',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
+	ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '乐豆数量。包含未用完的赠送的乐豆。',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '玩家乐豆表';
 
 DROP TABLE IF EXISTS `gm_ledou_consume`;
 CREATE TABLE gm_ledou_consume(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
-consume_type TINYINT(1) NOT NULL COMMENT '消费类型：1增加、2扣减',
-consume_code CHAR(20) NOT NULL COMMENT '类型编码。通过编码可以知晓是因何产生的。编码通过字典配置。',
-ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '影响的乐豆数量',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
+	consume_type TINYINT(1) NOT NULL COMMENT '消费类型：1增加、2扣减',
+	consume_code CHAR(20) NOT NULL COMMENT '类型编码。通过编码可以知晓是因何产生的。编码通过字典配置。',
+	ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '影响的乐豆数量',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '乐豆消费记录';
 
 
 DROP TABLE IF EXISTS `gm_bet_record`;
 CREATE TABLE gm_bet_record(
-bet_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
-game_id INT(11) UNSIGNED NOT NULL COMMENT '游戏ID',
-bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
-bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
-reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
-PRIMARY KEY(bet_id),
-KEY(user_id)
+	bet_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
+	game_id INT(11) UNSIGNED NOT NULL COMMENT '游戏ID',
+	bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
+	bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
+	reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
+	PRIMARY KEY(bet_id),
+	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注记录';
 
 
 DROP TABLE IF EXISTS `gm_bet_record_number`;
 CREATE TABLE gm_bet_record_number(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-bet_id INT(11) UNSIGNED NOT NULL COMMENT '投注记录ID。对应ms_bet_record.bet_id',
-bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
-bet_number CHAR(100) NOT NULL COMMENT '投注号码',
-bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
-bet_level SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '中奖等级。有些游戏是没有等级的。默认就是0。根据游戏特点选择是否使用此字段。',
-reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
-PRIMARY KEY(id),
-KEY(bet_id)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	bet_id INT(11) UNSIGNED NOT NULL COMMENT '投注记录ID。对应ms_bet_record.bet_id',
+	bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
+	bet_number CHAR(100) NOT NULL COMMENT '投注号码',
+	bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
+	bet_level SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '中奖等级。有些游戏是没有等级的。默认就是0。根据游戏特点选择是否使用此字段。',
+	reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
+	PRIMARY KEY(id),
+	KEY(bet_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注号码记录表';
 
 
 DROP TABLE IF EXISTS `gm_game`;
 CREATE TABLE gm_game(
-game_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '游戏ID',
-game_name CHAR(50) NOT NULL COMMENT '游戏名称',
-game_code CHAR(20) NOT NULL COMMENT '游戏编码',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '管理员账号ID',
-PRIMARY KEY(game_id)
+	game_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '游戏ID',
+	game_name CHAR(50) NOT NULL COMMENT '游戏名称',
+	game_code CHAR(20) NOT NULL COMMENT '游戏编码',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '管理员账号ID',
+	PRIMARY KEY(game_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '游戏种类表';
 INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('1', '双色球', 'ssq', '0', '0', unix_timestamp(now()), '1');
 INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('2', '大乐透', 'dlt', '0', '0', unix_timestamp(now()), '1');
@@ -1185,52 +1185,52 @@ INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modi
 # 如果是中途停止之后再开启的，则判断之前的期号再后延。
 DROP TABLE IF EXISTS `gm_yyg`;
 CREATE TABLE gm_yyg(
-yyg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-qh_number INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '当前正在进行的期号',
-yyg_name CHAR(50) NOT NULL COMMENT '一元购活动名称',
-yyg_image_url CHAR(80) NOT NULL COMMENT '活动主图',
-yyg_desc CHAR(250) NOT NULL COMMENT '一元购活动介绍',
-yyg_price INT(11) UNSIGNED NOT NULL COMMENT '一元购价格',
-yyg_richtext VARCHAR(1000) NOT NULL COMMENT '一元购图文详情',
-listorder SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '排序。小在前',
-yyg_start TINYINT(1) NOT NULL COMMENT '一元购开启状态：1开启、0关闭',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(yyg_id)
+	yyg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	qh_number INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '当前正在进行的期号',
+	yyg_name CHAR(50) NOT NULL COMMENT '一元购活动名称',
+	yyg_image_url CHAR(80) NOT NULL COMMENT '活动主图',
+	yyg_desc CHAR(250) NOT NULL COMMENT '一元购活动介绍',
+	yyg_price INT(11) UNSIGNED NOT NULL COMMENT '一元购价格',
+	yyg_richtext VARCHAR(1000) NOT NULL COMMENT '一元购图文详情',
+	listorder SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '排序。小在前',
+	yyg_start TINYINT(1) NOT NULL COMMENT '一元购开启状态：1开启、0关闭',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(yyg_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购活动列表';
 
 
 # 一元购期号表
 DROP TABLE IF EXISTS `gm_yyg_qh`;
 CREATE TABLE gm_yyg_qh(
-qh_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
-ok_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '已参与人次',
-winner_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖用户ID',
-winner_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖时间',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(qh_id)
+	qh_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+	ok_times INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '已参与人次',
+	winner_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖用户ID',
+	winner_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖时间',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(qh_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购期号表';
 
 
 # 一元购活动相册图片最多允许5张。
 DROP TABLE IF EXISTS gm_yyg_image;
 CREATE TABLE gm_yyg_image(
-image_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购活动ID',
-image_url VARCHAR(100) NOT NULL COMMENT '图片URL',
-status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-PRIMARY KEY(image_id),
-KEY(yyg_id)
+	image_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购活动ID',
+	image_url VARCHAR(100) NOT NULL COMMENT '图片URL',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	PRIMARY KEY(image_id),
+	KEY(yyg_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购活动相册';
 
 
@@ -1238,67 +1238,67 @@ KEY(yyg_id)
 # 参与记录按照时间分表
 DROP TABLE IF EXISTS `gm_yyg_history_1`;
 CREATE TABLE gm_yyg_history_1(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
-qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
-do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id),
-KEY(yyg_id, qh_number)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+	qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+	do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(yyg_id, qh_number)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
 
 DROP TABLE IF EXISTS `gm_yyg_history_2`;
 CREATE TABLE gm_yyg_history_2(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
-qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
-do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id),
-KEY(yyg_id, qh_number)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+	qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+	do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(yyg_id, qh_number)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
 
 DROP TABLE IF EXISTS `gm_yyg_history_3`;
 CREATE TABLE gm_yyg_history_3(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
-qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
-do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id),
-KEY(yyg_id, qh_number)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+	qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+	do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(yyg_id, qh_number)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
 
 DROP TABLE IF EXISTS `gm_yyg_history_4`;
 CREATE TABLE gm_yyg_history_4(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
-qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
-do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id),
-KEY(yyg_id, qh_number)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+	qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+	do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(yyg_id, qh_number)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
 
 DROP TABLE IF EXISTS `gm_yyg_history_5`;
 CREATE TABLE gm_yyg_history_5(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
-qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
-user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
-do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
-created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-PRIMARY KEY(id),
-KEY(user_id),
-KEY(yyg_id, qh_number)
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	yyg_id INT(11) UNSIGNED NOT NULL COMMENT '一元购ID',
+	qh_number INT(11) UNSIGNED NOT NULL COMMENT '期号',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '参与用户ID',
+	do_times INT(11) UNSIGNED NOT NULL COMMENT '用户参与人次',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(yyg_id, qh_number)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '一元购参与记录';
 
 # --------------- 游戏相关 end   ------------#

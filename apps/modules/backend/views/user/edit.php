@@ -11,8 +11,7 @@ html {
 </style>
 
 <div class="pad_10">
-	<form action="<?php echo YUrl::createBackendUrl('User', 'edit'); ?>"
-		method="post" name="myform" id="myform">
+	<form action="<?php echo YUrl::createBackendUrl('User', 'edit'); ?>" method="post" name="myform" id="myform">
 		<table cellpadding="2" cellspacing="1" class="table_form" width="100%">
 			<tr>
 				<th width="100">账号：</th>
@@ -61,13 +60,12 @@ html {
 	</form>
 </div>
 
-<script
-	src="<?php echo YUrl::assets('js', '/AjaxUploader/uploadImage.js'); ?>"></script>
+<script src="<?php echo YUrl::assets('js', '/AjaxUploader/uploadImage.js'); ?>"></script>
 <script type="text/javascript">
 
 var uploadUrl = '<?php echo YUrl::createBackendUrl('Index', 'upload'); ?>';
 var baseJsUrl = '<?php echo YUrl::assets('js', ''); ?>';
-var filUrl = '<?php echo YCore::config('files_domain_name'); ?>';
+var filUrl    = '<?php echo YUrl::getDomainName(); ?>';
 uploadImage(filUrl, baseJsUrl, 'avatar_view', 'avatar', 120, 120, uploadUrl);
 
 $(document).ready(function(){

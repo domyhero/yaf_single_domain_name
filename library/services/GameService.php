@@ -41,27 +41,29 @@ class GameService extends BaseService {
      */
     public static function ledouConsume($user_id, $ledou, $consume_type, $consume_code) {
         $ledou_model = new GmLedou();
-        $user_ledou_info = $ledou_model->fetchOne([], [
-                'user_id' => $user_id
-        ]);
+        $user_ledou_info = $ledou_model->fetchOne([], ['user_id' => $user_id]);
         if ($consume_type == 1) {
             if (empty($user_ledou_info)) {
                 $data = [
-                        'user_id' => $user_id,'ledou' => $ledou,'created_time' => $_SERVER['REQUEST_TIME']
+                    'user_id'      => $user_id,
+                    'ledou'        => $ledou,
+                    'created_time' => $_SERVER['REQUEST_TIME']
                 ];
                 $ok = $ledou_model->insert($data);
-                if (! $ok) {
+                if (!$ok) {
                     YCore::exception(- 1, '服务器繁忙,请稍候重试');
                 }
             } else {
                 $data = [
-                        'ledou' => $user_ledou_info['ledou'] + $ledou,'modified_time' => $_SERVER['REQUEST_TIME']
+                    'ledou'         => $user_ledou_info['ledou'] + $ledou,
+                    'modified_time' => $_SERVER['REQUEST_TIME']
                 ];
                 $where = [
-                        'user_id' => $user_id,'ledou' => $user_ledou_info['ledou']
+                    'user_id' => $user_id,
+                    'ledou'   => $user_ledou_info['ledou']
                 ];
                 $ok = $ledou_model->insert($data);
-                if (! $ok) {
+                if (!$ok) {
                     YCore::exception(- 1, '服务器繁忙,请稍候重试');
                 }
             }
@@ -70,20 +72,25 @@ class GameService extends BaseService {
                 YCore::exception(- 1, '乐豆数量不足');
             }
             $data = [
-                    'ledou' => $user_ledou_info['ledou'] - $ledou,'modified_time' => $_SERVER['REQUEST_TIME']
+                'ledou'         => $user_ledou_info['ledou'] - $ledou,
+                'modified_time' => $_SERVER['REQUEST_TIME']
             ];
             $where = [
-                    'user_id' => $user_id,'ledou' => $user_ledou_info['ledou']
+                'user_id' => $user_id,
+                'ledou'   => $user_ledou_info['ledou']
             ];
             $ok = $ledou_model->update($data, $where);
-            if (! $ok) {
+            if (!$ok) {
                 YCore::exception(- 1, '服务器繁忙,请稍候重试');
             }
         }
         $ledou_consume_model = new GmLedouConsume();
         $data = [
-                'user_id' => $user_id,'consume_type' => $consume_type,'consume_code' => $consume_code,
-                'ledou' => $ledou,'created_time' => $_SERVER['REQUEST_TIME']
+            'user_id'      => $user_id,
+            'consume_type' => $consume_type,
+            'consume_code' => $consume_code,
+            'ledou'        => $ledou,
+            'created_time' => $_SERVER['REQUEST_TIME']
         ];
         $ok = $ledou_consume_model->insert($data);
         if (! $ok) {
@@ -111,9 +118,7 @@ class GameService extends BaseService {
         $params = [];
         if (strlen($game_code) > 0) {
             $game_model = new GmGame();
-            $game_info = $game_model->fetchOne([], [
-                    'game_code' => $game_code
-            ]);
+            $game_info = $game_model->fetchOne([], ['game_code' => $game_code]);
             if (empty($game_info)) {
                 YCore::exception(- 1, '游戏不存在');
             }
@@ -202,9 +207,9 @@ class GameService extends BaseService {
         $user_model = new User();
         foreach ($list as $key => $item) {
             $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
-            $item['username'] = $userinfo ? $userinfo['username'] : '-';
+            $item['username']    = $userinfo ? $userinfo['username'] : '-';
             $item['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '-';
-            $item['email'] = $userinfo ? $userinfo['email'] : '-';
+            $item['email']       = $userinfo ? $userinfo['email'] : '-';
         }
         $result = [
             'list'   => $list,
@@ -336,10 +341,10 @@ class GameService extends BaseService {
         if (count($ball) != 2) {
             return 0;
         }
-        $str_red_ball = $ball[0];
+        $str_red_ball  = $ball[0];
         $str_blue_ball = $ball[1];
 
-        $arr_red_ball = explode(',', $str_red_ball);
+        $arr_red_ball  = explode(',', $str_red_ball);
         $arr_blue_ball = explode(',', $str_blue_ball);
 
         // 红色球取整调整。

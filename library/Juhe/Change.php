@@ -25,7 +25,7 @@ class Change extends Base {
             'key'  => 'bcfc17e7a4ca1a1abebcaf7dd8691c3b',   // 应用APPKEY(应用详细页查询)
         ];
         $paramstring = http_build_query($params);
-        $content = YCore::juhecurl($url, $paramstring);
+        $content = self::juhecurl($url, $paramstring);
         $result  = json_decode($content, true);
         if($result){
             if ($result['error_code'] == '0') {

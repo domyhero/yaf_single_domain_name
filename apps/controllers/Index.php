@@ -1,5 +1,5 @@
 <?php
-use Juhe\IpToAddr;
+use Juhe\Chengyu;
 /**
  * 首页。
  * @author winerQin
@@ -13,7 +13,7 @@ class IndexController extends \common\controllers\Guest {
      * -- 1、需要静态化处理。
      */
     public function indexAction() {
-        $ob = IpToAddr::query("125.93.16.111");
+        $ob = Chengyu::query('三心二意');
         print_r($ob);
         exit;
     }

@@ -30,9 +30,9 @@ class UserService extends BaseService {
     /**
      * 账号类型。
      */
-    const ACCOUNT_TYPE_USERNAME = 'username'; // 用户名类型。
-    const ACCOUNT_TYPE_PHONE = 'mobilephone'; // 手机号码类型。
-    const ACCOUNT_TYPE_EMAIL = 'email'; // 邮箱类型。
+    const ACCOUNT_TYPE_USERNAME = 'username';       // 用户名类型。
+    const ACCOUNT_TYPE_PHONE    = 'mobilephone';    // 手机号码类型。
+    const ACCOUNT_TYPE_EMAIL    = 'email';          // 邮箱类型。
 
     /**
      * 手机注册。
@@ -224,11 +224,11 @@ class UserService extends BaseService {
         if (strlen($mobilephone) > 0 && !Validator::is_mobilephone($mobilephone)) {
             YCore::exception(-1, '手机号码格式不正确');
         }
-        $from = 'FROM ms_user';
-        $offset = self::getPaginationOffset($page, $count);
+        $from    = 'FROM ms_user';
+        $offset  = self::getPaginationOffset($page, $count);
         $columns = ' * ';
-        $where = ' WHERE 1 ';
-        $params = [];
+        $where   = ' WHERE 1 ';
+        $params  = [];
         if (strlen($username) > 0) {
             $where .= ' AND username LIKE :username ';
             $params[':username'] = "{$username}%"; // 为了性能，以及常规查询并不会查后缀。
@@ -254,8 +254,8 @@ class UserService extends BaseService {
         $sql = "SELECT COUNT(1) AS count {$from} {$where}";
         $count_data = $default_db->rawQuery($sql, $params)->rawFetchOne();
         $total = $count_data ? $count_data['count'] : 0;
-        $sql = "SELECT {$columns} {$from} {$where} {$order_by} LIMIT {$offset},{$count}";
-        $list = $default_db->rawQuery($sql, $params)->rawFetchAll();
+        $sql   = "SELECT {$columns} {$from} {$where} {$order_by} LIMIT {$offset},{$count}";
+        $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
         $users_blacklist_model = new UserBlacklist();
         foreach ($list as $k => $val) {
             // 是否封禁。

@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS phper;
 CREATE DATABASE phper DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 use phper;
 
+
 DROP TABLE IF EXISTS ms_user;
 CREATE TABLE ms_user(
 	user_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID',
@@ -22,6 +23,7 @@ CREATE TABLE ms_user(
 	KEY `email_key` (email)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户表';
 
+
 # 用户副表。
 DROP TABLE IF EXISTS ms_user_data;
 CREATE TABLE ms_user_data(
@@ -41,6 +43,7 @@ CREATE TABLE ms_user_data(
 	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户副表';
 
+
 # 找回密码记录表
 DROP TABLE IF EXISTS ms_find_pwd;
 CREATE TABLE ms_find_pwd(
@@ -57,6 +60,7 @@ CREATE TABLE ms_find_pwd(
 	PRIMARY KEY(id),
 	KEY(find_type, to_account)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '找回密码记录表';
+
 
 # 用户登录历史表
 # 记录用户的登录行为，提供风险评估。
@@ -109,6 +113,7 @@ CREATE TABLE ms_user_bind(
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户绑定表';
 
 
+# 短信发送/验证码日志表
 DROP TABLE IF EXISTS `ms_sms_log`;
 CREATE TABLE ms_sms_log (
 	log_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '日志ID',
@@ -136,6 +141,7 @@ CREATE TABLE ms_sensitive(
 	PRIMARY KEY(id),
 	KEY(val)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '敏感词表';
+
 
 # IP黑名单表
 DROP TABLE IF EXISTS ms_ip_ban;
@@ -182,8 +188,8 @@ CREATE TABLE ms_dict_type(
 	KEY `type_code` (type_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '字典类型表';
 INSERT INTO ms_dict_type (`dict_type_id`, `type_code`, `type_name`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) 
-VALUES ('1', 'category_type_list', '分类类型列表', '此分类类型列表用在分类列表中。', '1', '1', unix_timestamp(now()), '0', '0'),
-('2', 'wechat_type', '公众号类型', '公众号类型', '1', '1', unix_timestamp(now()), '0', '0');
+VALUES ('1', 'category_type_list', '分类类型列表', '此分类类型列表用在分类列表中。', '1', '1', unix_timestamp(now()), '0', '0');
+
 
 # 字典数据表
 DROP TABLE IF EXISTS ms_dict;
@@ -206,11 +212,7 @@ INSERT INTO ms_dict (`dict_type_id`, `dict_code`, `dict_value`, `description`, `
 VALUES 
 ('1', '1', '文章分类', '文章分类的值最好别更改。因为，会影响此分类关联的子分类。如确实要变更，请检查此ID对应的表ms_category的分类是否有值。如果有请处理之后再变更此值。', '0', '1', '1', unix_timestamp(now()), '0', '0'),
 ('1', '2', '友情链接分类', '请别随意更改编码值。因为与它关联的子分类数据会失去依赖。', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('1', '3', '商品分类', '请别随意更改编码值。因为与它关联的子分类数据会失去依赖。', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('2', '1', '订阅号', '订阅号。', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('2', '2', '服务号', '服务号。', '0', '1', '1', unix_timestamp(now()), '0', '0'),
-('3', '3', '企业号', '企业号。', '0', '1', '1', unix_timestamp(now()), '0', '0');
-
+('1', '3', '商品分类', '请别随意更改编码值。因为与它关联的子分类数据会失去依赖。', '0', '1', '1', unix_timestamp(now()), '0', '0');
 
 
 # 系统配置表
@@ -345,6 +347,7 @@ CREATE TABLE `ms_news` (
 	KEY(created_by)
 ) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT '文章表';
 
+
 # 文章副表
 DROP TABLE IF EXISTS ms_news_data;
 CREATE TABLE `ms_news_data` (
@@ -389,6 +392,7 @@ CREATE TABLE `ms_ad_position` (
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
 	PRIMARY KEY(pos_id)
 ) ENGINE=InnoDB DEFAULT CHARSET UTF8 COMMENT '广告位置接表';
+
 
 # 广告表
 DROP TABLE IF EXISTS ms_ad;
@@ -436,6 +440,7 @@ CREATE TABLE ms_category(
 	KEY(cat_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '分类表';
 
+# 收藏表
 DROP TABLE IF EXISTS ms_favorites;
 CREATE TABLE ms_favorites(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -448,6 +453,7 @@ CREATE TABLE ms_favorites(
 	PRIMARY KEY(id),
 	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户收藏夹';
+
 
 # 后台菜单表
 DROP TABLE IF EXISTS ms_menu;
@@ -627,6 +633,8 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 
 INSERT INTO `ms_config` (`ctitle`, `cname`, `cvalue`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('用户收货地址最大数量', 'max_user_address_count', '20', '允许创建的用户地址最大数量值。', '1', '1', unix_timestamp(now()), '0', '0');
 
+
+# 评价表
 DROP TABLE IF EXISTS `mall_appraise`;
 CREATE TABLE mall_appraise (
 	aid INT(11) UNSIGNED AUTO_INCREMENT COMMENT '评价ID',
@@ -642,6 +650,8 @@ CREATE TABLE mall_appraise (
 	UNIQUE KEY(order_id)
 )ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT '评价表';
 
+
+# 评论表
 DROP TABLE IF EXISTS `mall_comment`;
 CREATE TABLE mall_comment (
 	cid INT(11) UNSIGNED AUTO_INCREMENT COMMENT '评论ID',
@@ -667,6 +677,8 @@ CREATE TABLE mall_comment (
 	UNIQUE KEY(sub_order_id)
 )ENGINE = InnoDB DEFAULT CHARSET = 'UTF8' COMMENT '买家评论表';
 
+
+# 购物车表
 DROP TABLE IF EXISTS mall_cart;
 CREATE TABLE mall_cart(
 	id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -718,6 +730,8 @@ CREATE TABLE mall_goods(
 	KEY(cat_code)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '商品表';
 
+
+# 货品表
 DROP TABLE IF EXISTS mall_product;
 CREATE TABLE mall_product(
 	product_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '货品ID',
@@ -735,6 +749,8 @@ CREATE TABLE mall_product(
 	KEY(goods_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '货品表';
 
+
+# 运费表
 DROP TABLE IF EXISTS mall_freight_tpl;
 CREATE TABLE mall_freight_tpl(
 	tpl_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '运费模板ID',
@@ -756,6 +772,7 @@ CREATE TABLE mall_freight_tpl(
 	PRIMARY KEY(tpl_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '商品运费模板';
 
+
 # 相册图片最多允许5张。
 DROP TABLE IF EXISTS mall_goods_image;
 CREATE TABLE mall_goods_image(
@@ -770,6 +787,7 @@ CREATE TABLE mall_goods_image(
 	PRIMARY KEY(image_id),
 	KEY(goods_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '商品相册表';
+
 
 # 最多20个收货地址
 DROP TABLE IF EXISTS mall_user_address;
@@ -791,6 +809,8 @@ CREATE TABLE mall_user_address(
 	KEY(district_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户收货地址表';
 
+
+# 订单表
 DROP TABLE IF EXISTS mall_order;
 CREATE TABLE mall_order(
 	order_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '订单ID',
@@ -835,6 +855,8 @@ CREATE TABLE mall_order(
 	KEY(user_id, order_status)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单主表';
 
+
+# 订单明细表
 DROP TABLE IF EXISTS mall_order_item;
 CREATE TABLE mall_order_item(
 	sub_order_id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '子订单ID',
@@ -862,6 +884,8 @@ CREATE TABLE mall_order_item(
 	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单明细表';
 
+
+# 订单操作日志表
 DROP TABLE IF EXISTS mall_order_log;
 CREATE TABLE mall_order_log(
 	log_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -873,6 +897,7 @@ CREATE TABLE mall_order_log(
 	PRIMARY KEY(log_id),
 	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单操作日志表';
+
 
 # 物流单号在未确认收货之前均可修改。
 DROP TABLE IF EXISTS mall_logistics;
@@ -888,6 +913,8 @@ CREATE TABLE mall_logistics(
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '订单物流信息表';
 
+
+# 支付记录表
 DROP TABLE IF EXISTS mall_payment_log;
 CREATE TABLE mall_payment_log(
 	payment_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -901,6 +928,8 @@ CREATE TABLE mall_payment_log(
 	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '支付记录表';
 
+
+# 支付配置表
 DROP TABLE IF EXISTS mall_payment_cfg;
 CREATE TABLE mall_payment_cfg(
 	cfg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -912,6 +941,8 @@ CREATE TABLE mall_payment_cfg(
 	PRIMARY KEY(cfg_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '支付配置表';
 
+
+# 优惠券表
 DROP TABLE IF EXISTS mall_coupon;
 CREATE TABLE mall_coupon(
 	coupon_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
@@ -930,6 +961,8 @@ CREATE TABLE mall_coupon(
 	PRIMARY KEY(coupon_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '优惠券表';
 
+
+# 用户优惠券表
 DROP TABLE IF EXISTS mall_user_coupon;
 CREATE TABLE mall_user_coupon(
 	id INT(11) UNSIGNED AUTO_INCREMENT COMMENT '主键ID',
@@ -944,6 +977,9 @@ CREATE TABLE mall_user_coupon(
 	KEY(coupon_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '用户优惠券表';
 
+
+# 系统 SESSION 表
+DROP TABLE IF EXISTS ms_session;
 CREATE TABLE ms_session (
   session_id varchar(100) NOT NULL COMMENT 'php session_id',
   session_expire int(11) UNSIGNED NOT NULL COMMENT 'session到期时间',
@@ -951,6 +987,8 @@ CREATE TABLE ms_session (
   UNIQUE KEY `session_id` (`session_id`)
 )ENGINE = MyISAM DEFAULT CHARSET=utf8 COMMENT 'session表';
 
+# 系统缓存表
+DROP TABLE IF EXISTS ms_cache;
 CREATE TABLE ms_cache (
   cache_key varchar(100) NOT NULL COMMENT '缓存key',
   cache_expire int(11) UNSIGNED NOT NULL COMMENT '缓存到期时间',
@@ -962,42 +1000,45 @@ CREATE TABLE ms_cache (
 
 ### 初始化游戏模型需要的字典数据
 INSERT INTO `ms_dict_type` (`dict_type_id`, `type_code`, `type_name`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) 
-VALUES ('20', 'game_ledou_consume_code', '游戏乐豆消费编码', '游戏乐豆消费编码：通过此编码可以知道乐豆是在何种情况下消费。比如：add_ssq_reward 代表双色球中奖增加。', '1', '1', unix_timestamp(now()), '0', '0');
+VALUES ('20', 'game_gold_consume_code', '游戏金币消费编码', '游戏金币消费编码：通过此编码可以知道金币是在何种情况下消费。比如：add_ssq_reward 代表双色球中奖增加。', '1', '1', unix_timestamp(now()), '0', '0');
 
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_ssq_reward', '双色球中奖', '双色球中奖', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_dlt_reward', '大乐透中奖', '大乐透中奖', '0', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_ssc_reward', '时时彩中奖', '时时彩中奖', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_ssq_bet', '双色球投注', '双色球投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_dlt_bet', '大乐透投注', '大乐透投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
-INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_ssc_bet', '时时彩投注', '时时彩投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_checkin', '每日签到', '每日签到', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_buy_goods', '购买商品赠送', '购买商品赠送', '0', '1', '1', unix_timestamp(now()), '0', '0');
 
 
-DROP TABLE IF EXISTS `gm_ledou`;
-CREATE TABLE gm_ledou(
+# 玩家金币表
+DROP TABLE IF EXISTS `gm_gold`;
+CREATE TABLE gm_gold(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
-	ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '乐豆数量。包含未用完的赠送的乐豆。',
+	gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '乐豆数量。包含未用完的赠送的乐豆。',
+	v INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '记录版本号,处理并发修改问题',
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id),
 	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '玩家乐豆表';
 
-DROP TABLE IF EXISTS `gm_ledou_consume`;
-CREATE TABLE gm_ledou_consume(
+
+# 玩家金币消费记录表
+DROP TABLE IF EXISTS `gm_gold_consume`;
+CREATE TABLE gm_gold_consume(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
 	consume_type TINYINT(1) NOT NULL COMMENT '消费类型：1增加、2扣减',
 	consume_code CHAR(20) NOT NULL COMMENT '类型编码。通过编码可以知晓是因何产生的。编码通过字典配置。',
-	ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '影响的乐豆数量',
+	gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '影响的乐豆数量',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id),
 	KEY(user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '乐豆消费记录';
 
 
+# 用户投注记录表
 DROP TABLE IF EXISTS `gm_bet_record`;
 CREATE TABLE gm_bet_record(
 	bet_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -1013,6 +1054,7 @@ CREATE TABLE gm_bet_record(
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注记录';
 
 
+# 用户投注号码记录表
 DROP TABLE IF EXISTS `gm_bet_record_number`;
 CREATE TABLE gm_bet_record_number(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
@@ -1027,21 +1069,5 @@ CREATE TABLE gm_bet_record_number(
 	PRIMARY KEY(id),
 	KEY(bet_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注号码记录表';
-
-
-DROP TABLE IF EXISTS `gm_game`;
-CREATE TABLE gm_game(
-	game_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '游戏ID',
-	game_name CHAR(50) NOT NULL COMMENT '游戏名称',
-	game_code CHAR(20) NOT NULL COMMENT '游戏编码',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '管理员账号ID',
-	PRIMARY KEY(game_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '游戏种类表';
-INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('1', '双色球', 'ssq', '0', '0', unix_timestamp(now()), '1');
-INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('2', '大乐透', 'dlt', '0', '0', unix_timestamp(now()), '1');
-INSERT INTO `gm_game` (`game_id`, `game_name`, `game_code`, `modified_by`, `modified_time`, `created_time`, `created_by`) VALUES ('3', '时时彩', 'ssc', '0', '0', unix_timestamp(now()), '1');
 
 # --------------- 游戏相关 end   ------------#

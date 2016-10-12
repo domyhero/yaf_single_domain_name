@@ -103,7 +103,7 @@ class GoldService extends BaseService {
      */
     public static function getLedouConsume($user_id = -1, $consume_type = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
-        $from_table = ' FROM ms_ledou_consume ';
+        $from_table = ' FROM ms_gold_consume ';
         $columns = ' * ';
         $where   = ' WHERE 1 ';
         $params  = [];

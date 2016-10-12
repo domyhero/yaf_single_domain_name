@@ -22,6 +22,10 @@ class GameService extends BaseService {
     const CONSUME_TYPE_ADD = 1; // 增加。
     const CONSUME_TYPE_CUT = 2; // 扣减。
 
+    // 游戏类型。
+    const GAME_SSQ = 'ssq';     // 福彩双色球。
+    const GAME_DLT = 'dlt';     // 体彩大乐透。
+
     /**
      * 单倍投注每手10乐逗。
      * -- 1元充值1000乐逗。
@@ -114,8 +118,8 @@ class GameService extends BaseService {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM ms_bet_record ';
         $columns = ' * ';
-        $where = ' WHERE 1 ';
-        $params = [];
+        $where   = ' WHERE 1 ';
+        $params  = [];
         if (strlen($game_code) > 0) {
             $game_model = new GmGame();
             $game_info = $game_model->fetchOne([], ['game_code' => $game_code]);
@@ -460,34 +464,5 @@ class GameService extends BaseService {
             $right_val = $right_val * $_val;
         }
         return ($left_val / (5 * 4 * 3 * 2 * 1)) * ($right_val / (2 * 1));
-    }
-
-    /**
-     * 检查时时彩投注号码是否合法并返回投注号码对应多少注。
-     * -- 1、数字1~30.
-     * -- 2、猜中一个号1陪25.
-     *
-     * @param string $bet_number 投注号码。
-     * @return number
-     */
-    function ssc_check_be_number($bet_number) {
-        $arr_ball  = explode(',', $bet_number);
-        $_arr_ball = [];
-        foreach ($arr_ball as $ball) {
-            $ball = intval($ball);
-            if ($ball < 1 || $ball > 30) {
-                return 0;
-            }
-            $_arr_ball[] = $ball;
-        }
-        // 去除重复号码
-        $_arr_ball = array_unique($_arr_ball);
-        // 去重后号码的数量。
-        $ball_count = count($_arr_ball);
-        // 判断过滤前后号码数量是否一致。一致说明是合法的号码。
-        if (count($arr_ball) != $ball_count) {
-            return 0;
-        }
-        return $ball_count;
     }
 }

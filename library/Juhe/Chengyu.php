@@ -23,7 +23,7 @@ class Chengyu extends Base {
         $params = [
             'word'  => $word,
             'dtype' => 'json',
-            'key'   => '784edd9f93e295cd8a4b0cbd79d66132',
+            'key'   => '784edd9f93e295cd8a4b0cbd79d66132'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

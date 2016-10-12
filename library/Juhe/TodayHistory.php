@@ -19,7 +19,7 @@ class TodayHistory extends Base {
         $url = "http://v.juhe.cn/todayOnhistory/queryEvent.php";
         $params = [
             'date' => $date,
-            'key'  => '4f94d3d13359135a7c863b89ed445def',
+            'key'  => '4f94d3d13359135a7c863b89ed445def'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -45,7 +45,7 @@ class TodayHistory extends Base {
         $url = "http://v.juhe.cn/todayOnhistory/queryDetail.php";
         $params = [
             'e_id' => $event_id,
-            'key'  => '4f94d3d13359135a7c863b89ed445def',
+            'key'  => '4f94d3d13359135a7c863b89ed445def'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

@@ -26,7 +26,7 @@ class Robot extends Base {
             'info'   => $info,
             'userid' => $userid,
             'loc'    => $loc,
-            'key'    => 'fb013675d34b7be1358a86a8c69f9ece',
+            'key'    => 'fb013675d34b7be1358a86a8c69f9ece'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -51,7 +51,7 @@ class Robot extends Base {
         $url = "http://op.juhe.cn/robot/code";
         $params = [
             'dtype' => 'json',
-            'key'   => 'fb013675d34b7be1358a86a8c69f9ece',
+            'key'   => 'fb013675d34b7be1358a86a8c69f9ece'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

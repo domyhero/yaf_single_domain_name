@@ -1,28 +1,32 @@
 <?php
 /**
- * 身份证。
+ * 菜谱大全。
  * @author winerQin
- * @date 2016-10-12
+ * @date 2106-10-12
  */
 
 namespace Juhe;
 
 use common\YCore;
-
-class IDCard extends Base {
+class CookBook extends Base {
 
     /**
-     * 身份证实名认证。
-     * @param string $realname 姓名。
-     * @param string $idcard 身份证号码。
+     * 菜谱查询。
+     * @param string $menu 要查询的菜谱名。
+     * @param int $pn 数据返回起始下标。
+     * @param int $rn 数据返回条数，最大30。
+     * @param int $albums albums字段类型，1字符串，默认数组。
      * @return array
      */
-    public static function isRealname($realname, $idcard) {
-        $url = "http://op.juhe.cn/idcard/query";
+    public static function query($menu, $pn, $rn, $albums = 0) {
+        $url = "http://apis.juhe.cn/cook/query.php";
         $params = [
-            'realname' => $realname,
-            'idcard'   => $idcard,
-            'key'      => 'f7380a91a125b1ce5c04b22096d0713b'
+            'menu'   => $menu,
+            'dtype'  => 'json',
+            'pn'     => $pn,
+            'rn'     => $rn,
+            'albums' => $albums,
+            'key'    => 'd4f40600c00f766decf0ba54332e3325'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -40,16 +44,16 @@ class IDCard extends Base {
     }
 
     /**
-     * 身份证信息查询。
-     * @param string $cardno 身份证号码。
+     * 菜谱分类标签。
+     * @param int $parentid 父分类ID。
      * @return array
      */
-    public static function getIDCardInfo($cardno) {
-        $url = "http://apis.juhe.cn/idcard/index";
+    public static function category($parentid = 0) {
+        $url = "http://apis.juhe.cn/cook/category";
         $params = [
-            'dtype'  => 'json',
-            'cardno' => $cardno,
-            'key'    => '855366926196ed6e4549fac00b3abd42'
+            'parentid' => $parentid,
+            'dtype'    => 'json',
+            'key'      => 'd4f40600c00f766decf0ba54332e3325'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -67,16 +71,22 @@ class IDCard extends Base {
     }
 
     /**
-     * 身份证信息泄漏查询。
-     * @param string $cardno 身份证号码。
+     * 按菜谱标签检索菜谱。
+     * @param int $cid 标签ID。
+     * @param int $pn 数据返回起始下标。
+     * @param int $rn 数据返回条数，最大30。
+     * @param int $albums albums字段类型，1字符串，默认数组。
      * @return array
      */
-    public static function isLeak($cardno) {
-        $url = "http://apis.juhe.cn/idcard/leak";
+    public static function byCategoryQuery($cid, $pn, $rn) {
+        $url = "http://apis.juhe.cn/cook/index";
         $params = [
+            'cid'    => $cid,
             'dtype'  => 'json',
-            'cardno' => $cardno,
-            'key'    => '855366926196ed6e4549fac00b3abd42'
+            'pn'     => $pn,
+            'rn'     => $rn,
+            'format' => '',
+            'key'    => 'd4f40600c00f766decf0ba54332e3325'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -94,16 +104,16 @@ class IDCard extends Base {
     }
 
     /**
-     * 身份证信息泄漏查询。
-     * @param string $cardno 身份证号码。
+     * 按菜谱ID查看详情。
+     * @param int $id 标签ID。
      * @return array
      */
-    public static function isLoss($cardno) {
-        $url = "http://apis.juhe.cn/idcard/loss";
+    public static function getCookDetail($id) {
+        $url = "http://apis.juhe.cn/cook/queryid";
         $params = [
-            'dtype'  => 'json',
-            'cardno' => $cardno,
-            'key'    => '855366926196ed6e4549fac00b3abd42'
+            'id'    => $id,
+            'dtype' => 'json',
+            'key'   => 'd4f40600c00f766decf0ba54332e3325'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

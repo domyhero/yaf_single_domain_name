@@ -16,11 +16,10 @@ class Bus extends Base {
      * @return string
      */
     public static function query($station) {
-        $time = $_SERVER['REQUEST_TIME'];
         $url = "http://op.juhe.cn/onebox/bus/query";
         $params = [
             'station' => $station,
-            'key'     => 'eb93607b12cad2889fe50dbcf650b1a0',
+            'key'     => 'eb93607b12cad2889fe50dbcf650b1a0'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -44,12 +43,11 @@ class Bus extends Base {
      * @return string
      */
     public static function queryAb($from, $to) {
-        $time = $_SERVER['REQUEST_TIME'];
         $url = "http://op.juhe.cn/onebox/bus/query_ab";
         $params = [
             'from' => $from,
             'to'   => $to,
-            'key'  => 'eb93607b12cad2889fe50dbcf650b1a0',
+            'key'  => 'eb93607b12cad2889fe50dbcf650b1a0'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

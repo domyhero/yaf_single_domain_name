@@ -20,7 +20,7 @@ class BoxOffice extends Base {
         $params = [
             'area'  => $area,
             'dtype' => 'json',
-            'key'   => '9fec3844af0ce881205fb466120c45ed',
+            'key'   => '9fec3844af0ce881205fb466120c45ed'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

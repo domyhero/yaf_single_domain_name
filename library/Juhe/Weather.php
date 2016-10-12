@@ -21,7 +21,7 @@ class Weather extends Base {
         $params = [
             'cityname' => $cityname,
             'dtype'    => 'json',
-            'key'      => 'eb93607b12cad2889fe50dbcf650b1a0',
+            'key'      => 'eb93607b12cad2889fe50dbcf650b1a0'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

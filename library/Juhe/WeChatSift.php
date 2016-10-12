@@ -1,6 +1,6 @@
 <?php
 /**
- * 火车时刻表。
+ * 微信精选。
  * @author winerQin
  * @date 2016-10-12
  */
@@ -8,26 +8,28 @@
 namespace Juhe;
 
 use common\YCore;
-class Train extends Base {
+class WeChatSift extends Base {
 
     /**
-     * 站到站查询。
-     * @param string $cityname 	要查询的城市，如：温州、上海、北京，需要utf8 urlencode。
-     * @return string
+     * 微信精选列表。
+     * @param int $pno 当前页数，默认1。
+     * @param int $ps 每页返回条数，最大100，默认20。
+     * @return array
      */
-    public static function query($from, $to) {
-        $url = "http://op.juhe.cn/onebox/train/query_ab";
+    public static function query($pno, $ps) {
+        $url = "http://v.juhe.cn/weixin/query";
         $params = [
-            'from' => $from,
-            'to'   => $to,
-            'key'  => '4ae8687a4afd7ab77ae629e1c42eda20'
+            'pno'   => $pno,
+            'ps'    => $ps,
+            'dtype' => 'json',
+            'key'   => '8a3b4581f251c806325614f1fc4eac24'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
         $result  = json_decode($content, true);
         if($result){
             if ($result['error_code'] == '0') {
-                return $result['result']['list'];
+                return $result['result'];
             } else {
                 // echo $result['error_code'].":".$result['reason'];
                 YCore::exception(-1, '服务器繁忙,请稍候重试');

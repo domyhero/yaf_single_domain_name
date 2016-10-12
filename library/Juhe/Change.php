@@ -22,7 +22,7 @@ class Change extends Base {
             'ip'   => $_SERVER['SERVER_ADDR'],              // 需要查询的IP地址或域名
             'text' => $str,                                 // 需要转换字符串
             'type' => $juhe_type,                           // 需要转换成的类型。0：简体 1：繁体  2：火星文
-            'key'  => 'bcfc17e7a4ca1a1abebcaf7dd8691c3b',   // 应用APPKEY(应用详细页查询)
+            'key'  => 'bcfc17e7a4ca1a1abebcaf7dd8691c3b'    // 应用APPKEY(应用详细页查询)
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

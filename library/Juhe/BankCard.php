@@ -1,6 +1,6 @@
 <?php
 /**
- * 身份证。
+ * 银行卡实名认证。
  * @author winerQin
  * @date 2016-10-12
  */
@@ -8,21 +8,50 @@
 namespace Juhe;
 
 use common\YCore;
-
-class IDCard extends Base {
+class BankCard extends Base {
 
     /**
-     * 身份证实名认证。
-     * @param string $realname 姓名。
+     * 银行卡二元素检测。
+     * @param string $realname 真实姓名。
+     * @param string $bankcard 银行卡号。
+     * @return array
+     */
+    public static function secoendVerify($realname, $bankcard) {
+        $url = "http://v.juhe.cn/verifybankcard/query";
+        $params = [
+            'realname' => $realname,
+            'bankcard' => $bankcard,
+            'key'      => 'e4cf64173916d87652e3f6f8cb1a8225'
+        ];
+        $paramstring = http_build_query($params);
+        $content = self::juhecurl($url, $paramstring);
+        $result  = json_decode($content, true);
+        if($result){
+            if ($result['error_code'] == '0') {
+                return $result['result'];
+            } else {
+                // echo $result['error_code'].":".$result['reason'];
+                YCore::exception(-1, '服务器繁忙,请稍候重试');
+            }
+        } else {
+            YCore::exception(-1, '服务器繁忙,请稍候重试');
+        }
+    }
+
+    /**
+     * 银行卡二元素检测。
+     * @param string $realname 真实姓名。
+     * @param string $bankcard 银行卡号。
      * @param string $idcard 身份证号码。
      * @return array
      */
-    public static function isRealname($realname, $idcard) {
-        $url = "http://op.juhe.cn/idcard/query";
+    public static function thirdVerify($realname, $bankcard, $idcard) {
+        $url = "http://v.juhe.cn/verifybankcard3/query";
         $params = [
-            'realname' => $realname,
             'idcard'   => $idcard,
-            'key'      => 'f7380a91a125b1ce5c04b22096d0713b'
+            'realname' => $realname,
+            'bankcard' => $bankcard,
+            'key'      => 'e4cf64173916d87652e3f6f8cb1a8225'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -40,70 +69,21 @@ class IDCard extends Base {
     }
 
     /**
-     * 身份证信息查询。
-     * @param string $cardno 身份证号码。
+     * 银行卡四元素检测。
+     * @param string $realname 真实姓名。
+     * @param string $bankcard 银行卡号。
+     * @param string $mobile 手机号码。
+     * @param string $idcard 身份证号码。
      * @return array
      */
-    public static function getIDCardInfo($cardno) {
-        $url = "http://apis.juhe.cn/idcard/index";
+    public static function fourVerify($realname, $bankcard, $mobile, $idcard) {
+        $url = "http://v.juhe.cn/verifybankcard4/query";
         $params = [
-            'dtype'  => 'json',
-            'cardno' => $cardno,
-            'key'    => '855366926196ed6e4549fac00b3abd42'
-        ];
-        $paramstring = http_build_query($params);
-        $content = self::juhecurl($url, $paramstring);
-        $result  = json_decode($content, true);
-        if($result){
-            if ($result['error_code'] == '0') {
-                return $result['result'];
-            } else {
-                // echo $result['error_code'].":".$result['reason'];
-                YCore::exception(-1, '服务器繁忙,请稍候重试');
-            }
-        } else {
-            YCore::exception(-1, '服务器繁忙,请稍候重试');
-        }
-    }
-
-    /**
-     * 身份证信息泄漏查询。
-     * @param string $cardno 身份证号码。
-     * @return array
-     */
-    public static function isLeak($cardno) {
-        $url = "http://apis.juhe.cn/idcard/leak";
-        $params = [
-            'dtype'  => 'json',
-            'cardno' => $cardno,
-            'key'    => '855366926196ed6e4549fac00b3abd42'
-        ];
-        $paramstring = http_build_query($params);
-        $content = self::juhecurl($url, $paramstring);
-        $result  = json_decode($content, true);
-        if($result){
-            if ($result['error_code'] == '0') {
-                return $result['result'];
-            } else {
-                // echo $result['error_code'].":".$result['reason'];
-                YCore::exception(-1, '服务器繁忙,请稍候重试');
-            }
-        } else {
-            YCore::exception(-1, '服务器繁忙,请稍候重试');
-        }
-    }
-
-    /**
-     * 身份证信息泄漏查询。
-     * @param string $cardno 身份证号码。
-     * @return array
-     */
-    public static function isLoss($cardno) {
-        $url = "http://apis.juhe.cn/idcard/loss";
-        $params = [
-            'dtype'  => 'json',
-            'cardno' => $cardno,
-            'key'    => '855366926196ed6e4549fac00b3abd42'
+            'idcard'   => $idcard,
+            'mobile'   => $mobile,
+            'realname' => $realname,
+            'bankcard' => $bankcard,
+            'key'      => '71cad5b3ee2bb43731dfa9a72b08590f'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

@@ -26,7 +26,7 @@ class Joke extends Base {
             'sort'     => $sort,
             'page'     => $page,
             'time'     => $time,
-            'key'      => 'c04b2d908aee2fa3d403c046f923d105',
+            'key'      => 'c04b2d908aee2fa3d403c046f923d105'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -59,7 +59,7 @@ class Joke extends Base {
             'sort'     => $sort,
             'page'     => $page,
             'time'     => $time,
-            'key'      => 'c04b2d908aee2fa3d403c046f923d105',
+            'key'      => 'c04b2d908aee2fa3d403c046f923d105'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
@@ -85,7 +85,7 @@ class Joke extends Base {
         $url  = "http://v.juhe.cn/joke/randJoke.php";
         $params = [
             'type' => $type,
-            'key'  => 'c04b2d908aee2fa3d403c046f923d105',
+            'key'  => 'c04b2d908aee2fa3d403c046f923d105'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

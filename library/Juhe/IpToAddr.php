@@ -19,8 +19,8 @@ class IpToAddr extends Base {
         $url = "http://apis.juhe.cn/ip/ip2addr";
         $params = [
             'ip'    => $ip,
-            'key'   => '00b329c76bebaf374426cc72371fcbc2',
-            'dtype' => 'json'
+            'dtype' => 'json',
+            'key'   => '00b329c76bebaf374426cc72371fcbc2'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

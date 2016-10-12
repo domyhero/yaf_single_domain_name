@@ -21,14 +21,12 @@ class Constellation extends Base {
         $params = [
             'consName' => $cons_name,
             'type'     => $type,
-            'key'      => '81ea126cab4f5edec3d1246bf8fe56c5',
+            'key'      => '81ea126cab4f5edec3d1246bf8fe56c5'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);
         $result  = json_decode($content, true);
         if($result){
-            print_r($result);
-            exit;
             if ($result['error_code'] == '0') {
                 return $result['result'];
             } else {

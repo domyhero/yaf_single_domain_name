@@ -23,7 +23,7 @@ class XinHuaDict extends Base {
         $params = [
             'word'  => $word,
             'dtype' => 'json',
-            'key'   => '869c92f4209ee349c90f2041a8093af7',
+            'key'   => '869c92f4209ee349c90f2041a8093af7'
         ];
         $paramstring = http_build_query($params);
         $content = self::juhecurl($url, $paramstring);

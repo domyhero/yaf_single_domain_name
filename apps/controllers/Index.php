@@ -1,5 +1,5 @@
 <?php
-use Juhe\Chengyu;
+use Juhe\CallDisplay;
 /**
  * 首页。
  * @author winerQin
@@ -13,7 +13,7 @@ class IndexController extends \common\controllers\Guest {
      * -- 1、需要静态化处理。
      */
     public function indexAction() {
-        $ob = Chengyu::query('三心二意');
+        $ob = CallDisplay::query('18575202691');
         print_r($ob);
         exit;
     }

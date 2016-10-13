@@ -1076,6 +1076,7 @@ CREATE TABLE gm_bet_record_number(
 DROP TABLE IF EXISTS `gm_lottery_activity`;
 CREATE TABLE gm_lottery_activity(
 	aid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	lottery_type TINYINT(1) NOT NULL COMMENT '彩票类型：1双色球、2大乐透',
 	bet_number CHAR(100) NOT NULL COMMENT '投注号码(复式)',
 	bet_money INT(11) UNSIGNED NOT NULL COMMENT '投注金额',
 	bet_count INT(11) UNSIGNED NOT NULL COMMENT '投注数量',
@@ -1085,10 +1086,12 @@ CREATE TABLE gm_lottery_activity(
 	end_time INT(11) UNSIGNED NOT NULL COMMENT '彩票活动结束时间。从这个时间结束计算彩票活动的中奖资金',
 	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖总额。这个总额每开一次会算总和，直到活动结束',
 	apply_count SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '参与人数',
-	display TINYINT(1) NOT NULL DEFAULT '0' COMMETN '是否显示：1是、0否',
+	display TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否显示：1是、0否',
 	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '活动修改时间戳',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '活动创建时间戳',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(aid)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票活动表';
 
@@ -1125,7 +1128,7 @@ CREATE TABLE gm_lottery_prize(
 DROP TABLE IF EXISTS `gm_lottery_result`;
 CREATE TABLE gm_lottery_result(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
-	lottery_code CHAR(5) NOT NULL COMMENT '彩票编码:ssq(双色球)、dlt(大乐透)',
+	lottery_type CHAR(5) NOT NULL COMMENT '彩票类型:1-双色球、2-dlt',
 	phase_sn CHAR(10) NOT NULL COMMENT '彩票期次',
 	lottery_result CHAR(20) NOT NULL COMMENT '彩票开奖号码',
 	first_prize INT(11) UNSIGNED NOT NULL COMMENT '一等奖金额',
@@ -1136,6 +1139,10 @@ CREATE TABLE gm_lottery_result(
 	fourth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '四等奖中奖注数',
 	fifth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '五等奖中奖注数',
 	sixth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '六等奖中奖注数',
+	lottery_time INT(11) UNSIGNED NOT NULL COMMENT '开奖时间',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
 	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',	
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id)

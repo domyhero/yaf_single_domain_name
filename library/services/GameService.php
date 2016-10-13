@@ -319,10 +319,6 @@ class GameService extends BaseService {
                 break;
             case 'dlt' :
                 return self::dlt_check_be_number($bet_number);
-                break;
-            case 'ssc' :
-                return self::ssc_check_be_number($bet_number);
-                break;
             default :
                 YCore::exception(- 1, '游戏编码不正确');
                 break;

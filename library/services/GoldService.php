@@ -41,7 +41,7 @@ class GoldService extends BaseService {
                     'created_time' => $_SERVER['REQUEST_TIME']
                 ];
                 $ok = $gold_model->insert($data);
-                if (! $ok) {
+                if (!$ok) {
                     YCore::exception(- 1, '服务器繁忙,请稍候重试');
                 }
             } else {
@@ -55,7 +55,7 @@ class GoldService extends BaseService {
                     'v'       => $user_gold_info['v']
                 ];
                 $ok = $gold_model->update($data, $where);
-                if (! $ok) {
+                if (!$ok) {
                     YCore::exception(- 1, '服务器繁忙,请稍候重试');
                 }
             }
@@ -73,7 +73,7 @@ class GoldService extends BaseService {
                 'v'       => $user_gold_info['v']
             ];
             $ok = $gold_model->update($data, $where);
-            if (! $ok) {
+            if (!$ok) {
                 YCore::exception(- 1, '服务器繁忙,请稍候重试');
             }
         }
@@ -86,7 +86,7 @@ class GoldService extends BaseService {
             'created_time' => $_SERVER['REQUEST_TIME']
         ];
         $ok = $gold_consume_model->insert($data);
-        if (! $ok) {
+        if (!$ok) {
             YCore::exception(- 1, '服务器繁忙,请稍候重试');
         }
         return true;

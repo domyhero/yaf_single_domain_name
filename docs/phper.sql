@@ -1044,9 +1044,9 @@ CREATE TABLE gm_bet_record(
 	bet_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
 	game_id INT(11) UNSIGNED NOT NULL COMMENT '游戏ID',
-	bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
+	bet_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的金币数量',
 	bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
-	reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
+	reward_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖金币',
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
 	PRIMARY KEY(bet_id),
@@ -1059,15 +1059,88 @@ DROP TABLE IF EXISTS `gm_bet_record_number`;
 CREATE TABLE gm_bet_record_number(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	bet_id INT(11) UNSIGNED NOT NULL COMMENT '投注记录ID。对应ms_bet_record.bet_id',
-	bet_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的乐豆数量',
+	bet_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的金币数量',
 	bet_number CHAR(100) NOT NULL COMMENT '投注号码',
 	bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
 	bet_level SMALLINT(3) NOT NULL DEFAULT '0' COMMENT '中奖等级。有些游戏是没有等级的。默认就是0。根据游戏特点选择是否使用此字段。',
-	reward_ledou INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖乐豆',
+	reward_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖金币',
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '投注时间戳',
 	PRIMARY KEY(id),
 	KEY(bet_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '投注号码记录表';
+
+
+
+# 彩票活动表
+DROP TABLE IF EXISTS `gm_lottery_activity`;
+CREATE TABLE gm_lottery_activity(
+	aid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	bet_number CHAR(100) NOT NULL COMMENT '投注号码(复式)',
+	bet_money INT(11) UNSIGNED NOT NULL COMMENT '投注金额',
+	bet_count INT(11) UNSIGNED NOT NULL COMMENT '投注数量',
+	person_limit INT(11) UNSIGNED NOT NULL COMMENT '人数限制(参与该活动的最大人数)',
+	open_apply_time INT(11) UNSIGNED NOT NULL COMMENT '开放参与时间',
+	start_time INT(11) UNSIGNED NOT NULL COMMENT '彩票活动开始时间。从这个时间开始计算彩票活动的中奖资金',
+	end_time INT(11) UNSIGNED NOT NULL COMMENT '彩票活动结束时间。从这个时间结束计算彩票活动的中奖资金',
+	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖总额。这个总额每开一次会算总和，直到活动结束',
+	apply_count SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0' COMMENT '参与人数',
+	display TINYINT(1) NOT NULL DEFAULT '0' COMMETN '是否显示：1是、0否',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '活动修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '活动创建时间戳',
+	PRIMARY KEY(aid)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票活动表';
+
+
+# 彩票活动参与记录表
+DROP TABLE IF EXISTS `gm_lottery_user`;
+CREATE TABLE gm_lottery_user(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	aid INT(11) UNSIGNED NOT NULL COMMENT '活动ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '分得奖金。单位(分)。活动结束才计入这个值。',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票活动中奖记录表';
+
+
+# 彩票活动中奖记录表
+DROP TABLE IF EXISTS `gm_lottery_prize`;
+CREATE TABLE gm_lottery_prize(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	aid INT(11) UNSIGNED NOT NULL COMMENT '活动ID',
+	phase_sn CHAR(10) NOT NULL COMMENT '彩票期次',
+	bet_number CHAR(100) NOT NULL COMMENT '投注号码(复式)',
+	lottery_result CHAR(20) NOT NULL COMMENT '彩票开奖号码',
+	prize_level SMALLINT(3) NOT NULL COMMENT '中奖等级:0(未中奖)、1(一等奖)、2(二等奖)、3(三等奖)、4(四等奖)、5(五等奖)、6(六等奖)',
+	prize_money INT(11) UNSIGNED NOT NULL COMMENT '中奖金额(税前)',
+	prize_money_at INT(11) UNSIGNED NOT NULL COMMENT '中奖金额(税后)',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票活动中奖记录表';
+
+
+# 彩票开奖结果表
+DROP TABLE IF EXISTS `gm_lottery_result`;
+CREATE TABLE gm_lottery_result(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	lottery_code CHAR(5) NOT NULL COMMENT '彩票编码:ssq(双色球)、dlt(大乐透)',
+	phase_sn CHAR(10) NOT NULL COMMENT '彩票期次',
+	lottery_result CHAR(20) NOT NULL COMMENT '彩票开奖号码',
+	first_prize INT(11) UNSIGNED NOT NULL COMMENT '一等奖金额',
+	second_prize INT(11) UNSIGNED NOT NULL COMMENT '二等奖金额',
+	first_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '一等奖中奖注数',
+	second_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '二等奖中奖注数',
+	third_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '三等奖中奖注数',
+	fourth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '四等奖中奖注数',
+	fifth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '五等奖中奖注数',
+	sixth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '六等奖中奖注数',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',	
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票开奖结果表';
+
+
 
 # --------------- 游戏相关 end   ------------#

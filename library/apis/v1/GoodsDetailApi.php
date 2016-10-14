@@ -17,7 +17,7 @@ class GoodsDetailApi extends BaseApi {
      * @return bool
      */
     protected function runService() {
-        $goods_id = $this->getInt('goods_id');
+        $goods_id   = $this->getInt('goods_id');
         $product_id = $this->getInt('product_id');
         $this->render(0, 'ok');
     }

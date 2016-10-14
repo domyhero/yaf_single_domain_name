@@ -11,44 +11,38 @@ html {
 </style>
 
 <div class="pad_10">
-	<form action="<?php echo YUrl::createBackendUrl('Coupon', 'add'); ?>"
-		method="post" name="myform" id="myform">
+	<form action="<?php echo YUrl::createBackendUrl('Coupon', 'add'); ?>" method="post" name="myform" id="myform">
 		<table cellpadding="2" cellspacing="1" class="table_form" width="100%">
 			<tr>
 				<th width="100">优惠券名称：</th>
-				<td><input type="text" name="coupon_name" id="coupon_name" size="50"
-					class="input-text" value=""></td>
+				<td><input type="text" name="coupon_name" id="coupon_name" size="50" class="input-text" value=""></td>
 			</tr>
 			<tr>
 				<th width="100">优惠券金额：</th>
-				<td><input type="text" name="money" id="money" size="10"
-					class="input-text" value=""></td>
+				<td><input type="text" name="money" id="money" size="10" class="input-text" value=""></td>
 			</tr>
 			<tr>
 				<th width="100">订单金额：</th>
-				<td><input type="text" name="order_money" id="order_money" size="10"
-					class="input-text" value=""></td>
+				<td><input type="text" name="order_money" id="order_money" size="10" class="input-text" value=""></td>
 			</tr>
 			<tr>
 				<th width="100">领取时间：</th>
-				<td><input type="text" name="get_start_time" id="get_start_time"
-					size="20" class="date input-text" value=""> 至 <input type="text"
-					name="get_end_time" id="get_end_time" size="20"
-					class="date input-text" value=""></td>
+				<td>
+				<input type="text" name="get_start_time" id="get_start_time" size="20" class="date input-text" value=""> 至
+				<input type="text" name="get_end_time" id="get_end_time" size="20" class="date input-text" value=""></td>
 			</tr>
 			<tr>
 				<th width="100">每人限领数量：</th>
-				<td><input type="text" name="limit_quantity" id="limit_quantity"
-					size="10" class="input-text" value=""></td>
+				<td><input type="text" name="limit_quantity" id="limit_quantity" size="10" class="input-text" value=""></td>
 			</tr>
 			<tr>
 				<th width="100">优惠券过期时间：</th>
-				<td><input type="text" name="expiry_date" id="expiry_date" size="20"
-					class="date input-text" value=""></td>
+				<td><input type="text" name="expiry_date" id="expiry_date" size="20" class="date input-text" value=""></td>
 			</tr>
 			<tr>
-				<td width="100%" align="center" colspan="2"><input id="form_submit"
-					type="button" name="dosubmit" class="btn_submit" value=" 提交 " /></td>
+				<td width="100%" align="center" colspan="2">
+				    <input id="form_submit" type="button" name="dosubmit" class="btn_submit" value=" 提交 " />
+				</td>
 			</tr>
 		</table>
 

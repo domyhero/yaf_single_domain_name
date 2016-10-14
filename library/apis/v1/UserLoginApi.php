@@ -21,7 +21,7 @@ class UserLoginApi extends BaseApi {
     protected function runService() {
         $username = $this->getString('username');
         $password = $this->getString('password');
-        $return = UserService::login($username, $password, 2);
+        $return   = UserService::login($username, $password, 2);
         $this->render(0, '登录成功', $return);
     }
 

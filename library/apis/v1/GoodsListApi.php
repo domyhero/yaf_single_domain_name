@@ -18,10 +18,10 @@ class GoodsListApi extends BaseApi {
      */
     protected function runService() {
         $keywords = $this->getString('keywords', '');
-        $cat_id = $this->getInt('cat_id', - 1);
+        $cat_id   = $this->getInt('cat_id', - 1);
         $order_by = $this->getString('order_by', 'price');
-        $page = $this->getInt('page', 1);
-        $count = 10;
+        $page     = $this->getInt('page', 1);
+        $count    = 10;
         $this->render(0, 'ok');
     }
 

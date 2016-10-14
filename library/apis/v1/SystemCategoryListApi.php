@@ -19,8 +19,8 @@ class SystemCategoryListApi extends BaseApi {
      */
     protected function runService() {
         $position = $this->getString('cat_type');
-        $count = $this->getInt('cat_level', - 1);
-        $list = CategoryService::getCategoryList(0, CategoryService::CAT_NEWS);
+        $count    = $this->getInt('cat_level', - 1);
+        $list     = CategoryService::getCategoryList(0, CategoryService::CAT_NEWS);
         $this->render(0, 'ok', $list);
     }
 

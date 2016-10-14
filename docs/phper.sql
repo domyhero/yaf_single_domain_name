@@ -605,6 +605,24 @@ INSERT INTO `ms_menu` VALUES ('6022', '运费模板添加', '6001', 'freight', '
 INSERT INTO `ms_menu` VALUES ('6023', '运费模板编辑', '6001', 'freight', 'edit', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('6024', '运费模板删除', '6001', 'freight', 'delete', '', '0', '0');
 
+INSERT INTO `ms_menu` VALUES ('7000', '活动管理', '0', '', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7001', '彩票活动', '7000', 'Lottery', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7003', '活动列表', '7001', 'Lottery', 'list', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7004', '添加彩票活动', '7001', 'Lottery', 'add', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7005', '编辑彩票活动', '7001', 'Lottery', 'edit', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7006', '删除彩票活动', '7001', 'Lottery', 'delete', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7007', '彩票活动参与用户列表', '7001', 'Lottery', 'users', '', '0', '0');
+
+INSERT INTO `ms_menu` VALUES ('7008', '彩票开奖结果', '7001', 'Result', 'list', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7009', '添加彩票开奖结果', '7001', 'Result', 'add', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7010', '编辑彩票开奖结果', '7001', 'Result', 'edit', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7011', '删除彩票开奖结果', '7001', 'Result', 'delete', '', '0', '0');
+
+INSERT INTO `ms_menu` VALUES ('7100', '抽奖活动', '7000', 'Lucky', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7101', '奖品列表', '7100', 'Lucky', 'list', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7102', '添加奖品', '7100', 'Lucky', 'add', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7103', '编辑奖品', '7100', 'Lucky', 'edit', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7104', '删除奖品', '7100', 'Lucky', 'delete', '', '0', '0');
 
 # 商城字典初始化。
 INSERT INTO `ms_dict_type` (`dict_type_id`, `type_code`, `type_name`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('30', 'order_operation_code', '订单操作编码', '订单操作编码：标识下单之后，买家或卖家对订单的操作。', '1', '1', unix_timestamp(now()), '0', '0');
@@ -1076,6 +1094,7 @@ CREATE TABLE gm_bet_record_number(
 DROP TABLE IF EXISTS `gm_lottery_activity`;
 CREATE TABLE gm_lottery_activity(
 	aid INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	title CHAR(20) NOT NULL COMMENT '活动名称',
 	lottery_type TINYINT(1) NOT NULL COMMENT '彩票类型：1双色球、2大乐透',
 	bet_number CHAR(100) NOT NULL COMMENT '投注号码(复式)',
 	bet_money INT(11) UNSIGNED NOT NULL COMMENT '投注金额',
@@ -1104,7 +1123,8 @@ CREATE TABLE gm_lottery_user(
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
 	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '分得奖金。单位(分)。活动结束才计入这个值。',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-	PRIMARY KEY(id)
+	PRIMARY KEY(id),
+	UNIQUE KEY `user_activity_index`(`aid`, `user_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票活动中奖记录表';
 
 
@@ -1133,12 +1153,12 @@ CREATE TABLE gm_lottery_result(
 	lottery_result CHAR(20) NOT NULL COMMENT '彩票开奖号码',
 	first_prize INT(11) UNSIGNED NOT NULL COMMENT '一等奖金额',
 	second_prize INT(11) UNSIGNED NOT NULL COMMENT '二等奖金额',
-	first_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '一等奖中奖注数',
-	second_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '二等奖中奖注数',
-	third_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '三等奖中奖注数',
-	fourth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '四等奖中奖注数',
-	fifth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '五等奖中奖注数',
-	sixth_prize_count SMALLINT(5) UNSIGNED NOT NULL COMMENT '六等奖中奖注数',
+	first_prize_count INT(11) UNSIGNED NOT NULL COMMENT '一等奖中奖注数',
+	second_prize_count INT(11) UNSIGNED NOT NULL COMMENT '二等奖中奖注数',
+	third_prize_count INT(11) UNSIGNED NOT NULL COMMENT '三等奖中奖注数',
+	fourth_prize_count INT(11) UNSIGNED NOT NULL COMMENT '四等奖中奖注数',
+	fifth_prize_count INT(11) UNSIGNED NOT NULL COMMENT '五等奖中奖注数',
+	sixth_prize_count INT(11) UNSIGNED NOT NULL COMMENT '六等奖中奖注数',
 	lottery_time INT(11) UNSIGNED NOT NULL COMMENT '开奖时间',
 	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
 	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',

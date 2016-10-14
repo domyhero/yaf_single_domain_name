@@ -20,8 +20,8 @@ class SystemAdListApi extends BaseApi {
      */
     protected function runService() {
         $position = $this->getString('position');
-        $count = $this->getInt('count');
-        $list = AdService::getPositionAdList($position, $count);
+        $count    = $this->getInt('count');
+        $list     = AdService::getPositionAdList($position, $count);
         $this->render(0, 'ok', $list);
     }
 

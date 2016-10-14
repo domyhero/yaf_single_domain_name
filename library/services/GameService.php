@@ -343,10 +343,8 @@ class GameService extends BaseService {
         }
         $str_red_ball  = $ball[0];
         $str_blue_ball = $ball[1];
-
         $arr_red_ball  = explode(',', $str_red_ball);
         $arr_blue_ball = explode(',', $str_blue_ball);
-
         // 红色球取整调整。
         $_arr_red_ball = [];
         foreach ($arr_red_ball as $ball) {

@@ -25,10 +25,8 @@ html {
 					<td>
 						<div class="explain-col">
 							<p style="margin-top: 10px;">
-								<input type="text"
-									value="<?php echo htmlspecialchars($coupon_name); ?>"
-									class="input-text" name="coupon_name" placeholder="优惠券名称" /> <input
-									type="submit" name="search" class="button" value="搜索" />
+								<input type="text" value="<?php echo htmlspecialchars($coupon_name); ?>" class="input-text" name="coupon_name" placeholder="优惠券名称" />
+                                <input type="submit" name="search" class="button" value="搜索" />
 							</p>
 						</div>
 					</td>

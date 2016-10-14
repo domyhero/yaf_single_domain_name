@@ -20,9 +20,9 @@ class UserRegisterApi extends BaseApi {
      */
     protected function runService() {
         $mobilephone = $this->getString('mobilephone');
-        $password = $this->getString('password');
-        $code = $this->getString('code');
-        $user_type = UserService::USER_TYPE_NORMAL;
+        $password    = $this->getString('password');
+        $code        = $this->getString('code');
+        $user_type   = UserService::USER_TYPE_NORMAL;
         UserService::mobilephoneRegister($user_type, $mobilephone, $password, $code);
         $this->render(0, '注册成功');
     }

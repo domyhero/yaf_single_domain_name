@@ -13,5 +13,5 @@ class LotteryResult extends DbBase {
      *
      * @var string
      */
-    protected $_table_name = 'gm_lottery_prize';
+    protected $_table_name = 'gm_lottery_result';
 }

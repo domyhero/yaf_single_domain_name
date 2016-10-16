@@ -1169,5 +1169,20 @@ CREATE TABLE gm_lottery_result(
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '彩票开奖结果表';
 
 
+# 抽奖奖励表
+DROP TABLE IF EXISTS `gm_lucky_goods`;
+CREATE TABLE gm_lucky_goods(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	goods_name CHAR(50) NOT NULL COMMENT '商品名称',
+	day_max SMALLINT(5) NOT NULL DEFAULT '0' COMMENT '每天中奖最大次数。0代表不限制',
+	odds INT(11) NOT NULL COMMENT '抽奖概率。千分位。',
+	v INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '版本号',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',	
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖奖励表';
 
 # --------------- 游戏相关 end   ------------#

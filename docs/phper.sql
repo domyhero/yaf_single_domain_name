@@ -1175,7 +1175,9 @@ CREATE TABLE gm_lucky_goods(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
 	goods_name CHAR(50) NOT NULL COMMENT '商品名称',
 	day_max SMALLINT(5) NOT NULL DEFAULT '0' COMMENT '每天中奖最大次数。0代表不限制',
-	odds INT(11) NOT NULL COMMENT '抽奖概率。千分位。',
+	min_range INT(11) NOT NULL COMMENT '随机数最小值',
+	max_range INT(11) NOT NULL COMMENT '随机数最大值',
+	goods_type SMALLINT(1) NOT NULL COMMENT '商品类型:jb-金币、qb-Q币、hf-话费、sw-实物、no-未中奖',
 	v INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '版本号',
 	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
 	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
@@ -1184,5 +1186,26 @@ CREATE TABLE gm_lucky_goods(
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖奖励表';
+
+
+# 抽奖中奖记录表
+DROP TABLE IF EXISTS `gm_lucky_prize`;
+CREATE TABLE gm_lucky_prize(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	goods_name CHAR(50) NOT NULL COMMENT '商品名称',
+	goods_type SMALLINT(1) NOT NULL COMMENT '商品类型:jb-金币、qb-Q币、hf-话费、sw-实物、no-未中奖',
+	is_send TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否已经发放奖励：0否、1是',
+	send_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '奖励发送时间',
+	range_val INT(11) UNSIGNED NOT NULL COMMENT '随机到的值',
+	get_info CHAR(255) NOT NULL DEFAULT '' COMMENT 'QQ号/手机号码/收货地址信息', 
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '中奖时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(goods_type)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖中奖记录表';
 
 # --------------- 游戏相关 end   ------------#

@@ -14,6 +14,20 @@ use winer\WeChat\WeChatApp;
 class YCore {
 
     /**
+     * 字符串星号处理器。
+     * @param string $str 被加星处理的字符串。
+     * @return string
+     */
+    public static function asterisk($str, $is_full = true) {
+        $len = mb_strlen($str, 'UTF-8');
+        if ($len < 3) {
+            return '**';
+        } else {
+            return mb_substr($str, 0, 1, 'UTF-8') . '**' . mb_substr($str, -1, 1, 'UTF-8');
+        }
+    }
+
+    /**
      * 时间戳格式化。
      *
      * @param number $timestamp 时间戳。

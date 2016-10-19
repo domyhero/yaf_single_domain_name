@@ -1178,14 +1178,12 @@ CREATE TABLE gm_lucky_goods(
 	min_range INT(11) NOT NULL COMMENT '随机数最小值',
 	max_range INT(11) NOT NULL COMMENT '随机数最大值',
 	goods_type SMALLINT(1) NOT NULL COMMENT '商品类型:jb-金币、qb-Q币、hf-话费、sw-实物、no-未中奖',
-	v INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '版本号',
-	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	image_url CHAR(100) NOT NULL COMMENT '奖品图片',
 	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',	
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖奖励表';
+
 
 
 # 抽奖中奖记录表

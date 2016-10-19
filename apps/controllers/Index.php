@@ -1,5 +1,5 @@
 <?php
-use Juhe\CallDisplay;
+use common\YCore;
 /**
  * 首页。
  * @author winerQin
@@ -13,7 +13,7 @@ class IndexController extends \common\controllers\Guest {
      * -- 1、需要静态化处理。
      */
     public function indexAction() {
-        $ob = CallDisplay::query('18575202691');
+        $ob = YCore::asterisk('东南方向');
         print_r($ob);
         exit;
     }

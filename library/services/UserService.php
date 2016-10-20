@@ -559,7 +559,10 @@ class UserService extends BaseService {
      */
     public static function getUserDetail($user_id) {
         $base_model = new DbBase();
-        $sql = 'SELECT a.user_id,a.username,a.mobilephone,a.mobilephone_ok,a.mobilephone_time,' . 'a.email,a.email_ok,a.email_time,a.reg_time,b.realname,b.avatar,b.signature ' . 'FROM ms_user AS a LEFT JOIN ms_user_data AS b ON(a.user_id=b.user_id) ' . 'WHERE a.user_id = :user_id';
+        $sql = 'SELECT a.user_id,a.username,a.mobilephone,a.mobilephone_ok,a.mobilephone_time,'
+             . 'a.email,a.email_ok,a.email_time,a.reg_time,b.realname,b.avatar,b.signature '
+             . 'FROM ms_user AS a LEFT JOIN ms_user_data AS b ON(a.user_id=b.user_id) '
+             . 'WHERE a.user_id = :user_id';
         $params = [
             ':user_id' => $user_id
         ];
@@ -567,6 +570,7 @@ class UserService extends BaseService {
         if (empty($userinfo)) {
             YCore::exception(-1, '用户不存在或已经删除');
         }
+        $userinfo['avatar'] = YUrl::filePath($userinfo['avatar']);
         return $userinfo;
     }
 

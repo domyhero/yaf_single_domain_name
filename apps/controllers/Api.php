@@ -13,15 +13,44 @@ class ApiController extends \common\controllers\Guest {
      * 首页。
      */
     public function indexAction() {
-        echo $this->testLuckyStartDoApi();
+        echo $this->testLotteryActivityListApi();
         $this->end();
+    }
+
+    public function testLotteryActivityListApi() {
+        $data = [
+            'method' => 'lottery.activity.list',
+            'v'      => 1,
+            'page'   => 1
+        ];
+        return $this->curl(json_encode($data));
+    }
+
+    public function testUserEditPwdApi() {
+        $data = [
+            'method'  => 'user.edit.pwd',
+            'v'       => 1,
+            'token'   => '2ed8BAlUAgVSBQYEUwEDVARUBApTBFQEUlUDAFBVOVRSVgACDFNWDQdXVFVQC1NSCAABBFQBAwdWAVVaBQIGPlVSDwIAUQYHVAQ\/Bg',
+            'old_pwd' => '654321',
+            'new_pwd' => '123456'
+        ];
+        return $this->curl(json_encode($data));
+    }
+
+    public function testUserDetailApi() {
+        $data = [
+            'method' => 'user.detail',
+            'v'      => 1,
+            'token'  => '2ed8BAlUAgVSBQYEUwEDVARUBApTBFQEUlUDAFBVOVRSVgACDFNWDQdXVFVQC1NSCAABBFQBAwdWAVVaBQIGPlVSDwIAUQYHVAQ\/Bg'
+        ];
+        return $this->curl(json_encode($data));
     }
 
     public function testLuckyStartDoApi() {
         $data = [
             'method' => 'lucky.start.do',
             'v'      => 1,
-            'token'  => '1a88AQYFBQIDBlYJAVVdXlUPUgNQXQEBWg4JUlJXagAGV1IFBQxTUwNTAwBXV1RdAQ9YBlcGVFYICAxVB1RTPgZVAQcPAQABAgVvCw'
+            'token'  => '2ed8BAlUAgVSBQYEUwEDVARUBApTBFQEUlUDAFBVOVRSVgACDFNWDQdXVFVQC1NSCAABBFQBAwdWAVVaBQIGPlVSDwIAUQYHVAQ\/Bg'
         ];
         return $this->curl(json_encode($data));
     }
@@ -48,7 +77,7 @@ class ApiController extends \common\controllers\Guest {
         $data = [
             'method'     => 'user.lucky.prize.list',
             'v'          => 1,
-            'token'      => '1a88AQYFBQIDBlYJAVVdXlUPUgNQXQEBWg4JUlJXagAGV1IFBQxTUwNTAwBXV1RdAQ9YBlcGVFYICAxVB1RTPgZVAQcPAQABAgVvCw',
+            'token'      => '2ed8BAlUAgVSBQYEUwEDVARUBApTBFQEUlUDAFBVOVRSVgACDFNWDQdXVFVQC1NSCAABBFQBAwdWAVVaBQIGPlVSDwIAUQYHVAQ\/Bg',
             'goods_name' => '',
             'goods_type' => '',
             'page'       => 1

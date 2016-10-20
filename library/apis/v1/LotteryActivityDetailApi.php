@@ -1,6 +1,6 @@
 <?php
 /**
- * 抽奖商品列表。
+ * 彩票活动详情接口。
  * @author winerQin
  * @date 2016-10-20
  */
@@ -8,9 +8,9 @@
 namespace apis\v1;
 
 use apis\BaseApi;
-use services\LuckyService;
+use services\LotteryService;
 
-class LuckyGoodsListApi extends BaseApi {
+class LotteryActivityDetailApi extends BaseApi {
 
     /**
      * 逻辑处理。
@@ -19,7 +19,8 @@ class LuckyGoodsListApi extends BaseApi {
      * @return bool
      */
     protected function runService() {
-        $goods_list = LuckyService::getLuckyGoodsList();
+        $aid = $this->getInt('aid');
+        $goods_list = LotteryService::getLotteryActivityDetail($aid);
         $this->render(0, 'ok', $goods_list);
     }
 

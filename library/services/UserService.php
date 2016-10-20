@@ -800,7 +800,7 @@ class UserService extends BaseService {
      *
      * @param int $login_mode 登录模式。web模式、api模式。
      * @param string $token Token。如果是接口模式。必须设置此值。
-     * @return int 返回用户ID。
+     * @return array
      */
     public static function checkAuth($login_mode, $token = '') {
         // [1] 参数判断。
@@ -867,8 +867,7 @@ class UserService extends BaseService {
         return [
             'user_id'     => $user_id,
             'username'    => $userinfo['username'],
-            'mobilephone' => $userinfo['mobilephone'],
-            'user_type'   => $userinfo['user_type']
+            'mobilephone' => $userinfo['mobilephone']
         ];
     }
 

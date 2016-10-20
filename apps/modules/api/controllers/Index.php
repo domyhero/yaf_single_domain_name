@@ -17,8 +17,8 @@ class IndexController extends \common\controllers\Api {
         try {
             $body = file_get_contents('php://input'); // 取请求中body的JSON内容。
             $body_params = json_decode($body, true);  // 解析JSON为数组参数。
-            $api = ApiFactory::factory($body_params);
-            $data = $api->render();
+            $api  = ApiFactory::factory($body_params);
+            $data = $api->renderJson();
             header('Content-Type:application/json;charset=UTF-8');
             echo $data;
         } catch (\Exception $e) {

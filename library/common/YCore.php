@@ -18,7 +18,7 @@ class YCore {
      * @param string $str 被加星处理的字符串。
      * @return string
      */
-    public static function asterisk($str, $is_full = true) {
+    public static function asterisk($str) {
         $len = mb_strlen($str, 'UTF-8');
         if ($len < 3) {
             return '**';

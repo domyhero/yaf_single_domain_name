@@ -12,6 +12,7 @@ use winer\Validator;
 use models\DbBase;
 use models\GmLuckyGoods;
 use models\User;
+use models\GmLuckyPrize;
 class LuckyService extends BaseService {
 
     const GOODS_TYPE_JB = 'jb'; // 金币。
@@ -101,6 +102,20 @@ class LuckyService extends BaseService {
     }
 
     /**
+     * 获取中将奖品。
+     * @param int $is_has_no 是否包含未中奖的奖品项。
+     * @return array
+     */
+    public static function getLuckyGoodsList($is_has_no = true) {
+        $lucky_goods_model = new GmLuckyGoods();
+        $columns = [
+            'goods_name', 'image_url', 'goods_type'
+        ];
+        $lucky_goods_list = $lucky_goods_model->fetchAll($columns, [], 0, 'id ASC');
+        return $lucky_goods_list;
+    }
+
+    /**
      * 用户发起抽奖。
      * @param number $user_id 用户ID。
      * @return array
@@ -108,7 +123,7 @@ class LuckyService extends BaseService {
     public static function startDoLucky($user_id) {
         $lucky_goods_model = new GmLuckyGoods();
         $lucky_goods_list  = $lucky_goods_model->fetchAll();
-        $rand_value = mt_rand(1, 100000);
+        $rand_value = mt_rand(1, 10000);
         $prize_info = []; // 保存抽中的奖品信息。
         foreach ($lucky_goods_list as $item) {
             if ($rand_value >= $item['min_range'] && $rand_value <= $item['max_range']) {
@@ -116,6 +131,7 @@ class LuckyService extends BaseService {
             }
         }
         if ($prize_info['goods_type'] == self::GOODS_TYPE_NO) {
+            self::writeLuckyPrizeRecord($user_id, '未中奖', self::GOODS_TYPE_NO, $rand_value);
             return [
                 'goods_name' => '未中奖',
                 'goods_type' => self::GOODS_TYPE_NO
@@ -128,6 +144,7 @@ class LuckyService extends BaseService {
         if ($cache_val === false) {
             $cache_db->set($lucky_goods_time_key, $_SERVER['REQUEST_TIME']);
             $cache_db->set($cache_key, 1);
+            self::writeLuckyPrizeRecord($user_id, $prize_info['goods_name'], $prize_info['goods_type'], $rand_value);
             return [
                 'goods_name' => $prize_info['goods_name'],
                 'goods_type' => $prize_info['goods_type']
@@ -137,6 +154,7 @@ class LuckyService extends BaseService {
             $lucky_goods_time = $cache_db->get($lucky_goods_time);
             if ($lucky_goods_time > $last_end_time) { // 当天。
                 if ($cache_val >= $prize_info['day_max']) { // 超过了奖品当天允许抽中的数量。
+                    self::writeLuckyPrizeRecord($user_id, '未中奖', self::GOODS_TYPE_NO, $rand_value);
                     return [
                         'goods_name' => '未中奖',
                         'goods_type' => self::GOODS_TYPE_NO
@@ -144,6 +162,7 @@ class LuckyService extends BaseService {
                 } else {
                     $cache_db->set($cache_key, $cache_val+1);
                     $cache_db->set($lucky_goods_time_key, $_SERVER['REQUEST_TIME']);
+                    self::writeLuckyPrizeRecord($user_id, $prize_info['goods_name'], $prize_info['goods_type'], $rand_value);
                     return [
                         'goods_name' => $prize_info['goods_name'],
                         'goods_type' => $prize_info['goods_type']
@@ -152,12 +171,38 @@ class LuckyService extends BaseService {
             } else { // 昨天。
                 $cache_db->set($cache_key, 1);
                 $cache_db->set($lucky_goods_time_key, $_SERVER['REQUEST_TIME']);
+                self::writeLuckyPrizeRecord($user_id, $prize_info['goods_name'], $prize_info['goods_type'], $rand_value);
                 return [
                     'goods_name' => $prize_info['goods_name'],
                     'goods_type' => $prize_info['goods_type']
                 ];
             }
         }
+    }
+
+    /**
+     * 写入用户抽奖记录。
+     * @param number $user_id 用户ID。
+     * @param string $goods_name 奖品名称。
+     * @param string $goods_type 奖品类型。
+     * @param number $range_val 随机值。
+     * @return boolean
+     */
+    public static function writeLuckyPrizeRecord($user_id, $goods_name, $goods_type, $range_val) {
+        $lucky_prize_model = new GmLuckyPrize();
+        $data = [
+            'user_id'      => $user_id,
+            'goods_name'   => $goods_name,
+            'goods_type'   => $goods_type,
+            'range_val'    => $range_val,
+            'status'       => 1,
+            'created_time' => $_SERVER['REQUEST_TIME']
+        ];
+        $ok = $lucky_prize_model->insert($data);
+        if (!$ok) {
+            YCore::exception(-1, '服务器繁忙');
+        }
+        return true;
     }
 
     /**
@@ -278,7 +323,7 @@ class LuckyService extends BaseService {
      * @param number $count 要取的记录条数。
      * @return array
      */
-    public static function getNewestKuckyPrizeList($count = 20) {
+    public static function getNewestLuckyPrizeList($count = 20) {
         $page    = 1;
         $offset  = self::getPaginationOffset($page, $count);
         $columns = ' * ';
@@ -298,10 +343,10 @@ class LuckyService extends BaseService {
         $user_model = new User();
         foreach ($list as $k => $v) {
             if (isset($userinfos[$v['user_id']])) {
-                $v['username'] = $userinfos[$v['user_id']]['username'];
+                $v['username'] = YCore::asterisk($userinfos[$v['user_id']]['username']);
             } else {
                 $userinfo = $user_model->fetchOne([], ['user_id' => $v['user_id']]);
-                $v['username'] = $userinfo ? $userinfo['username'] : '';
+                $v['username'] = $userinfo ? YCore::asterisk($userinfo['username']) : '';
                 $userinfos[$v['user_id']] = $userinfo;
             }
             $v['created_time'] = YCore::format_timestamp($v['created_time']);

@@ -101,7 +101,7 @@ Calendar.setup({
 						<td align="left"><?php echo $item['mobilephone_ok'] ? '是' : '否'; ?></td>
 						<td align="left"><?php echo $item['email']; ?></td>
 						<td align="center"><?php echo $item['email_ok'] ? '是' : '否'; ?></td>
-						<td align="left"><?php echo date('Y-m-d H:i:s', $item['reg_time']); ?></td>
+						<td align="left"><?php echo $item['reg_time']; ?></td>
 						<td align="center">[<a href="###"
 							onclick="edit(<?php echo $item['user_id'] ?>, '<?php echo $item['username'] ?>')"
 							title="修改">修改</a>]&nbsp;

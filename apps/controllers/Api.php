@@ -13,8 +13,18 @@ class ApiController extends \common\controllers\Guest {
      * 首页。
      */
     public function indexAction() {
-        echo $this->testLotteryActivityListApi();
+        echo $this->testLotteryResultListApi();
         $this->end();
+    }
+
+    public function testLotteryResultListApi() {
+        $data = [
+            'method'       => 'lottery.result.list',
+            'v'            => 1,
+            'page'         => 1,
+            'lottery_type' => -1
+        ];
+        return $this->curl(json_encode($data));
     }
 
     public function testLotteryActivityListApi() {

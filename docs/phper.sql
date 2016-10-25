@@ -620,9 +620,9 @@ INSERT INTO `ms_menu` VALUES ('7011', '删除彩票开奖结果', '7001', 'Resul
 
 INSERT INTO `ms_menu` VALUES ('7100', '抽奖活动', '7000', 'Lucky', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7101', '奖品列表', '7100', 'Lucky', 'list', '', '0', '1');
-INSERT INTO `ms_menu` VALUES ('7102', '添加奖品', '7100', 'Lucky', 'add', '', '0', '0');
-INSERT INTO `ms_menu` VALUES ('7103', '编辑奖品', '7100', 'Lucky', 'edit', '', '0', '0');
-INSERT INTO `ms_menu` VALUES ('7104', '删除奖品', '7100', 'Lucky', 'delete', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7102', '设置奖品', '7100', 'Lucky', 'set', '', '0', '0');
+
+
 
 # 商城字典初始化。
 INSERT INTO `ms_dict_type` (`dict_type_id`, `type_code`, `type_name`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('30', 'order_operation_code', '订单操作编码', '订单操作编码：标识下单之后，买家或卖家对订单的操作。', '1', '1', unix_timestamp(now()), '0', '0');
@@ -1183,7 +1183,6 @@ CREATE TABLE gm_lucky_goods(
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖奖励表';
-
 
 
 # 抽奖中奖记录表

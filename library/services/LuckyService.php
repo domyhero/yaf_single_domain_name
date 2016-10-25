@@ -13,6 +13,8 @@ use models\DbBase;
 use models\GmLuckyGoods;
 use models\User;
 use models\GmLuckyPrize;
+use common\YUrl;
+use models\Admin;
 class LuckyService extends BaseService {
 
     const GOODS_TYPE_JB = 'jb'; // 金币。
@@ -53,7 +55,7 @@ class LuckyService extends BaseService {
      * @return boolean
      */
     public static function setLuckyGoods($admin_id, $goods) {
-        if (count($goods) === 9) {
+        if (count($goods) !== 9) {
             YCore::exception(-1, '奖品必须9个');
         }
         $db = new DbBase();
@@ -102,16 +104,45 @@ class LuckyService extends BaseService {
     }
 
     /**
-     * 获取中将奖品。
+     * 获取中将奖品[管理后台]。
      * @param int $is_has_no 是否包含未中奖的奖品项。
      * @return array
      */
-    public static function getLuckyGoodsList($is_has_no = true) {
+    public static function getAdminLuckyGoodsList($is_has_no = true) {
         $lucky_goods_model = new GmLuckyGoods();
         $columns = [
-            'goods_name', 'image_url', 'goods_type'
+            'id', 'day_max', 'min_range', 'max_range',
+            'goods_name', 'image_url', 'goods_type',
+            'created_by', 'created_time'
         ];
         $lucky_goods_list = $lucky_goods_model->fetchAll($columns, [], 0, 'id ASC');
+        foreach ($lucky_goods_list as $k => $v) {
+            $admin_model = new Admin();
+            $admin_info  = $admin_model->fetchOne([], ['admin_id' => $v['created_by']]);
+            $v['created_by']   = "{$admin_info['realname']}({$admin_info['username']})";
+            $v['created_time'] = YCore::format_timestamp($v['created_time']);
+            $lucky_goods_list[$k] = $v;
+        }
+        return $lucky_goods_list;
+    }
+
+    /**
+     * 获取中将奖品[前台用户]。
+     * @param int $is_has_no 是否包含未中奖的奖品项。
+     * @return array
+     */
+    public static function getUserLuckyGoodsList($is_has_no = true) {
+        $lucky_goods_model = new GmLuckyGoods();
+        $columns = [
+            'goods_name', 'image_url', 'goods_type',
+        ];
+        $lucky_goods_list = $lucky_goods_model->fetchAll($columns, [], 0, 'id ASC');
+        foreach ($lucky_goods_list as $k => $v) {
+            $admin_model = new Admin();
+            $v['goods_type_label'] = self::$goods_type_dict[$v['goods_type']];
+            $v['image_url']        = YUrl::filePath($v['image_url']);
+            $lucky_goods_list[$k] = $v;
+        }
         return $lucky_goods_list;
     }
 

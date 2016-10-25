@@ -3,13 +3,6 @@ use common\YUrl;
 require_once (dirname(__DIR__) . '/common/header.php');
 ?>
 
-<div class="subnav">
-	<div class="content-menu ib-a blue line-x">
-		<a class="add fb"
-			href="javascript:postDialog('addResult', '<?php echo YUrl::createBackendUrl('Result', 'add'); ?>', '添加开奖结果', 600, 500)"><em>添加开奖结果</em></a>
-		<a href='javascript:;' class="on"><em>彩票活动列表</em></a>
-	</div>
-</div>
 <style type="text/css">
 html {
 	_overflow-y: scroll

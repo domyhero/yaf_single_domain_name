@@ -45,9 +45,7 @@ html {
 			</tr>
 			<tr>
 				<th width="100">头像：</th>
-				<td><input type="hidden" name="avatar" id="avatar"
-					value="<?php echo $userinfo['avatar']; ?>" />
-					<div id="avatar_view"></div></td>
+				<td><input type="hidden" name="avatar" id="avatar" value="<?php echo $userinfo['avatar']; ?>" /><div id="avatar_view"></div></td>
 			</tr>
 			<tr>
 				<td width="100%" align="center" colspan="2"><input type="hidden"

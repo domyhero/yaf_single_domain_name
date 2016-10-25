@@ -1061,7 +1061,7 @@ DROP TABLE IF EXISTS `gm_bet_record`;
 CREATE TABLE gm_bet_record(
 	bet_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '玩家ID。对应ms_user.user_id',
-	game_id INT(11) UNSIGNED NOT NULL COMMENT '游戏ID',
+	game_code INT(11) UNSIGNED NOT NULL COMMENT '游戏编码',
 	bet_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '投注的金币数量',
 	bet_status TINYINT(1) NOT NULL COMMENT '中奖状态：0待开奖、1已中奖、2未中奖',
 	reward_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖金币',

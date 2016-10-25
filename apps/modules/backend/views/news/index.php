@@ -25,15 +25,10 @@ html {
 					<td>
 						<div class="explain-col">
 							<p>
-								文章标题：<input type="text" value="<?php echo $title; ?>"
-									class="input-text" name="title" placeholder="文章标题" /> 管理员账号：<input
-									type="text" value="<?php echo $admin_name; ?>"
-									class="input-text" name="admin_name" placeholder="管理员账号" />
-								上传时间：<input type="text" name="starttime" id="starttime"
-									value="<?php echo $starttime; ?>" size="20"
-									class="date input-text" /> ～ <input type="text" name="endtime"
-									id="endtime" value="<?php echo $endtime; ?>" size="20"
-									class="date input-text" />
+								文章标题：<input type="text" value="<?php echo $title; ?>" class="input-text" name="title" placeholder="文章标题" />
+								管理员账号：<input type="text" value="<?php echo $admin_name; ?>" class="input-text" name="admin_name" placeholder="管理员账号" />
+								上传时间：<input type="text" name="starttime" id="starttime" value="<?php echo $starttime; ?>" size="20" class="date input-text" /> ～ <input type="text" name="endtime"
+									id="endtime" value="<?php echo $endtime; ?>" size="20" class="date input-text" />
 								<script type="text/javascript">
 Calendar.setup({
 	weekNumbers: false,

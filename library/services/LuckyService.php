@@ -249,18 +249,17 @@ class LuckyService extends BaseService {
     public static function getAdminLuckyPrizeList($username = '', $mobilephone = '', $goods_name = '', $goods_type = '', $page = 1, $count = 20) {
         $offset  = self::getPaginationOffset($page, $count);
         $columns = ' * ';
-        $where   = ' WHERE status = :status';
+        $where   = ' WHERE status = :status ';
         $params  = [
             ':status' => 1
         ];
         $user_model = new User();
-        if (strlen($username) === 0) {
+        if (strlen($username) !== 0) {
             $userinfo = $user_model->fetchOne([], ['username' => $username]);
             $where .= ' AND user_id = :user_id ';
             $params[':user_id'] = $userinfo ? $userinfo['user_id'] : 0;
-        }
-        if (strlen($mobilephone) === 0) {
-            $userinfo = $user_model->fetchOne([], ['mobilephone' => $mobilephone, 'status' => 1]);
+        } else if (strlen($mobilephone) !== 0) {
+            $userinfo = $user_model->fetchOne([], ['mobilephone' => $mobilephone]);
             $where .= ' AND user_id = :user_id ';
             $params[':user_id'] = $userinfo ? $userinfo['user_id'] : 0;
         }
@@ -290,6 +289,9 @@ class LuckyService extends BaseService {
                 $v['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '';
                 $userinfos[$v['user_id']] = $userinfo;
             }
+            $v['goods_type']   = self::$goods_type_dict[$v['goods_type']];
+            $v['is_send']      = $v['is_send'] ? '是' : '否';
+            $v['send_time']    = YCore::format_timestamp($v['send_time']);
             $v['created_time'] = YCore::format_timestamp($v['created_time']);
             $list[$k] = $v;
         }
@@ -391,5 +393,176 @@ class LuckyService extends BaseService {
             'isnext' => self::IsHasNextPage($total, $page, $count)
         ];
         return $result;
+    }
+
+    /**
+     * 删除中奖记录。
+     * @param number $admin_id 管理员ID。
+     * @param number $id 中奖记录ID。
+     * @return boolean
+     */
+    public static function deletePrizeRecord($admin_id, $id) {
+        $lucky_prize_model = new GmLuckyPrize();
+        $result = $lucky_prize_model->fetchOne([], ['id' => $id, 'status' => 1]);
+        if (empty($result)) {
+            YCore::exception(-1, '中奖记录不存在');
+        }
+        $data = [
+            'status'        => 2,
+            'modified_by'   => $admin_id,
+            'modified_time' => $_SERVER['REQUEST_TIME']
+        ];
+        $ok = $lucky_prize_model->update($data, ['id' => $id, 'status' => 1]);
+        if (!$ok) {
+            YCore::exception(-1, '删除失败');
+        }
+        return true;
+    }
+
+    /**
+     * 发送奖品。
+     * -- Example start --
+     * ## 话费格式 ##
+     * $data = [
+     *      'channel' => '微信', // 支付宝、聚合
+     *      'sn'      => '流水号',
+     * ];
+     *
+     * ## Q币格式 ##
+     * $data = [
+     *      'channel' => '微信', // 支付宝、聚合,
+     *      'sn'      => '流水号',
+     * ];
+     *
+     * ## 实物 ##
+     * $data = [
+     *      'express_name' => '快递公司名称',
+     *      'express_sn'   => '快递公司单号',
+     *      'express_time' => '快递发送时间'
+     * ];
+     *
+     * -- Example end --
+     * @param number $admin_id 管理员ID。
+     * @param number $id 中奖记录ID。
+     * @param number $data 发送奖品相关信息。
+     * @return boolean
+     */
+    public static function sendAward($admin_id, $id, array $data = []) {
+        $lucky_prize_model = new GmLuckyPrize();
+        $result = $lucky_prize_model->fetchOne([], ['id' => $id, 'status' => 1]);
+        if (empty($result)) {
+            YCore::exception(-1, '中奖记录不存在');
+        }
+        if ($result['goods_type'] == self::GOODS_TYPE_NO) {
+            YCore::exception(-1, '未中奖的记录不能操作');
+        }
+        if ($result['goods_type'] == self::GOODS_TYPE_JB) {
+            YCore::exception(-1, '金币奖品不需要手动发奖');
+        }
+        if ($result['is_send'] == 1) {
+            $diff_time = $_SERVER['REQUEST_TIME'] - $result['send_time'];
+            if ($diff_time > 86400) {
+                YCore::exception(-1, '超过24小时的记录不能修改');
+            }
+        }
+        if (strlen($result['get_info']) === 0) {
+            YCore::exception(-1, '用户还未填写领奖信息');
+        }
+        switch ($result['goods_type']) {
+            case self::GOODS_TYPE_HF: // 话费充值要填写流水号之类的数据。
+                if (empty($data)) {
+                    YCore::exception(-1, '流水号必须填写');
+                }
+                break;
+            case self::GOODS_TYPE_QB:
+                break;
+            case self::GOODS_TYPE_SW:
+                break;
+        }
+        $data = [
+            'is_send'       => 1,
+            'send_time'     => $_SERVER['REQUEST_TIME'],
+            'modified_by'   => $admin_id,
+            'modified_time' => $_SERVER['REQUEST_TIME']
+        ];
+        $ok = $lucky_prize_model->update($data, ['id' => $id, 'status' => 1]);
+        if (!$ok) {
+            YCore::exception(-1, '奖励发送失败');
+        }
+        return true;
+    }
+
+    /**
+     * 用户设置领奖信息。
+     * -- Example start --
+     * ## 话费 ##
+     * $data = [
+     *      'mobilephone' => '手机号码'
+     * ];
+     *
+     * ## Q币 ##
+     * $data = [
+     *      'qq' => 'QQ号'
+     * ];
+     *
+     * ## 实物 ##
+     * $data = [
+     *      'address_id' => '收货地址ID'
+     * ];
+     * -- Example end --
+     * @param number $user_id 用户ID。
+     * @param number $id 中奖记录ID。
+     * @param array $data 领奖信息。
+     * @return array
+     */
+    public static function setGetInfo($user_id, $id, $data) {
+        $lucky_prize_model = new GmLuckyPrize();
+        $result = $lucky_prize_model->fetchOne([], ['id' => $id, 'user_id' => $user_id, 'status' => 1]);
+        if (empty($result)) {
+            YCore::exception(-1, '中奖记录不存在');
+        }
+        if ($lucky_prize_model['goods_type'] == self::GOODS_TYPE_NO) {
+            YCore::exception(-1, '未中奖不能操作');
+        }
+        if ($lucky_prize_model['goods_type'] == self::GOODS_TYPE_JB) {
+            YCore::exception(-1, '金币奖品不需要操作');
+        }
+        if ($lucky_prize_model['is_send'] == 1) {
+            YCore::exception(-1, '奖品已经发送，不能执行操作');
+        }
+        switch ($result['goods_type']) {
+            case self::GOODS_TYPE_HF:
+                if (!isset($data['mobilephone']) || strlen($data['mobilephone']) == 0) {
+                    YCore::exception(-1, '手机号码必须填写');
+                }
+                if (!Validator::is_mobilephone($data['mobilephone'])) {
+                    YCore::exception(-1, '手机号码格式错误');
+                }
+                break;
+            case self::GOODS_TYPE_QB:
+                if (!isset($data['qq']) || strlen($data['qq']) == 0) {
+                    YCore::exception(-1, 'QQ号码必须填写');
+                }
+                if (!Validator::is_qq($data['qq'])) {
+                    YCore::exception(-1, 'QQ号码格式错误');
+                }
+                break;
+            case self::GOODS_TYPE_SW:
+
+                break;
+            default:
+                YCore::exception(-1, '服务器异常');
+                break;
+        }
+        $data = [
+            'get_info'      => json_encode($data),
+            'modified_by'   => $user_id,
+            'modified_time' => $_SERVER['REQUEST_TIME']
+        ];
+        $ok = $lucky_prize_model->update($data, ['id' => $id, 'user_id' => $user_id, 'status' => 1]);
+        if (!$ok) {
+            YCore::exception(-1, '操作失败');
+        }
+        return true;
     }
 }

@@ -621,7 +621,8 @@ INSERT INTO `ms_menu` VALUES ('7011', '删除彩票开奖结果', '7001', 'Resul
 INSERT INTO `ms_menu` VALUES ('7100', '抽奖活动', '7000', 'Lucky', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7101', '奖品列表', '7100', 'Lucky', 'list', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7102', '设置奖品', '7100', 'Lucky', 'set', '', '0', '0');
-
+INSERT INTO `ms_menu` VALUES ('7103', '抽奖记录', '7100', 'Lucky', 'record', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7104', '抽奖记录删除', '7100', 'Lucky', 'deleteRecord', '', '0', '0');
 
 
 # 商城字典初始化。
@@ -1196,6 +1197,7 @@ CREATE TABLE gm_lucky_prize(
 	send_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '奖励发送时间',
 	range_val INT(11) UNSIGNED NOT NULL COMMENT '随机到的值',
 	get_info CHAR(255) NOT NULL DEFAULT '' COMMENT 'QQ号/手机号码/收货地址信息', 
+	send_info CHAR(255) NOT NULL DEFAULT '' COMMENT '奖励发送信息',
 	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
 	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',

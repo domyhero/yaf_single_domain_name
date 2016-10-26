@@ -20,7 +20,7 @@ class LuckyNewestPrizeListApi extends BaseApi {
      */
     protected function runService() {
         $prize_list = LuckyService::getNewestLuckyPrizeList(20);
-        $this->render(0, 'ok', $prize_list);
+        $this->render(0, 'success', $prize_list);
     }
 
 }

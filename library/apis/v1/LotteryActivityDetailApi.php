@@ -21,7 +21,7 @@ class LotteryActivityDetailApi extends BaseApi {
     protected function runService() {
         $aid = $this->getInt('aid');
         $goods_list = LotteryService::getLotteryActivityDetail($aid);
-        $this->render(0, 'ok', $goods_list);
+        $this->render(0, 'success', $goods_list);
     }
 
 }

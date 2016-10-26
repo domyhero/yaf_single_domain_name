@@ -24,7 +24,7 @@ class LuckyStartDoApi extends BaseApi {
         $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id  = $userinfo['user_id'];
         $result = LuckyService::startDoLucky($user_id);
-        $this->render(0, 'ok', $result);
+        $this->render(0, 'success', $result);
     }
 
 }

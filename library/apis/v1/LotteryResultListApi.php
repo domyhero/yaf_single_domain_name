@@ -22,7 +22,7 @@ class LotteryResultListApi extends BaseApi {
         $page = $this->getInt('page', 1);
         $lottery_type = $this->getInt('lottery_type', -1);
         $goods_list = LotteryService::getLotteryResultList($lottery_type, $page, 20);
-        $this->render(0, 'ok', $goods_list);
+        $this->render(0, 'success', $goods_list);
     }
 
 }

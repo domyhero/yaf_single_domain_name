@@ -20,7 +20,7 @@ class LuckyGoodsListApi extends BaseApi {
      */
     protected function runService() {
         $goods_list = LuckyService::getLuckyGoodsList();
-        $this->render(0, 'ok', $goods_list);
+        $this->render(0, 'success', $goods_list);
     }
 
 }

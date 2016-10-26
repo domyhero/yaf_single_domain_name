@@ -1,6 +1,5 @@
 <?php
 use common\YUrl;
-use common\YCore;
 require_once (dirname(__DIR__) . '/common/header.php');
 ?>
 

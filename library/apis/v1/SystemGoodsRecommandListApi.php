@@ -17,7 +17,7 @@ class SystemCategoryListApi extends BaseApi {
      * @return bool
      */
     protected function runService() {
-        $this->render(0, 'ok');
+        $this->render(0, 'success');
     }
 
 }

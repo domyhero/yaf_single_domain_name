@@ -66,7 +66,15 @@ class LuckyController extends \common\controllers\Admin {
      */
     public function sendPrizeAction() {
         if ($this->_request->isPost()) {
-            $id = $this->getInt('id');
+            $id   = $this->getInt('id');
+            $data = $this->getArray('data');
+            LuckyService::sendAward($this->admin_id, $id, $data);
+            $this->json(true, '发送成功');
         }
+        $id = $this->getInt('id');
+        $detail = LuckyService::getAdminLuckyPrizeDetail($id);
+        $logistics_list_dict = YCore::dict('logistics_list');
+        $this->_view->assign('detail', $detail);
+        $this->_view->assign('logistics_list_dict', $logistics_list_dict);
     }
 }

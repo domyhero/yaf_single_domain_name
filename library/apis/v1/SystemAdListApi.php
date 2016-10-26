@@ -22,7 +22,7 @@ class SystemAdListApi extends BaseApi {
         $position = $this->getString('position');
         $count    = $this->getInt('count');
         $list     = AdService::getPositionAdList($position, $count);
-        $this->render(0, 'ok', $list);
+        $this->render(0, 'success', $list);
     }
 
 }

@@ -5,9 +5,7 @@ require_once (dirname(__DIR__) . '/common/header.php');
 
 <div class="subnav">
 	<div class="content-menu ib-a blue line-x">
-		<a class="add fb"
-			href="javascript:postDialog('addLottery', '<?php echo YUrl::createBackendUrl('Lottery', 'add'); ?>', '添加活动', 600, 350)"><em>添加活动</em></a>
-		<a href='javascript:;' class="on"><em>彩票活动列表</em></a>
+		<a href='javascript:;' class="on"><em>抽奖记录列表</em></a>
 	</div>
 </div>
 <style type="text/css">
@@ -81,7 +79,9 @@ html {
 						<td align="center"><?php echo json_decode($item['get_info']); ?></td>
 						<td align="center"><?php echo $item['created_time']; ?></td>
 						<td align="center">
-						  <a href="javascript:postDialog('LuckyUsers', '<?php echo YUrl::createBackendUrl('Lucky', 'users', ['id' => $item['id']]); ?>', '参与活动的用户列表', 600, 500)">参与列表</a>  |
+						  <?php if($item['is_allow_send']): ?>
+						  <a href="javascript:postDialog('LuckyUsers', '<?php echo YUrl::createBackendUrl('Lucky', 'sendPrize', ['id' => $item['id']]); ?>', '立即发奖', 300, 300)">立即发奖</a>  |
+						  <?php endif; ?>
 						  <a href="###" onclick="deleteDialog('deleteLuckyRecord', '<?php echo YUrl::createBackendUrl('Lucky', 'deleteRecord', ['id' => $item['id']]); ?>', '<?php echo htmlspecialchars($item['goods_name']) ?>')" title="删除">删除</a>
 						</td>
 			       </tr>

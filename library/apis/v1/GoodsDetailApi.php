@@ -7,6 +7,7 @@
 namespace apis\v1;
 
 use apis\BaseApi;
+use services\GoodsService;
 
 class GoodsDetailApi extends BaseApi {
 
@@ -17,9 +18,10 @@ class GoodsDetailApi extends BaseApi {
      * @return bool
      */
     protected function runService() {
-        $goods_id   = $this->getInt('goods_id');
-        $product_id = $this->getInt('product_id');
-        $this->render(0, 'ok');
+        $goods_id     = $this->getInt('goods_id');
+        $product_id   = $this->getInt('product_id');
+        $goods_detail = GoodsService::getGoodsDetail($goods_id);
+        $this->render(0, 'success', $goods_detail);
     }
 
 }

@@ -623,6 +623,7 @@ INSERT INTO `ms_menu` VALUES ('7101', '奖品列表', '7100', 'Lucky', 'list', '
 INSERT INTO `ms_menu` VALUES ('7102', '设置奖品', '7100', 'Lucky', 'set', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7103', '抽奖记录', '7100', 'Lucky', 'record', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7104', '抽奖记录删除', '7100', 'Lucky', 'deleteRecord', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7105', '发送奖品', '7100', 'Lucky', 'sendPrize', '', '0', '0');
 
 
 # 商城字典初始化。

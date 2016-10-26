@@ -15,6 +15,8 @@ use models\User;
 use models\GmLuckyPrize;
 use common\YUrl;
 use models\Admin;
+use models\MallUserAddress;
+use models\District;
 class LuckyService extends BaseService {
 
     const GOODS_TYPE_JB = 'jb'; // 金币。
@@ -212,6 +214,23 @@ class LuckyService extends BaseService {
     }
 
     /**
+     * 获取抽奖记录详情。
+     * @param number $id 抽奖记录ID。
+     * @return array
+     */
+    public static function getAdminLuckyPrizeDetail($id) {
+        $lucky_prize_model = new GmLuckyPrize();
+        $columns = [
+            'id', 'goods_name', 'goods_type', 'is_send', 'send_time', 'range_val', 'get_info'
+        ];
+        $result = $lucky_prize_model->fetchOne($columns, ['id' => $id, 'status' => 1]);
+        if (empty($result)) {
+            YCore::exception(-1, '抽奖记录不存在');
+        }
+        return $result;
+    }
+
+    /**
      * 写入用户抽奖记录。
      * @param number $user_id 用户ID。
      * @param string $goods_name 奖品名称。
@@ -288,6 +307,11 @@ class LuckyService extends BaseService {
                 $v['username']    = $userinfo ? $userinfo['username'] : '';
                 $v['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '';
                 $userinfos[$v['user_id']] = $userinfo;
+            }
+            // 判断是否允许发奖。决定发奖按钮是否显示。大于24小时则不能修改发奖凭证等信息了。
+            $v['is_allow_send'] = true;
+            if ($v['send_time'] > 0 && (($_SERVER['REQUEST_TIME'] - $v['send_time']) > 86400)) {
+                $v['is_allow_send'] = false;
             }
             $v['goods_type']   = self::$goods_type_dict[$v['goods_type']];
             $v['is_send']      = $v['is_send'] ? '是' : '否';
@@ -407,6 +431,9 @@ class LuckyService extends BaseService {
         if (empty($result)) {
             YCore::exception(-1, '中奖记录不存在');
         }
+        if ($result['is_send'] == 1) {
+            YCore::exception(-1, '已发奖的记录不能删除');
+        }
         $data = [
             'status'        => 2,
             'modified_by'   => $admin_id,
@@ -447,7 +474,7 @@ class LuckyService extends BaseService {
      * @param number $data 发送奖品相关信息。
      * @return boolean
      */
-    public static function sendAward($admin_id, $id, array $data = []) {
+    public static function sendAward($admin_id, $id, array $data) {
         $lucky_prize_model = new GmLuckyPrize();
         $result = $lucky_prize_model->fetchOne([], ['id' => $id, 'status' => 1]);
         if (empty($result)) {
@@ -468,22 +495,49 @@ class LuckyService extends BaseService {
         if (strlen($result['get_info']) === 0) {
             YCore::exception(-1, '用户还未填写领奖信息');
         }
+        if (empty($data)) {
+            YCore::exception(-1, '必须填写奖励发送凭证信息');
+        }
         switch ($result['goods_type']) {
             case self::GOODS_TYPE_HF: // 话费充值要填写流水号之类的数据。
-                if (empty($data)) {
+            case self::GOODS_TYPE_QB:
+                if (!isset($data['channel']) || strlen($data['channel']) == 0) {
+                    YCore::exception(-1, '渠道必须填写');
+                }
+                if (!isset($data['sn']) || strlen($data['sn']) == 0) {
                     YCore::exception(-1, '流水号必须填写');
                 }
-                break;
-            case self::GOODS_TYPE_QB:
+                $data = [
+                    'channel' => $data['channel'],
+                    'sn'      => $data['sn']
+                ];
                 break;
             case self::GOODS_TYPE_SW:
+                if (!isset($data['express_name']) || strlen($data['express_name']) == 0) {
+                    YCore::exception(-1, '快递公司名称必须填写');
+                }
+                if (!isset($data['express_sn']) || strlen($data['express_sn']) == 0) {
+                    YCore::exception(-1, '快递单号必须填写');
+                }
+                if (!isset($data['express_time']) || strlen($data['express_time']) == 0) {
+                    YCore::exception(-1, '快递发货时间必须填写');
+                }
+                if (!Validator::is_date($data['express_time'], 'Y-m-d H:i:s')) {
+                    YCore::exception(-1, '快递发货时间格式错误');
+                }
+                $data = [
+                    'express_name' => $data['express_name'],
+                    'express_time' => $data['express_time'],
+                    'express_sn'   => $data['express_sn']
+                ];
                 break;
         }
         $data = [
             'is_send'       => 1,
             'send_time'     => $_SERVER['REQUEST_TIME'],
             'modified_by'   => $admin_id,
-            'modified_time' => $_SERVER['REQUEST_TIME']
+            'modified_time' => $_SERVER['REQUEST_TIME'],
+            'send_info'     => json_encode($data)
         ];
         $ok = $lucky_prize_model->update($data, ['id' => $id, 'status' => 1]);
         if (!$ok) {
@@ -538,6 +592,9 @@ class LuckyService extends BaseService {
                 if (!Validator::is_mobilephone($data['mobilephone'])) {
                     YCore::exception(-1, '手机号码格式错误');
                 }
+                $data = [
+                    'mobilephone' => $data['mobilephone']
+                ];
                 break;
             case self::GOODS_TYPE_QB:
                 if (!isset($data['qq']) || strlen($data['qq']) == 0) {
@@ -546,9 +603,31 @@ class LuckyService extends BaseService {
                 if (!Validator::is_qq($data['qq'])) {
                     YCore::exception(-1, 'QQ号码格式错误');
                 }
+                $data = [
+                    'qq' => $data['qq']
+                ];
                 break;
             case self::GOODS_TYPE_SW:
-
+                if (!isset($data['address_id']) || strlen($data['address_id']) == 0) {
+                    YCore::exception(-1, '收货地址必须填写');
+                }
+                $address_model = new MallUserAddress();
+                $address_info  = $address_model->fetchOne([], ['address_id' => $data['address_id'], 'status' => 1, 'user_id' => $user_id]);
+                if (empty($address_info)) {
+                    YCore::exception(-1, '收货地址不存在');
+                }
+                $district_model = new District();
+                $district_info  = $district_model->fetchOne([], ['district_id' => $address_info['district_id']]);
+                $data = [
+                    'realname'      => $address_info['realname'],
+                    'zipcode'       => $address_info['zipcode'],
+                    'mobilephone'   => $address_info['mobilephone'],
+                    'address'       => $address_info['address'],
+                    'province_name' => $district_info['province_name'],
+                    'city_name'     => $district_info['city_name'],
+                    'district_name' => $district_info['district_name'],
+                    'street_name'   => $district_info['street_name']
+                ];
                 break;
             default:
                 YCore::exception(-1, '服务器异常');

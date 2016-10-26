@@ -23,7 +23,7 @@ class UserDetailApi extends BaseApi {
         $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id  = $userinfo['user_id'];
         $detail   = UserService::getUserDetail($user_id);
-        $this->render(0, 'ok', $detail);
+        $this->render(0, 'success', $detail);
     }
 
 }

@@ -12,7 +12,7 @@ use models\MallProduct;
 use models\MallCart;
 
 class CartService extends BaseService {
-    
+
     /**
      * 获取用户购物车数据。
      *
@@ -22,7 +22,7 @@ class CartService extends BaseService {
     public static function getUserCartList($user_id) {
         $where = [
             'user_id' => $user_id,
-            'status'  => 1 
+            'status'  => 1
         ];
         $order_by = ' id ASC ';
         $columns = ['goods_id', 'product_id', 'quantity'];
@@ -33,7 +33,7 @@ class CartService extends BaseService {
         }
         return self::formatGoods($goods_list);
     }
-    
+
     /**
      * 格式化指定的商品信息。
      * -- Example start --
@@ -72,7 +72,7 @@ class CartService extends BaseService {
         unset($goods_info, $product_info, $goods_model, $product_model);
         return $goods_list;
     }
-    
+
     /**
      * 设置用户购物车商品数量(增减)。
      *
@@ -93,10 +93,15 @@ class CartService extends BaseService {
         if (empty($product_info)) {
             YCore::exception(-1, '商品已经下架或删除');
         }
+        $quantity = $quantity < 0 ? 0 : $quantity;
+        // 如果数量设置为0代表从该购物车中删除。
+        if ($quantity == 0) {
+            self::deleteUserCartGoods($user_id, $goods_id, $product_id);
+        }
         $where = [
             'user_id'    => $user_id,
             'product_id' => $product_id,
-            'status'     => 1 
+            'status'     => 1
         ];
         $cart_model = new MallCart();
         $cart_info = $cart_model->fetchOne([], $where);
@@ -107,7 +112,7 @@ class CartService extends BaseService {
                 'product_id'   => $product_id,
                 'quantity'     => $quantity,
                 'status'       => 1,
-                'created_time' => $_SERVER['REQUEST_TIME'] 
+                'created_time' => $_SERVER['REQUEST_TIME']
             ];
             $last_insert_id = $cart_model->insert($data);
             if ($last_insert_id == 0) {
@@ -116,12 +121,12 @@ class CartService extends BaseService {
         } else {
             $data = [
                 'quantity'      => $quantity,
-                'modified_time' => $_SERVER['REQUEST_TIME'] 
+                'modified_time' => $_SERVER['REQUEST_TIME']
             ];
             $where = [
                 'user_id'    => $user_id,
                 'product_id' => $product_id,
-                'status'     => 1 
+                'status'     => 1
             ];
             $ok = $cart_model->update($data, $where);
             if (!$ok) {
@@ -130,7 +135,7 @@ class CartService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 删除购物车商品。
      *
@@ -144,11 +149,11 @@ class CartService extends BaseService {
             'user_id'    => $user_id,
             'product_id' => $product_id,
             'goods_id'   => $goods_id,
-            'status'     => 1 
+            'status'     => 1
         ];
         $updata = [
             'modified_time' => $_SERVER['REQUEST_TIME'],
-            'status'        => 2 
+            'status'        => 2
         ];
         $cart_model = new MallCart();
         $ok = $cart_model->update($updata, $where);
@@ -157,7 +162,7 @@ class CartService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 清空用户购物车。
      *
@@ -166,11 +171,11 @@ class CartService extends BaseService {
      */
     public static function clearUserCart($user_id) {
         $where = [
-            'user_id' => $user_id 
+            'user_id' => $user_id
         ];
         $updata = [
             'modified_time' => $_SERVER['REQUEST_TIME'],
-            'status'        => 2 
+            'status'        => 2
         ];
         $cart_model = new MallCart();
         $ok = $cart_model->update($updata, $where);
@@ -179,7 +184,7 @@ class CartService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 同步本地未登录时用户购物车数据。
      * -- Example start --
@@ -206,7 +211,7 @@ class CartService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 格式化本地用户购物车商品。
      * -- 1、主要用于用户未登录的情况下返回格式化后的购物车数据。

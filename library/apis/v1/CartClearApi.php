@@ -1,17 +1,16 @@
 <?php
 /**
- * 用户抽奖接口。
+ * 购物车商品清空接口。
  * @author winerQin
- * @date 2016-10-20
+ * @date 2016-10-26
  */
 
 namespace apis\v1;
 
 use apis\BaseApi;
-use services\LuckyService;
 use services\UserService;
-
-class LuckyStartDoApi extends BaseApi {
+use services\CartService;
+class CartClearApi extends BaseApi {
 
     /**
      * 逻辑处理。
@@ -23,8 +22,8 @@ class LuckyStartDoApi extends BaseApi {
         $token    = $this->getString('token');
         $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id  = $userinfo['user_id'];
-        $result   = LuckyService::startDoLucky($user_id);
-        $this->render(0, 'success', $result);
+        CartService::clearUserCart($user_id);
+        $this->render(0, 'success');
     }
 
 }

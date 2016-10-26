@@ -1,17 +1,16 @@
 <?php
 /**
- * 用户抽奖接口。
+ * 用户订单取消接口。
  * @author winerQin
- * @date 2016-10-20
+ * @date 2016-10-26
  */
 
 namespace apis\v1;
 
 use apis\BaseApi;
-use services\LuckyService;
 use services\UserService;
-
-class LuckyStartDoApi extends BaseApi {
+use services\OrderService;
+class OrderCancelApi extends BaseApi {
 
     /**
      * 逻辑处理。
@@ -23,8 +22,9 @@ class LuckyStartDoApi extends BaseApi {
         $token    = $this->getString('token');
         $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id  = $userinfo['user_id'];
-        $result   = LuckyService::startDoLucky($user_id);
-        $this->render(0, 'success', $result);
+        $order_id = $this->getInt('order_id');
+        OrderService::cencelOrder($user_id, $order_id);
+        $this->render(0, '操作成功');
     }
 
 }

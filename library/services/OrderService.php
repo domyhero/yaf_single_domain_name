@@ -296,8 +296,8 @@ class OrderService extends BaseService {
      *      'invoice_name'     => '发票抬头',
      *      'buyer_message'    => '买家留言。100这个字符。',
      *      'new_address_info' => '新的收货地址。如果address_id不等于-1,则此值有没有设置都无效。',
-     *      'is_exchange'      => '是否积分兑换。1是、0否。使用积分兑换的时候不能享受优惠券优惠。',
-     *      'user_coupon_id'   => '优惠券ID。使用积分兑换的时候不能享受优惠券优惠。',
+     *      'is_exchange'      => '是否金币兑换。1是、0否。使用金币兑换的时候不能享受优惠券优惠。',
+     *      'user_coupon_id'   => '优惠券ID。使用积分兑换的时候不能享受优惠券优惠。0代表没有优惠券。',
      * ];
      *
      * $new_address_info = [
@@ -310,21 +310,21 @@ class OrderService extends BaseService {
      *
      * $goods_list = [
      *  [
-     *      'goods_id' => '商品ID',
+     *      'goods_id'   => '商品ID',
      *      'product_id' => '货品ID',
-     *      'quantity' => '购买数量',
+     *      'quantity'   => '购买数量',
      *  ],
      *  [
-     *      'goods_id' => '商品ID',
+     *      'goods_id'   => '商品ID',
      *      'product_id' => '货品ID',
-     *      'quantity' => '购买数量',
+     *      'quantity'   => '购买数量',
      *  ],
      *  ......
      * ];
      * -- Example end --
      *
      * @param array $data 订单数据。
-     * @return array 订单ID组成的数组。用户购买的商品属于多家店的时候，才会出现多个订单ID。
+     * @return number 订单ID。
      */
     public static function submitOrder($data) {
         if (empty($data)) {
@@ -383,7 +383,6 @@ class OrderService extends BaseService {
         // 准备开启事务。
         $default_db = new DbBase();
         $default_db->beginTransaction();
-        // 以商家级别循环提交订单。
         $order_data['goods_list']     = $data['goods_list'];
         $order_data['user_coupon_id'] = $data['user_coupon_id'];
         $order_data['is_exchange']    = $data['is_exchange'];
@@ -414,27 +413,27 @@ class OrderService extends BaseService {
      *      'province_name'  => '省名称',
      *      'city_name'      => '市名称',
      *      'district_name'  => '区县名称',
-     *      'is_exchange'    => '是否积分兑换。1是、0否。使用积分兑换的时候不能享受优惠券优惠。',
-     *      'user_coupon_id' => '优惠券ID。使用积分兑换的时候不能享受优惠券优惠。',
+     *      'is_exchange'    => '是否金币兑换。1是、0否。使用金币兑换的时候不能享受优惠券优惠。',
+     *      'user_coupon_id' => '优惠券ID。使用金币兑换的时候不能享受优惠券优惠。',
      * ];
      *
      * $goods_list = [
      *  [
-     *      'goods_id' => '商品ID',
+     *      'goods_id'   => '商品ID',
      *      'product_id' => '货品ID',
-     *      'quantity' => '购买数量',
+     *      'quantity'   => '购买数量',
      *  ],
      *  [
-     *      'goods_id' => '商品ID',
+     *      'goods_id'   => '商品ID',
      *      'product_id' => '货品ID',
-     *      'quantity' => '购买数量',
+     *      'quantity'   => '购买数量',
      *  ],
      *  ......
      * ];
      * -- Example end --
      *
      * @param array $data 订单信息。
-     * @return boolean
+     * @return number 订单ID
      */
     protected static function submitShopOrder($data) {
         $user_coupon_model = new MallCoupon();
@@ -476,7 +475,7 @@ class OrderService extends BaseService {
             'created_by'        => $data['user_id'],
             'user_coupon_id'    => $data['user_coupon_id'],
             'user_coupon_money' => $coupon_money,
-            'jifen_pay'         => 0,
+            'gold_pay'          => 0,
             'status'            => 1
         ];
         $order_model = new MallOrder();
@@ -489,13 +488,13 @@ class OrderService extends BaseService {
             }
         }
         $update_data = [];
-        // 判断积分是否足够扣取。
+        // 判断金币是否足够扣取。
         if ($data['is_exchange'] == 1) {
-            $jifen_to_cash = YCore::appconfig('jifen_to_cash', 1000);
-            $jifen_pay = $jifen_to_cash * $price_info['payment_price'];
-            GoldService::goldConsume($data['user_id'], $jifen_pay, GoldService::CONSUME_TYPE_CUT, 'order_pay');
+            $gold_to_cash = YCore::config('gold_ratio', 1000);
+            $gold_pay = $gold_to_cash * $price_info['payment_price'];
+            GoldService::goldConsume($data['user_id'], $gold_pay, GoldService::CONSUME_TYPE_CUT, 'order_pay');
             $update_data['payment_type'] = 2;
-            $update_data['jifen_pay']    = $jifen_pay;
+            $update_data['gold_pay']     = $gold_pay;
             $update_data['pay_status']   = 1;
             $update_data['pay_time']     = $_SERVER['REQUEST_TIME'];
             $update_data['order_status'] = OrderService::ORDER_STATUS_PAY_OK;
@@ -876,10 +875,7 @@ class OrderService extends BaseService {
      */
     public static function confirmReceiptGoods($user_id, $order_id) {
         $order_model = new MallOrder();
-        $order_info = $order_model->fetchOne([], [
-            'order_id' => $order_id,
-            'status' => 1
-        ]);
+        $order_info = $order_model->fetchOne([], ['order_id' => $order_id, 'status' => 1]);
         if (empty($order_info) || $order_info['user_id'] != $user_id) {
             YCore::exception(-1, '订单不存在或已经删除');
         }
@@ -894,7 +890,7 @@ class OrderService extends BaseService {
         ];
         $where = [
             'order_id' => $order_id,
-            'status'    => 1
+            'status'   => 1
         ];
         $ok = $order_model->update($update_data, $where);
         if ($ok) {
@@ -1076,12 +1072,14 @@ class OrderService extends BaseService {
     /**
      * 获取订单快递信息。
      *
+     * @param number $user_id 用户ID。
      * @param number $order_id 订单ID。
      * @return array
      */
-    public static function getOrderExpressInfo($order_id) {
+    public static function getOrderExpressInfo($user_id, $order_id) {
         $where = [
-            'order_id' => $order_id
+            'order_id' => $order_id,
+            'user_id'  => $user_id
         ];
         $columns = [
             'logistics_code',

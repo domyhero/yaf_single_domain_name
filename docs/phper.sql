@@ -859,7 +859,7 @@ CREATE TABLE mall_order(
 	receiver_mobile CHAR(11) DEFAULT NULL COMMENT '收货人手机',
 	buyer_message CHAR(50) DEFAULT NULL COMMENT '买家留言，给卖家看的',
 	freight_price DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '运费',
-	jifen_pay INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '积分兑换花费数量',
+	gold_pay INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '积分兑换花费数量',
 	user_coupon_id INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '优惠券ID',
 	user_coupon_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '优惠券减免的金额',
 	comment_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '评论状态：0未评论、1已评论',
@@ -1029,6 +1029,8 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_checkin', '每日签到', '每日签到', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_buy_goods', '购买商品赠送', '购买商品赠送', '0', '1', '1', unix_timestamp(now()), '0', '0');
 
+
+INSERT INTO `ms_config` (`ctitle`, `cname`, `cvalue`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('金币与人民币兑换率', 'gold_ratio', '1000', '1元人民币兑换多少金币', '1', '1', unix_timestamp(now()), '0', '0');
 
 # 玩家金币表
 DROP TABLE IF EXISTS `gm_gold`;

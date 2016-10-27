@@ -101,7 +101,47 @@ class GoldService extends BaseService {
      * @param number $count 每页显示条数。
      * @return array
      */
-    public static function getLedouConsume($user_id = -1, $consume_type = -1, $page = 1, $count = 20) {
+    public static function getUserGoldConsume($user_id = -1, $consume_type = -1, $page = 1, $count = 20) {
+        $offset = self::getPaginationOffset($page, $count);
+        $from_table = ' FROM ms_gold_consume ';
+        $columns = ' * ';
+        $where   = ' WHERE 1 ';
+        $params  = [];
+        if ($user_id != - 1) {
+            $where .= ' AND user_id = :user_id ';
+            $params[':user_id'] = $user_id;
+        }
+        if ($consume_type != - 1) {
+            $where .= ' AND consume_type = :consume_type ';
+            $params[':consume_type'] = $consume_type;
+        }
+        $order_by = ' ORDER BY id DESC ';
+        $sql = "SELECT COUNT(1) AS count {$from_table} {$where}";
+        $default_db = new DbBase();
+        $count_data = $default_db->rawQuery($sql, $params)->rawFetchOne();
+        $total  = $count_data ? $count_data['count'] : 0;
+        $sql    = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
+        $list   = $default_db->rawQuery($sql, $params)->rawFetchAll();
+        $result = [
+            'list'   => $list,
+            'total'  => $total,
+            'page'   => $page,
+            'count'  => $count,
+            'isnext' => self::IsHasNextPage($total, $page, $count)
+        ];
+        return $result;
+    }
+
+    /**
+     * 获取金币消费记录。
+     *
+     * @param number $user_id 用户ID。
+     * @param number $consume_type 消费类型：1增加、2扣减
+     * @param number $page 当前页码。
+     * @param number $count 每页显示条数。
+     * @return array
+     */
+    public static function getAdminGoldConsume($user_id = -1, $consume_type = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM ms_gold_consume ';
         $columns = ' * ';
@@ -125,9 +165,9 @@ class GoldService extends BaseService {
         $user_model = new User();
         foreach ($list as $key => $item) {
             $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
-            $item['username']    = $userinfo ? $userinfo['username'] : '-';
-            $item['mobilephone'] = $userinfo ? $userinfo['mobilephone'] : '-';
-            $item['email']       = $userinfo ? $userinfo['email'] : '-';
+            $item['username']    = $userinfo['username'];
+            $item['mobilephone'] = $userinfo['mobilephone'];
+            $item['email']       = $userinfo['email'];
         }
         $result = [
             'list'   => $list,

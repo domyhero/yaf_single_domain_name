@@ -12,11 +12,12 @@ use common\YUrl;
 use models\Favorites;
 
 class FavoritesService extends BaseService {
+
     /**
      * 获取收藏列表。
      *
      * @param number $user_id 用户ID。
-     * @param number $obj_type 收藏类型：1商品收藏、2文章收藏、3问答收藏、4IT题目收藏。
+     * @param number $obj_type 收藏类型：1商品收藏、2文章收藏。
      * @param number $page 当前页码。
      * @param number $count 每页显示条数。
      * @return array
@@ -54,20 +55,6 @@ class FavoritesService extends BaseService {
                     $v['image_url'] = YUrl::filePath($news_detail['image_url']);
                     $v['is_delete'] = ($news_detail['status'] == 1) ? false : true;
                     break;
-                case 3: // 问答。
-                    $sql = 'SELECT ques_title,status FROM qa_question WHERE ques_id = :ques_id LIMIT 1';
-                    $ques_detail    = $default_db->rawQuery($sql, [':ques_id' => $v['obj_id']])->rawFetchOne();
-                    $v['title']     = $ques_detail['ques_title'];
-                    $v['image_url'] = '';
-                    $v['is_delete'] = ($ques_detail['status'] == 1) ? false : true;
-                    break;
-                case 4: // IT题目。
-                    $sql = 'SELECT ques_title,status FROM it_question WHERE ques_id = :ques_id LIMIT 1';
-                    $ques_detail    = $default_db->rawQuery($sql, [':ques_id' => $v['obj_id']])->rawFetchOne();
-                    $v['title']     = $ques_detail['ques_title'];
-                    $v['image_url'] = '';
-                    $v['is_delete'] = ($goods_detail['status'] == 1) ? false : true;
-                    break;
             }
             $list[$k] = $v;
         }
@@ -80,12 +67,13 @@ class FavoritesService extends BaseService {
         ];
         return $result;
     }
+
     /**
      * 添加收藏。
      *
      * @param number $user_id 用户ID。
-     * @param number $obj_type 收藏类型：1商品收藏、2文章收藏、3问答收藏、4IT题目收藏。
-     * @param number $obj_id 商品ID/文章ID/问答ID/IT题目ID。
+     * @param number $obj_type 收藏类型：1商品收藏、2文章收藏。
+     * @param number $obj_id 商品ID/文章ID。
      * @return boolean
      */
     public static function add($user_id, $obj_type, $obj_id) {
@@ -103,20 +91,6 @@ class FavoritesService extends BaseService {
                 $news_detail = $default_db->rawQuery($sql, [':news_id' => $obj_id, ':status' => 1])->rawFetchOne();
                 if (empty($news_detail)) {
                     YCore::exception(2, '该文章已经删除');
-                }
-                break;
-            case 3: // 问答。
-                $sql = 'SELECT * FROM qa_question WHERE ques_id = :ques_id AND status = :status LIMIT 1';
-                $ques_detail = $default_db->rawQuery($sql, [':ques_id' => $obj_id, ':status' => 1])->rawFetchOne();
-                if (empty($ques_detail)) {
-                    YCore::exception(3, '该商品已经删除');
-                }
-                break;
-            case 4: // IT题目。
-                $sql = 'SELECT * FROM it_question WHERE ques_id = :ques_id AND status = :status LIMIT 1';
-                $ques_detail = $default_db->rawQuery($sql, [':ques_id' => $obj_id, ':status' => 1])->rawFetchOne();
-                if (empty($ques_detail)) {
-                    YCore::exception(4, '该商品已经删除');
                 }
                 break;
         }
@@ -143,12 +117,13 @@ class FavoritesService extends BaseService {
         }
         return true;
     }
+
     /**
      * 删除收藏。
      *
      * @param number $user_id 用户ID。
-     * @param number $obj_type 收藏类型：1商品收藏、2文章收藏、3问答收藏、4IT题目收藏
-     * @param number $obj_id 商品ID/文章ID/问答ID/IT题目ID
+     * @param number $obj_type 收藏类型：1商品收藏、2文章收藏。
+     * @param number $obj_id 商品ID/文章ID。
      * @return boolean
      */
     public static function delete($user_id, $obj_type, $obj_id) {

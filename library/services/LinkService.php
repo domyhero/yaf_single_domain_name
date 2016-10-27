@@ -76,7 +76,7 @@ class LinkService extends BaseService {
     }
 
     /**
-     * 编辑友情链接。
+     * 添加友情链接。
      *
      * @param number $admin_id 管理员ID。
      * @param string $link_name 友情链接名称。

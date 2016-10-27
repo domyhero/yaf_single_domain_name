@@ -15,7 +15,6 @@ use models\DbBase;
 use models\MallAppraise;
 use models\User;
 use models\MallProduct;
-use models\MallGoods;
 use common\YUrl;
 
 class AppraiseService extends BaseService {

@@ -159,12 +159,7 @@ class UploadService extends BaseService {
         $upload    = new \winer\Upload(); // 实例化上传类
         $upload->maxSize = $max_size; // 设置附件上传大小
         // 设置附件上传类型
-        $upload->exts = [
-            'jpg',
-            'gif',
-            'png',
-            'jpeg'
-        ];
+        $upload->exts = ['jpg', 'gif', 'png', 'jpeg'];
         $upload->rootPath = $root_path; // 设置附件上传根目录
         $upload->savePath = $dirname . '/'; // 设置附件上传（子）目录
         $info = $upload->upload();

@@ -445,8 +445,8 @@ DROP TABLE IF EXISTS ms_favorites;
 CREATE TABLE ms_favorites(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-	obj_type TINYINT(1) NOT NULL COMMENT '收藏类型：1商品收藏、2文章收藏、3问答收藏、4IT题目收藏',
-	obj_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID/文章ID/问答ID/IT题目ID',
+	obj_type TINYINT(1) NOT NULL COMMENT '收藏类型：1商品收藏、2文章收藏',
+	obj_id INT(11) UNSIGNED NOT NULL COMMENT '商品ID/文章ID',
 	status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '状态：0无效、1正常、2删除',
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间',

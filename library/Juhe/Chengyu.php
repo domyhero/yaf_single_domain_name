@@ -17,7 +17,7 @@ class Chengyu extends Base {
      */
     public static function query($word) {
         if (mb_strlen($word, 'UTF-8') === 0) {
-            YCore::exception(-1, '只能输入一个汉字');
+            YCore::exception(-1, '必须输入一个汉字');
         }
         $url = "http://v.juhe.cn/chengyu/query";
         $params = [

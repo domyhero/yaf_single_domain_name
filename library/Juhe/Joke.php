@@ -35,7 +35,6 @@ class Joke extends Base {
             if ($result['error_code'] == '0') {
                 return $result['result'];
             } else {
-                // echo $result['error_code'].":".$result['reason'];
                 YCore::exception(-1, '服务器繁忙,请稍候重试');
             }
         } else {
@@ -68,7 +67,6 @@ class Joke extends Base {
             if ($result['error_code'] == '0') {
                 return $result['result'];
             } else {
-                // echo $result['error_code'].":".$result['reason'];
                 YCore::exception(-1, '服务器繁忙,请稍候重试');
             }
         } else {
@@ -94,7 +92,6 @@ class Joke extends Base {
             if ($result['error_code'] == '0') {
                 return $result['result'];
             } else {
-                // echo $result['error_code'].":".$result['reason'];
                 YCore::exception(-1, '服务器繁忙,请稍候重试');
             }
         } else {

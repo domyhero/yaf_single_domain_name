@@ -22,7 +22,7 @@ class UserLoginApi extends BaseApi {
         $username = $this->getString('username');
         $password = $this->getString('password');
         $return   = UserService::login($username, $password, 2);
-        $this->render(0, '登录成功', $return);
+        $this->render(0, 'success', $return);
     }
 
 }

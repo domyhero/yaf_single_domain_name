@@ -23,8 +23,8 @@ class UserAddressDeleteApi extends BaseApi {
         $userinfo   = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id    = $userinfo['user_id'];
         $address_id = $this->getInt('address_id');
-        $result     = UserAddressService::deleteAddress($user_id, $address_id);
-        $this->render(0, 'success', $result);
+        UserAddressService::deleteAddress($user_id, $address_id);
+        $this->render(0, 'success');
     }
 
 }

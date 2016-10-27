@@ -22,7 +22,7 @@ class SendFindPwdCodeApi extends BaseApi {
         $find_type  = $this->getInt('find_type');
         $to_account = $this->getString('to_account');
         UserService::sendFindPwdCode($find_type, $to_account);
-        $this->render(0, '验证码发送成功');
+        $this->render(0, 'success');
     }
 
 }

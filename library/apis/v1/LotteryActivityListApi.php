@@ -20,8 +20,8 @@ class LotteryActivityListApi extends BaseApi {
      */
     protected function runService() {
         $page = $this->getInt('page', 1);
-        $goods_list = LotteryService::getLotteryActivityList($page, 20);
-        $this->render(0, 'success', $goods_list);
+        $result = LotteryService::getLotteryActivityList($page, 20);
+        $this->render(0, 'success', $result);
     }
 
 }

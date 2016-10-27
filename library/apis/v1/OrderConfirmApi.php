@@ -24,7 +24,7 @@ class OrderListApi extends BaseApi {
         $user_id  = $userinfo['user_id'];
         $order_id = $this->getInt('order_id');
         OrderService::confirmReceiptGoods($user_id, $order_id);
-        $this->render(0, '操作成功');
+        $this->render(0, 'success');
     }
 
 }

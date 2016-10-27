@@ -24,7 +24,7 @@ class OrderDeleteApi extends BaseApi {
         $user_id  = $userinfo['user_id'];
         $order_id = $this->getInt('order_id');
         OrderService::deleteOrder($user_id, $order_id);
-        $this->render(0, '删除成功');
+        $this->render(0, 'success');
     }
 
 }

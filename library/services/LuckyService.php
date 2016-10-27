@@ -567,7 +567,7 @@ class LuckyService extends BaseService {
      * @param number $user_id 用户ID。
      * @param number $id 中奖记录ID。
      * @param array $data 领奖信息。
-     * @return array
+     * @return boolean
      */
     public static function setGetInfo($user_id, $id, $data) {
         $lucky_prize_model = new GmLuckyPrize();

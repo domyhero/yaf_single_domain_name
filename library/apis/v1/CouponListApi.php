@@ -1,6 +1,6 @@
 <?php
 /**
- * 用户商品评论列表接口。
+ * 平台优惠券列表接口。
  * @author winerQin
  * @date 2016-10-27
  */
@@ -9,9 +9,9 @@ namespace apis\v1;
 
 use apis\BaseApi;
 use services\UserService;
-use services\AppraiseService;
+use services\CouponService;
 
-class GoodsUserCommentListApi extends BaseApi {
+class CouponListApi extends BaseApi {
 
     /**
      * 逻辑处理。
@@ -24,7 +24,7 @@ class GoodsUserCommentListApi extends BaseApi {
         $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id  = $userinfo['user_id'];
         $page     = $this->getInt('page', 1);
-        $result   = AppraiseService::getBuyerAppraiseList($user_id, $page, 20);
+        $result   = CouponService::getUserToShopCouponList($page, 20);
         $this->render(0, 'success', $result);
     }
 

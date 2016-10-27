@@ -26,8 +26,8 @@ class LuckyUserPrizeListApi extends BaseApi {
         $goods_name = $this->getString('goods_name', '');
         $goods_type = $this->getString('goods_type', '');
         $page       = $this->getInt('page', 1);
-        $prize_list = LuckyService::getUserLuckyPrizeList($user_id, $goods_name, $goods_type, $page, 20);
-        $this->render(0, 'success', $prize_list);
+        $result     = LuckyService::getUserLuckyPrizeList($user_id, $goods_name, $goods_type, $page, 20);
+        $this->render(0, 'success', $result);
     }
 
 }

@@ -24,7 +24,7 @@ class UserFindPwdApi extends BaseApi {
         $code       = $this->getString('code');
         $new_pwd    = $this->getString('new_pwd');
         UserService::findPwd($find_type, $to_account, $code, $new_pwd);
-        $this->render(0, '密码设置成功');
+        $this->render(0, 'success');
     }
 
 }

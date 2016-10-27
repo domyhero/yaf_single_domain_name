@@ -34,8 +34,8 @@ class OrderSubmitApi extends BaseApi {
             'new_address_info' => json_decode($this->getString('new_address_info', ''), true),
             'goods_list'       => json_decode($this->getString('goods_list', ''), true),
         ];
-        $result = OrderService::submitOrder($data);
-        $this->render(0, 'success', $result);
+        $order_id = OrderService::submitOrder($data);
+        $this->render(0, 'success', ['order_id' => $order_id]);
     }
 
 }

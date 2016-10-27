@@ -14,7 +14,7 @@ use models\MallUserCoupon;
 use models\User;
 
 class CouponService extends BaseService {
-    
+
     /**
      * 管理后台获取优惠券发送记录。
      *
@@ -44,7 +44,7 @@ class CouponService extends BaseService {
         } else if (strlen($mobilephone) > 0) {
             $user_model = new User();
             $userinfo = $user_model->fetchOne([], [
-                'mobilephone' => $mobilephone 
+                'mobilephone' => $mobilephone
             ]);
             $user_id = $userinfo ? $userinfo['user_id'] : -1;
             $where .= ' AND user_id = :user_id ';
@@ -81,7 +81,7 @@ class CouponService extends BaseService {
                 $v['get_end_time']   = $coupon_detail['get_end_time'];
                 $v['limit_quantity'] = $coupon_detail['limit_quantity'];
                 $v['expiry_date']    = $coupon_detail['expiry_date'];
-                
+
             }
             $list[$k] = $v;
         }
@@ -90,11 +90,11 @@ class CouponService extends BaseService {
             'total'  => $total,
             'page'   => $page,
             'count'  => $count,
-            'isnext' => self::IsHasNextPage($total, $page, $count) 
+            'isnext' => self::IsHasNextPage($total, $page, $count)
         ];
         return $result;
     }
-    
+
     /**
      * 管理后台获取优惠券列表。
      *
@@ -134,13 +134,13 @@ class CouponService extends BaseService {
             'total'  => $total,
             'page'   => $page,
             'count'  => $count,
-            'isnext' => self::IsHasNextPage($total, $page, $count) 
+            'isnext' => self::IsHasNextPage($total, $page, $count)
         ];
         return $result;
     }
-    
+
     /**
-     * 用户获取优惠券列表。
+     * 获取用户优惠券列表。
      *
      * @param number $user_id 用户ID。
      * @param number $is_use 是否使用。-1全部。1是、0否。
@@ -152,7 +152,7 @@ class CouponService extends BaseService {
         $columns = ' coupon_id,is_use,use_time,created_time ';
         $where   = ' WHERE user_id = :user_id ';
         $params  = [
-            ':user_id' => $user_id 
+            ':user_id' => $user_id
         ];
         if ($is_use != -1) {
             $where .= ' AND is_use = :is_use ';
@@ -181,11 +181,11 @@ class CouponService extends BaseService {
             'total'  => $total,
             'page'   => $page,
             'count'  => $count,
-            'isnext' => self::IsHasNextPage($total, $page, $count) 
+            'isnext' => self::IsHasNextPage($total, $page, $count)
         ];
         return $result;
     }
-    
+
     /**
      * 获取用户领取优惠券时指定商家的优惠券列表。
      *
@@ -195,13 +195,13 @@ class CouponService extends BaseService {
     public static function getUserToShopCouponList($page = -1, $count = 20) {
         $offset  = self::getPaginationOffset($page, $count);
         $columns = ' coupon_id,coupon_name,money,order_money,get_start_time,get_end_time,limit_quantity,expiry_date ';
-        $where   = ' WHERE status = :status AND get_start_time < :get_start_time ' 
+        $where   = ' WHERE status = :status AND get_start_time < :get_start_time '
                  . ' AND get_end_time > :get_end_time AND expiry_date > :expiry_date ';
         $params  = [
             ':status'         => 1,
             ':get_start_time' => $_SERVER['REQUEST_TIME'],
             ':get_end_time'   => $_SERVER['REQUEST_TIME'],
-            ':expiry_date'    => $_SERVER['REQUEST_TIME'] 
+            ':expiry_date'    => $_SERVER['REQUEST_TIME']
         ];
         $order_by = ' ORDER BY coupon_id DESC ';
         $sql = "SELECT COUNT(1) AS count FROM mall_coupon {$where}";
@@ -221,11 +221,11 @@ class CouponService extends BaseService {
             'total'  => $total,
             'page'   => $page,
             'count'  => $count,
-            'isnext' => self::IsHasNextPage($total, $page, $count) 
+            'isnext' => self::IsHasNextPage($total, $page, $count)
         ];
         return $result;
     }
-    
+
     /**
      * 用户领取优惠券。
      *
@@ -250,7 +250,7 @@ class CouponService extends BaseService {
         }
         $where = [
             'user_id'   => $user_id,
-            'coupon_id' => $coupon_id 
+            'coupon_id' => $coupon_id
         ];
         $user_coupon_model = new MallUserCoupon();
         $user_coupon_info = $user_coupon_model->fetchOne([], $where, 'id DESC');
@@ -273,7 +273,7 @@ class CouponService extends BaseService {
             'shop_id'      => $coupon_info['shop_id'],
             'is_use'       => 0,
             'use_time'     => 0,
-            'created_time' => $_SERVER['REQUEST_TIME'] 
+            'created_time' => $_SERVER['REQUEST_TIME']
         ];
         $id = $user_coupon_model->insert($data);
         if ($id == 0) {
@@ -281,7 +281,7 @@ class CouponService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 添加优惠券。
      *
@@ -304,7 +304,7 @@ class CouponService extends BaseService {
             'expiry_date'    => $expiry_date,
             'get_start_time' => $get_start_time,
             'get_end_time'   => $get_end_time,
-            'limit_quantity' => $limit_quantity 
+            'limit_quantity' => $limit_quantity
         ];
         $rules = [
             'user_id'        => '用户ID|require:1000000|integer:1000000',
@@ -314,7 +314,7 @@ class CouponService extends BaseService {
             'expiry_date'    => '有效期截止时间|require:1000000|date:1000000:1',
             'get_start_time' => '优惠券领取开始时间|require:1000000|date:1000000:1',
             'get_end_time'   => '优惠券领取截止时间|require:1000000|date:1000000:1',
-            'limit_quantity' => '优惠券限每人领数量|require:1000000|integer:1000000|number_between:1000000:1:1000' 
+            'limit_quantity' => '优惠券限每人领数量|require:1000000|integer:1000000|number_between:1000000:1:1000'
         ];
         Validator::valido($data, $rules);
         if ($order_money < $money) {
@@ -334,7 +334,7 @@ class CouponService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 编辑优惠券。
      *
@@ -359,7 +359,7 @@ class CouponService extends BaseService {
             'expiry_date'    => $expiry_date,
             'get_start_time' => $get_start_time,
             'get_end_time'   => $get_end_time,
-            'limit_quantity' => $limit_quantity 
+            'limit_quantity' => $limit_quantity
         ];
         $rules = [
             'coupon_id'      => '优惠券ID|require:1000000|integer:1000000',
@@ -370,7 +370,7 @@ class CouponService extends BaseService {
             'expiry_date'    => '有效期截止时间|require:1000000|date:1000000:1',
             'get_start_time' => '优惠券领取开始时间|require:1000000|date:1000000:1',
             'get_end_time'   => '优惠券领取截止时间|require:1000000|date:1000000:1',
-            'limit_quantity' => '优惠券限每人领数量|require:1000000|integer:1000000|number_between:1000000:1:1000' 
+            'limit_quantity' => '优惠券限每人领数量|require:1000000|integer:1000000|number_between:1000000:1:1000'
         ];
         Validator::valido($data, $rules);
         if ($order_money < $money) {
@@ -378,7 +378,7 @@ class CouponService extends BaseService {
         }
         $where = [
             'coupon_id' => $coupon_id,
-            'status' => 1 
+            'status' => 1
         ];
         $coupon_model = new MallCoupon();
         $coupon_info = $coupon_model->fetchOne([], $where);
@@ -405,7 +405,7 @@ class CouponService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 删除优惠券。
      *
@@ -416,7 +416,7 @@ class CouponService extends BaseService {
     public static function deleteCoupon($user_id, $coupon_id) {
         $where = [
             'coupon_id' => $coupon_id,
-            'status'    => 1 
+            'status'    => 1
         ];
         $coupon_model = new MallCoupon();
         $coupon_info = $coupon_model->fetchOne([], $where);
@@ -433,7 +433,7 @@ class CouponService extends BaseService {
         }
         $data = [
             'modified_time' => $_SERVER['REQUEST_TIME'],
-            'status'        => 2 
+            'status'        => 2
         ];
         $coupon_id = $coupon_model->update($data, ['coupon_id' => $coupon_id]);
         if ($coupon_id == 0) {
@@ -441,7 +441,7 @@ class CouponService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 获取优惠券详情。
      *
@@ -451,7 +451,7 @@ class CouponService extends BaseService {
      */
     public static function getCouponDetail($coupon_id, $dont_status = true) {
         $where = [
-            'coupon_id' => $coupon_id 
+            'coupon_id' => $coupon_id
         ];
         if ($dont_status) {
             $where['status'] = 1;
@@ -475,12 +475,12 @@ class CouponService extends BaseService {
      */
     public static function getCouponDoGetCount($coupon_id) {
         $where = [
-            'coupon_id' => $coupon_id 
+            'coupon_id' => $coupon_id
         ];
         $user_coupon_model = new MallUserCoupon();
         return $user_coupon_model->count($where);
     }
-    
+
     /**
      * 获取优惠券使用数量。
      *
@@ -490,7 +490,7 @@ class CouponService extends BaseService {
     public static function getCouponUseCount($coupon_id) {
         $where = [
             'coupon_id' => $coupon_id,
-            'is_use'    => 1 
+            'is_use'    => 1
         ];
         $user_coupon_model = new MallUserCoupon();
         return $user_coupon_model->count($where);

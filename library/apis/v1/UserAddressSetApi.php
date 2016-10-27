@@ -33,6 +33,6 @@ class UserAddressSetApi extends BaseApi {
         } else {
             UserAddressService::addAddress($user_id, $realname, $zipcode, $mobilephone, $district_id, $address);
         }
-        $this->render(0, '保存成功');
+        $this->render(0, 'success');
     }
 }

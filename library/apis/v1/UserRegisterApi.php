@@ -24,7 +24,7 @@ class UserRegisterApi extends BaseApi {
         $code        = $this->getString('code');
         $user_type   = UserService::USER_TYPE_NORMAL;
         UserService::mobilephoneRegister($user_type, $mobilephone, $password, $code);
-        $this->render(0, '注册成功');
+        $this->render(0, 'success');
     }
 
 }

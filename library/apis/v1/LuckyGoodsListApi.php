@@ -19,8 +19,8 @@ class LuckyGoodsListApi extends BaseApi {
      * @return bool
      */
     protected function runService() {
-        $goods_list = LuckyService::getLuckyGoodsList();
-        $this->render(0, 'success', $goods_list);
+        $result = LuckyService::getLuckyGoodsList();
+        $this->render(0, 'success', $result);
     }
 
 }

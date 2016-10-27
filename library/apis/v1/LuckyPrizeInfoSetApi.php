@@ -19,12 +19,12 @@ class LuckyPrizeInfoSetApi extends BaseApi {
      * @return bool
      */
     protected function runService() {
-        $token      = $this->getString('token');
-        $userinfo   = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
-        $user_id    = $userinfo['user_id'];
-        $id         = $this->getInt('id');
-        $data       = $this->getArray('data');
-        $goods_list = LuckyService::setGetInfo($user_id, $id, $data);
-        $this->render(0, 'success', $goods_list);
+        $token    = $this->getString('token');
+        $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
+        $user_id  = $userinfo['user_id'];
+        $id       = $this->getInt('id');
+        $data     = $this->getArray('data');
+        LuckyService::setGetInfo($user_id, $id, $data);
+        $this->render(0, 'success');
     }
 }

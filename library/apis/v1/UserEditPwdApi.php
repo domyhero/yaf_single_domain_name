@@ -25,7 +25,7 @@ class UserEditPwdApi extends BaseApi {
         $old_pwd  = $this->getString('old_pwd');
         $new_pwd  = $this->getString('new_pwd');
         UserService::editPwd($user_id, $old_pwd, $new_pwd);
-        $this->render(0, '修改成功');
+        $this->render(0, 'success');
     }
 
 }

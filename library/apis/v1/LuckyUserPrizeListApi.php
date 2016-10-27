@@ -11,7 +11,7 @@ use apis\BaseApi;
 use services\LuckyService;
 use services\UserService;
 
-class UserLuckyPrizeListApi extends BaseApi {
+class LuckyUserPrizeListApi extends BaseApi {
 
     /**
      * 逻辑处理。

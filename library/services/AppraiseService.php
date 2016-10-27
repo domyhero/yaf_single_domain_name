@@ -14,6 +14,9 @@ use models\MallComment;
 use models\DbBase;
 use models\MallAppraise;
 use models\User;
+use models\MallProduct;
+use models\MallGoods;
+use common\YUrl;
 
 class AppraiseService extends BaseService {
 
@@ -131,18 +134,20 @@ class AppraiseService extends BaseService {
     }
 
     /**
-     * 买家评价列表。
-     *
-     * @param number $user_id 买家用户ID。
+     * 获取商品评论列表。
+     * @param number $goods_id 商品ID。
      * @param number $page 当前页码。
      * @param number $count 每页显示条数。
-     * @return boolean
+     * @return array
      */
-    public static function getBuyerAppraiseList($user_id, $page = 1, $count = 20) {
-        $offset = self::getPaginationOffset($page, $count);
-        $columns = ' cid,sub_order_id,evaluate_level,content1,content1_time,reply1,reply1_time,content2,content2_time,reply2,reply2_time ';
-        $where = ' WHERE 1 ';
-        $params = [];
+    public static function getGoodsCommentList($goods_id, $page = 1, $count = 20) {
+        $offset  = self::getPaginationOffset($page, $count);
+        $columns = ' evaluate_level,content1,content1_time,reply1,reply1_time,content2,content2_time,reply2,reply2_time ';
+        $where   = ' WHERE goods_id = :goods_id AND is_display = :is_display ';
+        $params  = [
+            ':goods_id'   => $goods_id,
+            ':is_display' => 1
+        ];
         $order_by = ' ORDER BY cid DESC ';
         $sql = "SELECT COUNT(1) AS count FROM mall_comment {$where}";
         $default_db = new DbBase();
@@ -151,17 +156,60 @@ class AppraiseService extends BaseService {
         $sql   = "SELECT {$columns} FROM mall_comment {$where} {$order_by} LIMIT {$offset},{$count}";
         $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
         foreach ($list as $k => $v) {
-            $item_detail = OrderService::getOrderItem($v['sub_order_id']);
-            $v['goods_name']           = $item_detail['goods_name'];
-            $v['goods_image']          = $item_detail['goods_image'];
-            $v['goods_id']             = $item_detail['goods_id'];
-            $v['product_id']           = $item_detail['product_id'];
-            $v['spec_val']             = $item_detail['spec_val'];
-            $v['market_price']         = $item_detail['market_price'];
-            $v['sales_price']          = $item_detail['sales_price'];
-            $v['quantity']             = $item_detail['quantity'];
-            $v['comment_status']       = $item_detail['comment_status'];
-            $v['reply_status']         = $item_detail['reply_status'];
+            $product_model = new MallProduct();
+            $product_info  = $product_model->fetchOne([], ['product_id' => $v['product_id']]);
+            $v['spec_val']             = $product_info ? $product_info['spec_val'] : '';
+            $v['content1_time']        = YCore::format_timestamp($v['content1_time']);
+            $v['reply1_time']          = YCore::format_timestamp($v['reply1_time']);
+            $v['content2_time']        = YCore::format_timestamp($v['content2_time']);
+            $v['reply2_time']          = YCore::format_timestamp($v['reply2_time']);
+            $v['evaluate_level_label'] = self::$evaluate_level_dict[$v['evaluate_level']];
+            $list[$k] = $v;
+        }
+        $result = [
+            'list'   => $list,
+            'total'  => $total,
+            'page'   => $page,
+            'count'  => $count,
+            'isnext' => self::IsHasNextPage($total, $page, $count)
+        ];
+        return $result;
+    }
+
+    /**
+     * 买家评价列表。
+     *
+     * @param number $user_id 买家用户ID。
+     * @param number $page 当前页码。
+     * @param number $count 每页显示条数。
+     * @return boolean
+     */
+    public static function getBuyerAppraiseList($user_id, $page = 1, $count = 20) {
+        $offset  = self::getPaginationOffset($page, $count);
+        $columns = ' sub_order_id,evaluate_level,content1,content1_time,reply1,reply1_time,content2,content2_time,reply2,reply2_time ';
+        $where   = ' WHERE user_id = :user_id ';
+        $params  = [
+            ':user_id' => $user_id
+        ];
+        $order_by = ' ORDER BY cid DESC ';
+        $sql = "SELECT COUNT(1) AS count FROM mall_comment {$where}";
+        $default_db = new DbBase();
+        $count_data = $default_db->rawQuery($sql, $params)->rawFetchOne();
+        $total = $count_data ? $count_data['count'] : 0;
+        $sql   = "SELECT {$columns} FROM mall_comment {$where} {$order_by} LIMIT {$offset},{$count}";
+        $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
+        foreach ($list as $k => $v) {
+            $order_item_model = new MallOrderItem();
+            $order_item_info  = $order_item_model->fetchOne([], ['sub_order_id' => $v['sub_order_id']]);
+            $v['spec_val']             = $order_item_info['spec_val'];
+            $v['goods_name']           = $order_item_info['goods_name'];
+            $v['goods_image']          = YUrl::filePath($v['goods_image']);
+            $v['goods_id']             = $order_item_info['goods_id'];
+            $v['product_id']           = $order_item_info['product_id'];
+            $v['market_price']         = $order_item_info['market_price'];
+            $v['sales_price']          = $order_item_info['sales_price'];
+            $v['quantity']             = $order_item_info['quantity'];
+            $v['total_price']          = $order_item_info['total_price'];
             $v['content1_time']        = YCore::format_timestamp($v['content1_time']);
             $v['reply1_time']          = YCore::format_timestamp($v['reply1_time']);
             $v['content2_time']        = YCore::format_timestamp($v['content2_time']);
@@ -210,8 +258,8 @@ class AppraiseService extends BaseService {
      * -- Example start --
      * $goods_comment = [
      *  [
-     *      'sub_order_id' => '子订单ID',
-     *      'comment' => '评论内容',
+     *      'sub_order_id'   => '子订单ID',
+     *      'comment'        => '评论内容',
      *      'evaluate_level' => '好评等级：1好评、2中评、3差评',
      *  ],
      *  ......

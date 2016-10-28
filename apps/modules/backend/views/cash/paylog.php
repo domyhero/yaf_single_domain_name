@@ -44,6 +44,7 @@ html {
 						<th align="center">ID</th>
 						<th align="center">账号</th>
 						<th align="center">手机号</th>
+						<th align="center">支付渠道</th>
 						<th align="center">流水号</th>
 						<th align="center">金额</th>
 						<th align="center">时间</th>
@@ -52,9 +53,10 @@ html {
 				<tbody>
     <?php foreach ($list as $item): ?>
     	<tr>
-						<td align="center"><?php echo $item['id']; ?></td>
+						<td align="center"><?php echo $item['payment_id']; ?></td>
 						<td align="center"><?php echo $item['username']; ?></td>
 						<td align="center"><?php echo $item['mobilephone']; ?></td>
+						<td align="center"><?php echo $item['payment_code_label']; ?></td>
 						<td align="center"><?php echo $item['serial_number']; ?></td>
 						<td align="center"><?php echo $item['amount']; ?> 元</td>
 						<td align="center"><?php echo $item['created_time']; ?></td>

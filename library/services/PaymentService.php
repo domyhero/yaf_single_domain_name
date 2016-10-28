@@ -14,7 +14,18 @@ use models\DbBase;
 class PaymentService extends BaseService {
 
     /**
-     * 获取金币消费记录。
+     * 支付渠道。
+     * @var array
+     */
+    public static $payment_code_dict = [
+        'alipay_app' => '支付宝APP',
+        'alipay_wap' => '支付宝WAP',
+        'weixin_app' => '微信APP',
+        'weixin_wap' => '微信WAP'
+    ];
+
+    /**
+     * 获取支付记录。
      *
      * @param string $username 用户账号。
      * @param string $mobilephone
@@ -61,7 +72,6 @@ class PaymentService extends BaseService {
         $total = $count_data ? $count_data['count'] : 0;
         $sql   = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
         $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
-        $game_gold_consume_code_dict = YCore::dict('game_gold_consume_code');
         $users = [];
         foreach ($list as $key => $item) {
             if (isset($users[$item['user_id']])) {
@@ -70,8 +80,7 @@ class PaymentService extends BaseService {
                 $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
                 $users[$item['user_id']] = $userinfo;
             }
-            $item['consume_type_label'] = self::$consume_type_dict[$item['consume_type']];
-            $item['consume_code_label'] = $game_gold_consume_code_dict[$item['consume_code']];
+            $item['payment_code_label'] = self::$payment_code_dict[$item['payment_code']];
             $item['username']           = $userinfo['username'];
             $item['mobilephone']        = $userinfo['mobilephone'];
             $item['email']              = $userinfo['email'];

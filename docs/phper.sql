@@ -944,7 +944,7 @@ DROP TABLE IF EXISTS mall_payment_log;
 CREATE TABLE mall_payment_log(
 	payment_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。对应ms_payment_cfg.payment_code',
+	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。具体查看字典配置。',
 	order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
 	serial_number VARCHAR(50) NOT NULL COMMENT '支付流水号',
 	amount DOUBLE(8,2) NOT NULL COMMENT '支付金额',
@@ -952,19 +952,6 @@ CREATE TABLE mall_payment_log(
 	PRIMARY KEY(payment_id),
 	KEY(order_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '支付记录表';
-
-
-# 支付配置表
-DROP TABLE IF EXISTS mall_payment_cfg;
-CREATE TABLE mall_payment_cfg(
-	cfg_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。',
-	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
-	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
-	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
-	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
-	PRIMARY KEY(cfg_id)
-) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '支付配置表';
 
 
 # 优惠券表

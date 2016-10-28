@@ -2,6 +2,7 @@
 use common\YCore;
 use services\GoldService;
 use winer\Paginator;
+use services\PaymentService;
 /**
  * 消费明细。
  * @author winerQin
@@ -14,14 +15,20 @@ class CashController extends \common\controllers\Admin {
      * 现金支付记录。
      */
     public function payLogAction() {
-        $coupon_name = $this->getString('coupon_name', '');
-        $page = $this->getInt(YCore::appconfig('pager'), 1);
-        $list = CouponService::getBackendCouponList($coupon_name, $page, 20);
+        $page        = $this->getInt(YCore::appconfig('pager'), 1);
+        $username    = $this->getString('username', '');
+        $mobilephone = $this->getString('mobilephone', '');
+        $start_time  = $this->getString('start_time', '');
+        $end_time    = $this->getString('end_time', '');
+        $list = PaymentService::getAdminPaymentLogList($username, $mobilephone, $start_time, $end_time, $page, 20);
         $paginator = new Paginator($list['total'], 20);
         $page_html = $paginator->backendPageShow();
         $this->_view->assign('page_html', $page_html);
         $this->_view->assign('list', $list['list']);
-        $this->_view->assign('coupon_name', $coupon_name);
+        $this->_view->assign('mobilephone', $mobilephone);
+        $this->_view->assign('username', $username);
+        $this->_view->assign('start_time', $start_time);
+        $this->_view->assign('end_time', $end_time);
     }
 
     /**

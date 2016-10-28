@@ -23,8 +23,10 @@ class GoldConsumeListApi extends BaseApi {
         $userinfo     = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id      = $userinfo['user_id'];
         $consume_type = $this->getInt('consume_type', -1);
+        $start_time   = $this->getString('start_time', '');
+        $end_time     = $this->getString('end_time', '');
         $page         = $this->getInt('page', 1);
-        $result       = GoldService::getUserGoldConsume($user_id, $consume_type, $page, 20);
+        $result       = GoldService::getUserGoldConsume($user_id, $consume_type, $start_time, $end_time, $page, 20);
         $this->render(0, 'success', $result);
     }
 

@@ -25,25 +25,15 @@ html {
 					<td>
 						<div class="explain-col">
 							<p>
-								账号：<input type="text" value="<?php echo $username; ?>"
-									class="input-text" name="username" placeholder="请输入要查询的账号" />
-								手机号码：<input type="text" value="<?php echo $mobilephone; ?>"
-									class="input-text" name="mobilephone" placeholder="请输入要查询的手机号码" />
+								账号：<input type="text" value="<?php echo $username; ?>" class="input-text" name="username" placeholder="请输入要查询的账号" />
+								手机号码：<input type="text" value="<?php echo $mobilephone; ?>" class="input-text" name="mobilephone" placeholder="请输入要查询的手机号码" />
 								手机验证:<select name="is_verify">
-									<option
-										<?php echo $is_verify==-1 ? 'selected="selected"' : ''; ?>
-										value="-1">全部</option>
-									<option
-										<?php echo $is_verify==1 ? 'selected="selected"' : ''; ?>
-										value="1">是</option>
-									<option
-										<?php echo $is_verify==0 ? 'selected="selected"' : ''; ?>
-										value="0">否</option>
-								</select> 注册时间：<input type="text" name="starttime"
-									id="starttime" value="<?php echo $starttime; ?>" size="20"
-									class="date input-text" /> ～ <input type="text" name="endtime"
-									id="endtime" value="<?php echo $endtime; ?>" size="20"
-									class="date input-text" />
+									<option <?php echo $is_verify==-1 ? 'selected="selected"' : ''; ?>value="-1">全部</option>
+									<option <?php echo $is_verify==1 ? 'selected="selected"' : ''; ?> value="1">是</option>
+									<option <?php echo $is_verify==0 ? 'selected="selected"' : ''; ?>value="0">否</option>
+								</select>
+								注册时间：<input type="text" name="starttime" id="starttime" value="<?php echo $starttime; ?>" size="20" class="date input-text" />
+								～ <input type="text" name="endtime" id="endtime" value="<?php echo $endtime; ?>" size="20" class="date input-text" />
 								<script type="text/javascript">
 Calendar.setup({
 	weekNumbers: false,

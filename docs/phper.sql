@@ -604,7 +604,6 @@ INSERT INTO `ms_menu` VALUES ('6021', '运费模板管理', '6001', 'freight', '
 INSERT INTO `ms_menu` VALUES ('6022', '运费模板添加', '6001', 'freight', 'add', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('6023', '运费模板编辑', '6001', 'freight', 'edit', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('6024', '运费模板删除', '6001', 'freight', 'delete', '', '0', '0');
-
 INSERT INTO `ms_menu` VALUES ('7000', '活动管理', '0', '', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7001', '彩票活动', '7000', 'Lottery', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7003', '活动列表', '7001', 'Lottery', 'list', '', '0', '1');
@@ -612,18 +611,24 @@ INSERT INTO `ms_menu` VALUES ('7004', '添加彩票活动', '7001', 'Lottery', '
 INSERT INTO `ms_menu` VALUES ('7005', '编辑彩票活动', '7001', 'Lottery', 'edit', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7006', '删除彩票活动', '7001', 'Lottery', 'delete', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7007', '彩票活动参与用户列表', '7001', 'Lottery', 'users', '', '0', '0');
-
 INSERT INTO `ms_menu` VALUES ('7008', '彩票开奖结果', '7001', 'Result', 'list', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7009', '添加彩票开奖结果', '7001', 'Result', 'add', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7010', '编辑彩票开奖结果', '7001', 'Result', 'edit', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7011', '删除彩票开奖结果', '7001', 'Result', 'delete', '', '0', '0');
-
 INSERT INTO `ms_menu` VALUES ('7100', '抽奖活动', '7000', 'Lucky', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7101', '奖品列表', '7100', 'Lucky', 'list', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7102', '设置奖品', '7100', 'Lucky', 'set', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7103', '抽奖记录', '7100', 'Lucky', 'record', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7104', '抽奖记录删除', '7100', 'Lucky', 'deleteRecord', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7105', '发送奖品', '7100', 'Lucky', 'sendPrize', '', '0', '0');
+
+INSERT INTO `ms_menu` VALUES ('8000', '消费明细', '0', '', '', '', '0', '1');
+
+INSERT INTO `ms_menu` VALUES ('8001', '现金消费', '8000', 'Cash', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('8002', '支付记录', '8001', 'Cash', 'payLog', '', '0', '1');
+
+INSERT INTO `ms_menu` VALUES ('8100', '金币消费', '8000', 'Cash', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('8101', '金币记录', '8100', 'Cash', 'glodLog', '', '0', '1');
 
 
 # 商城字典初始化。

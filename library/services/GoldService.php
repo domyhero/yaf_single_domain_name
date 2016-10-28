@@ -12,11 +12,18 @@ use common\YCore;
 use models\GmGoldConsume;
 use models\DbBase;
 use models\User;
+use winer\Validator;
 class GoldService extends BaseService {
 
     // 消费类型。
     const CONSUME_TYPE_ADD = 1; // 增加。
     const CONSUME_TYPE_CUT = 2; // 扣减。
+
+    // 消费类型字典。
+    public static $consume_type_dict = [
+        1 => '增加',
+        2 => '扣减'
+    ];
 
     // 消费编码。
     const CONSUME_ORDER_PAY = 'order.pay'; // 订单支付。
@@ -96,12 +103,14 @@ class GoldService extends BaseService {
      * 获取金币消费记录。
      *
      * @param number $user_id 用户ID。
-     * @param number $consume_type 消费类型：1增加、2扣减
+     * @param number $consume_type 消费类型：1增加、2扣减。
+     * @param string $start_time 开始时间。
+     * @param string $end_time 截止时间。
      * @param number $page 当前页码。
      * @param number $count 每页显示条数。
      * @return array
      */
-    public static function getUserGoldConsume($user_id = -1, $consume_type = -1, $page = 1, $count = 20) {
+    public static function getUserGoldConsume($user_id = -1, $consume_type = -1, $start_time = '', $end_time = '', $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM ms_gold_consume ';
         $columns = ' * ';
@@ -114,6 +123,20 @@ class GoldService extends BaseService {
         if ($consume_type != - 1) {
             $where .= ' AND consume_type = :consume_type ';
             $params[':consume_type'] = $consume_type;
+        }
+        if (strlen($start_time) > 0) {
+            if (!Validator::is_date($start_time)) {
+                YCore::exception(-1, '查询时间格式不正确');
+            }
+            $where .= ' AND created_time <= :start_time ';
+            $params[':start_time'] = strtotime($start_time);
+        }
+        if (strlen($end_time) > 0) {
+            if (!Validator::is_date($end_time)) {
+                YCore::exception(-1, '查询时间格式不正确');
+            }
+            $where .= ' AND created_time >= :end_time ';
+            $params[':end_time'] = strtotime($end_time);
         }
         $order_by = ' ORDER BY id DESC ';
         $sql = "SELECT COUNT(1) AS count {$from_table} {$where}";
@@ -135,23 +158,46 @@ class GoldService extends BaseService {
     /**
      * 获取金币消费记录。
      *
-     * @param number $user_id 用户ID。
+     * @param string $username 用户账号。
+     * @param string $mobilephone
      * @param number $consume_type 消费类型：1增加、2扣减
+     * @param string $start_time 开始时间。
+     * @param string $end_time 截止时间。
      * @param number $page 当前页码。
      * @param number $count 每页显示条数。
      * @return array
      */
-    public static function getAdminGoldConsume($user_id = -1, $consume_type = -1, $page = 1, $count = 20) {
+    public static function getAdminGoldConsume($username = '', $mobilephone = '', $start_time = '', $end_time = '', $consume_type = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
-        $from_table = ' FROM ms_gold_consume ';
+        $from_table = ' FROM gm_gold_consume ';
         $columns = ' * ';
         $where   = ' WHERE 1 ';
         $params  = [];
-        if ($user_id != - 1) {
+        $user_model = new User();
+        if (strlen($username) > 0) {
+            $userinfo = $user_model->fetchOne([], ['username' => $username]);
             $where .= ' AND user_id = :user_id ';
-            $params[':user_id'] = $user_id;
+            $params[':user_id'] = $userinfo ? $userinfo['user_id'] : 0;
+        } else if (strlen($mobilephone) > 0) {
+            $userinfo = $user_model->fetchOne([], ['mobilephone' => $mobilephone]);
+            $where .= ' AND user_id = :user_id ';
+            $params[':user_id'] = $userinfo ? $userinfo['user_id'] : 0;
         }
-        if ($consume_type != - 1) {
+        if (strlen($start_time) > 0) {
+            if (!Validator::is_date($start_time)) {
+                YCore::exception(-1, '查询时间格式不正确');
+            }
+            $where .= ' AND created_time <= :start_time ';
+            $params[':start_time'] = strtotime($start_time);
+        }
+        if (strlen($end_time) > 0) {
+            if (!Validator::is_date($end_time)) {
+                YCore::exception(-1, '查询时间格式不正确');
+            }
+            $where .= ' AND created_time >= :end_time ';
+            $params[':end_time'] = strtotime($end_time);
+        }
+        if ($consume_type != -1) {
             $where .= ' AND consume_type = :consume_type ';
             $params[':consume_type'] = $consume_type;
         }
@@ -162,12 +208,22 @@ class GoldService extends BaseService {
         $total = $count_data ? $count_data['count'] : 0;
         $sql   = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
         $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
-        $user_model = new User();
+        $game_gold_consume_code_dict = YCore::dict('game_gold_consume_code');
+        $users = [];
         foreach ($list as $key => $item) {
-            $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
-            $item['username']    = $userinfo['username'];
-            $item['mobilephone'] = $userinfo['mobilephone'];
-            $item['email']       = $userinfo['email'];
+            if (isset($users[$item['user_id']])) {
+                $userinfo = $users[$item['user_id']];
+            } else {
+                $userinfo = $user_model->fetchOne([], ['user_id' => $item['user_id']]);
+                $users[$item['user_id']] = $userinfo;
+            }
+            $item['consume_type_label'] = self::$consume_type_dict[$item['consume_type']];
+            $item['consume_code_label'] = $game_gold_consume_code_dict[$item['consume_code']];
+            $item['username']           = $userinfo['username'];
+            $item['mobilephone']        = $userinfo['mobilephone'];
+            $item['email']              = $userinfo['email'];
+            $item['created_time']       = YCore::format_timestamp($item['created_time']);
+            $list[$key] = $item;
         }
         $result = [
             'list'   => $list,

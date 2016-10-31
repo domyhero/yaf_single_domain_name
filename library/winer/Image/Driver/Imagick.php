@@ -39,20 +39,17 @@ class Imagick {
         if (! is_file($imgname)) {
             throw new \Exception('不存在的图像文件');
         }
-
         // 销毁已存在的图像
         empty($this->img) || $this->img->destroy();
-
         // 载入图像
         $this->img = new \Imagick(realpath($imgname));
-
         // 设置图像信息
-        $this->info = array(
-            'width' => $this->img->getImageWidth(),
+        $this->info = [
+            'width'  => $this->img->getImageWidth(),
             'height' => $this->img->getImageHeight(),
-            'type' => strtolower($this->img->getImageFormat()),
-            'mime' => $this->img->getImageMimeType()
-        );
+            'type'   => strtolower($this->img->getImageFormat()),
+            'mime'   => $this->img->getImageMimeType()
+        ];
     }
 
     /**
@@ -153,10 +150,10 @@ class Imagick {
         if (empty($this->img)) {
             throw new \Exception('没有指定图像资源');
         }
-        return array(
+        return [
             $this->info['width'],
             $this->info['height']
-        );
+        ];
     }
 
     /**
@@ -384,10 +381,10 @@ class Imagick {
 
         // 创建水印图像资源
         $water = new \Imagick(realpath($source));
-        $info = array(
+        $info = [
             $water->getImageWidth(),
             $water->getImageHeight()
-        );
+        ];
 
         /* 设定水印位置 */
         switch ($locate) {

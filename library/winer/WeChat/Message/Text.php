@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 文本消息封装。
  * @author winerQin
@@ -29,7 +28,7 @@ class Text extends AbstractMessage {
      * @var string
      */
     protected $propertys = [
-        'Content' 
+        'Content'
     ];
 
     /**

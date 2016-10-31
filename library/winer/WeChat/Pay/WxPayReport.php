@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 测速上报输入对象
  * @author widyhu
@@ -85,7 +84,7 @@ class WxPayReport extends WxPayDataBase {
      * 判断微信支付分配的终端设备号，商户自定义是否存在
      *
      * @return true 或 false
-     *        
+     *
      */
     public function IsDevice_infoSet() {
         return array_key_exists('device_info', $this->values);
@@ -115,7 +114,7 @@ class WxPayReport extends WxPayDataBase {
      * 判断随机字符串，不长于32位。推荐随机数生成算法是否存在
      *
      * @return true 或 false
-     *        
+     *
      */
     public function IsNonce_strSet() {
         return array_key_exists('nonce_str', $this->values);
@@ -334,7 +333,7 @@ class WxPayReport extends WxPayDataBase {
      * 判断商户系统内部的订单号,商户可以在上报时提供相关商户订单号方便微信支付更好的提高服务质量。 是否存在
      *
      * @return true 或 false
-     *        
+     *
      */
     public function IsOut_trade_noSet() {
         return array_key_exists('out_trade_no', $this->values);

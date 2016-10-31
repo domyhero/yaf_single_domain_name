@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 短链转换输入对象
  * @author winerQin

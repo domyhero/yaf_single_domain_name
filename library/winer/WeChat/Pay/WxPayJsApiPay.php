@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 提交JSAPI输入对象
  * @author winerQin

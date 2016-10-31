@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 扫码支付模式一生成二维码参数
  * @author winerQin

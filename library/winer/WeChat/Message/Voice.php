@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 音频消息封装。
  * @author winerQin
@@ -29,7 +28,7 @@ class Voice extends AbstractMessage {
      * @var string
      */
     protected $propertys = [
-        'MediaId' 
+        'MediaId'
     ];
 
     /**

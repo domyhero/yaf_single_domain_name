@@ -86,7 +86,7 @@ class Error extends \common\controllers\Common {
         if ($this->_request->isXmlHttpRequest()) {
             $data = [
                 'errcode' => $errcode,
-                'errmsg' => $errmsg
+                'errmsg'  => $errmsg
             ];
             echo json_encode($data);
             $this->end();

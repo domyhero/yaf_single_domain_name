@@ -9,6 +9,7 @@
 namespace common;
 
 use models\DbBase;
+
 /**
  * 所有在Bootstrap类中, 以_init开头的方法, 都会被Yaf调用,这些方法,
  * 都接受一个参数:\\Yaf\Dispatcher $dispatcher调用的次序, 和申明的次序相同。
@@ -52,9 +53,8 @@ class Bootstrap extends \Yaf\Bootstrap_Abstract {
      * 1、实现SessionHandlerInterface接口，将session保存到reids中。
      * 2、重新开启session，让默认的session切换到自已的session接口。
      * 3、第二步中直接影响\Yaf\Session的工作方式。
-     * 4、SESSION在多机情况下会有小概率出现生成的SESSION ID冲突的情况。
-     * 5、可以使用代理机器来生成SESSION或单独使用一台机专门生产SESSION ID。
-     * 6、或者直接关闭SESSION的使用。
+     * 4、或者直接关闭SESSION的使用。
+     * 5、在WEB服务器集群情况下，可以使用诸如阿里云之类的负载均衡(IP+Cookie)的分配方式，解决SESSION碰撞的问题。
      * --------------------------------------
      */
     public function _initSession() {

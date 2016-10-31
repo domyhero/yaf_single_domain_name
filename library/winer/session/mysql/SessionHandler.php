@@ -52,8 +52,9 @@ class SessionHandler implements \SessionHandlerInterface {
      * @throws \Exception
      */
     public function __construct(&$pdo, $ttl = null, $prefix = 'sess_') {
-        $this->_ttl = $ttl ?  : ini_get('session.gc_maxlifetime');
+        $this->_ttl    = $ttl ?  : ini_get('session.gc_maxlifetime');
         $this->_client = $pdo;
+        $this->_prefix = $prefix;
     }
 
     /**
@@ -85,14 +86,14 @@ class SessionHandler implements \SessionHandlerInterface {
      * @return boolean
      */
     public function gc($maxlifetime) {
-//         $sql = 'DELETE FROM ms_session WHERE session_expire < :session_expire';
-//         $sth = $this->_client->prepare($sql);
-//         $sth->bindParam(':session_expire', $maxlifetime, \PDO::PARAM_INT);
-//         try {
-//             $sth->execute();
-//         } catch (\Exception $e) {
-//             throw new \Exception('服务器繁忙', -1);
-//         }
+        $sql = 'DELETE FROM ms_session WHERE session_expire < :session_expire';
+        $sth = $this->_client->prepare($sql);
+        $sth->bindParam(':session_expire', $maxlifetime, \PDO::PARAM_INT);
+        try {
+            $sth->execute();
+        } catch (\Exception $e) {
+            throw new \Exception('服务器繁忙', -1);
+        }
         return true;
     }
 

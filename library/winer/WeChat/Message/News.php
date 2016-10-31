@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 图文消息封装。
  * @author winerQin

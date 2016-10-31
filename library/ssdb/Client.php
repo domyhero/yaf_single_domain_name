@@ -54,11 +54,11 @@ class Client {
 
     private $batch_mode = false;
 
-    private $batch_cmds = array();
+    private $batch_cmds = [];
 
     public function batch() {
         $this->batch_mode = true;
-        $this->batch_cmds = array();
+        $this->batch_cmds = [];
         return $this;
     }
 
@@ -67,7 +67,7 @@ class Client {
     }
 
     public function exec() {
-        $ret = array();
+        $ret = [];
         foreach ($this->batch_cmds as $op) {
             list($cmd, $params) = $op;
             $this->send_req($cmd, $params);
@@ -79,7 +79,7 @@ class Client {
             $ret[] = $resp;
         }
         $this->batch_mode = false;
-        $this->batch_cmds = array();
+        $this->batch_cmds = [];
         return $ret;
     }
 
@@ -96,7 +96,7 @@ class Client {
         return null;
     }
 
-    public function __call($cmd, $params = array()) {
+    public function __call($cmd, $params = []) {
         $cmd = strtolower($cmd);
         if ($this->async_auth_password !== null) {
             $pass = $this->async_auth_password;
@@ -156,8 +156,8 @@ class Client {
         }
     }
 
-    public function multi_set($kvs = array()) {
-        $args = array();
+    public function multi_set($kvs = []) {
+        $args = [];
         foreach ($kvs as $k => $v) {
             $args[] = $k;
             $args[] = $v;
@@ -165,7 +165,7 @@ class Client {
         return $this->__call(__FUNCTION__, $args);
     }
 
-    public function multi_hset($name, $kvs = array()) {
+    public function multi_hset($name, $kvs = []) {
         $args = array(
             $name
         );
@@ -176,7 +176,7 @@ class Client {
         return $this->__call(__FUNCTION__, $args);
     }
 
-    public function multi_zset($name, $kvs = array()) {
+    public function multi_zset($name, $kvs = []) {
         $args = array(
             $name
         );
@@ -369,7 +369,7 @@ class Client {
             case 'zlist' :
             case 'qslice' :
                 if ($resp[0] == 'ok') {
-                    $data = array();
+                    $data = [];
                     if ($resp[0] == 'ok') {
                         $data = array_slice($resp, 1);
                     }
@@ -398,7 +398,7 @@ class Client {
             case 'multi_zexists' :
                 if ($resp[0] == 'ok') {
                     if (count($resp) % 2 == 1) {
-                        $data = array();
+                        $data = [];
                         for($i = 1; $i < count($resp); $i += 2) {
                             $data[$resp[$i]] = (bool) $resp[$i + 1];
                         }
@@ -427,7 +427,7 @@ class Client {
             case 'multi_zget' :
                 if ($resp[0] == 'ok') {
                     if (count($resp) % 2 == 1) {
-                        $data = array();
+                        $data = [];
                         for($i = 1; $i < count($resp); $i += 2) {
                             if ($cmd[0] == 'z') {
                                 $data[$resp[$i]] = intval($resp[$i + 1]);
@@ -451,7 +451,7 @@ class Client {
     }
 
     private function send($data) {
-        $ps = array();
+        $ps = [];
         foreach ($data as $p) {
             $ps[] = strlen($p);
             $ps[] = $p;
@@ -521,7 +521,7 @@ class Client {
 
     const STEP_DATA = 1;
 
-    public $resp = array();
+    public $resp = [];
 
     public $step;
 
@@ -548,7 +548,7 @@ class Client {
                 if (strlen($line) == 0) { // head end
                     $this->recv_buf = substr($this->recv_buf, $spos);
                     $ret = $this->resp;
-                    $this->resp = array();
+                    $this->resp = [];
                     return $ret;
                 }
                 $this->block_size = intval($line);

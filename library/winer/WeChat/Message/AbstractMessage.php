@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 消息抽象类。
  * @author winerQin

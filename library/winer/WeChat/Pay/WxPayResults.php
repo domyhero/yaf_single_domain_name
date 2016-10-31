@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 接口调用结果类
  * @author winerQin

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 配置账号信息。
  * @author winerQin

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 图片消息封装。
  * @author winerQin
@@ -29,7 +28,7 @@ class Image extends AbstractMessage {
      * @var string
      */
     protected $propertys = [
-        'MediaId' 
+        'MediaId'
     ];
 
     /**

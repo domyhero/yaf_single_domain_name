@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 视频消息封装。
  * @author winerQin
@@ -43,9 +42,9 @@ class Video extends AbstractMessage {
      * @var string
      */
     protected $propertys = [
-        'Title', 
-        'Description', 
-        'MediaId' 
+        'Title',
+        'Description',
+        'MediaId'
     ];
 
     /**

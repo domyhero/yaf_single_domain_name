@@ -191,15 +191,6 @@ class Common extends \Yaf\Controller_Abstract {
         }
     }
 
-    public function beginTransaction() {
-    }
-
-    public function commit() {
-    }
-
-    public function rollback() {
-    }
-
     /**
      * 关闭模板渲染。
      */

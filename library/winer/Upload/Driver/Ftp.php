@@ -18,9 +18,8 @@ class Ftp {
      *
      * @var string
      */
-    private $error = '';
- // 上传错误信息
-    
+    private $error = ''; // 上传错误信息
+
 
     /**
      * FTP连接
@@ -29,15 +28,13 @@ class Ftp {
      */
     private $link;
 
-    private $config = array(
-        'host' => '',  // 服务器
-        'port' => 21,  // 端口
-        'timeout' => 90,  // 超时时间
+    private $config = [
+        'host'     => '',  // 服务器
+        'port'     => 21,  // 端口
+        'timeout'  => 90,  // 超时时间
         'username' => '',  // 用户名
-        'password' => '' 
-    );
- // 密码
-    
+        'password' => ''   // 密码
+    ];
 
     /**
      * 构造函数，用于设置上传根路径
@@ -47,7 +44,6 @@ class Ftp {
     public function __construct($config) {
         /* 默认FTP配置 */
         $this->config = array_merge($this->config, $config);
-        
         /* 登录FTP服务器 */
         if (! $this->login()) {
             YCore::exception(- 1, $this->error);
@@ -63,9 +59,8 @@ class Ftp {
     public function checkRootPath($rootpath) {
         /* 设置根目录 */
         $this->rootPath = ftp_pwd($this->link) . '/' . ltrim($rootpath, '/');
-        
         if (! @ftp_chdir($this->link, $this->rootPath)) {
-            $this->error = '上传根目录不存在！';
+            $this->error = '上传根目录不存在';
             return false;
         }
         return true;
@@ -96,17 +91,14 @@ class Ftp {
      */
     public function save($file, $replace = true) {
         $filename = $this->rootPath . $file['savepath'] . $file['savename'];
-        
         /* 不覆盖同名文件 */
         // if (!$replace && is_file($filename)) {
         // $this->error = '存在同名文件' . $file['savename'];
         // return false;
         // }
-        
-
         /* 移动文件 */
         if (! ftp_put($this->link, $filename, $file['tmp_name'], FTP_BINARY)) {
-            $this->error = '文件上传保存错误！';
+            $this->error = '文件上传保存错误';
             return false;
         }
         return true;
@@ -123,13 +115,12 @@ class Ftp {
         if (ftp_chdir($this->link, $dir)) {
             return true;
         }
-        
         if (ftp_mkdir($this->link, $dir)) {
             return true;
         } elseif ($this->mkdir(dirname($savepath)) && ftp_mkdir($this->link, $dir)) {
             return true;
         } else {
-            $this->error = "目录 {$savepath} 创建失败！";
+            $this->error = "目录 {$savepath} 创建失败";
             return false;
         }
     }

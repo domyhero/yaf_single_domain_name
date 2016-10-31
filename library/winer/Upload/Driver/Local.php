@@ -17,14 +17,12 @@ class Local {
      * @var string
      */
     private $error = '';
- // 上传错误信息
-    
+
 
     /**
      * 构造函数，用于设置上传根路径
      */
-    public function __construct($config = null) {
-    }
+    public function __construct($config = null) {}
 
     /**
      * 检测上传根目录
@@ -54,7 +52,7 @@ class Local {
         } else {
             /* 检测目录是否可写 */
             if (! is_writable($this->rootPath . $savepath)) {
-                $this->error = "上传目录{$savepath}不可写！";
+                $this->error = "上传目录{$savepath}不可写";
                 return false;
             } else {
                 return true;
@@ -78,7 +76,7 @@ class Local {
         }
         /* 移动文件 */
         if (! move_uploaded_file($file['tmp_name'], $filename)) {
-            $this->error = '文件上传保存错误！';
+            $this->error = '文件上传保存错误';
             return false;
         }
         return true;
@@ -98,7 +96,7 @@ class Local {
         if (mkdir($dir, 0777, true)) {
             return true;
         } else {
-            $this->error = "目录 {$savepath} 创建失败！";
+            $this->error = "目录 {$savepath} 创建失败";
             return false;
         }
     }

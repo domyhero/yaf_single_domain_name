@@ -44,8 +44,9 @@ class SessionHandler implements \SessionHandlerInterface {
      * @return void
      */
     public function __construct(&$redis, $ttl = null, $prefix = 'sess_') {
-        $this->_ttl = $ttl ?  : ini_get('session.gc_maxlifetime');
+        $this->_ttl    = $ttl ?  : ini_get('session.gc_maxlifetime');
         $this->_client = $redis;
+        $this->_prefix = $prefix;
     }
 
     /**

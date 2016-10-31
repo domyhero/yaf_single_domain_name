@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 提交被扫输入对象
  * @author winerQin

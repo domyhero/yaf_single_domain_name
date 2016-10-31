@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 撤销输入对象
  * @author winerQin

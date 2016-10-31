@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 统一下单输入对象
  * @author winerQin

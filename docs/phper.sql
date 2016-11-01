@@ -843,6 +843,7 @@ CREATE TABLE mall_order(
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID。对应ms_user.user_id',
 	total_price DOUBLE(8,2) NOT NULL COMMENT '订单实付金额',
 	payment_type TINYINT(1) NOT NULL COMMENT '支付类型。1RMB、2金币。',
+	payment_code CHAR(20) NOT NULL COMMENT '支付渠道编码。金币支付留空。',
 	payment_price DOUBLE(8,2) NOT NULL COMMENT '订单实付金额',
 	pay_status TINYINT(1) NOT NULL DEFAULT '0' COMMENT '支付状态：0未支付、1已支付',
 	pay_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '支付时间戳',
@@ -944,8 +945,8 @@ DROP TABLE IF EXISTS mall_payment_log;
 CREATE TABLE mall_payment_log(
 	payment_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
-	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码。具体查看字典配置。',
-	order_id INT(11) UNSIGNED NOT NULL COMMENT '主订单ID',
+	payment_code VARCHAR(20) NOT NULL COMMENT '支付类型编码',
+	order_id INT(11) UNSIGNED NOT NULL COMMENT '订单ID',
 	serial_number VARCHAR(50) NOT NULL COMMENT '支付流水号',
 	amount DOUBLE(8,2) NOT NULL COMMENT '支付金额',
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
@@ -1020,7 +1021,7 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'cut_dlt_bet', '大乐透投注', '大乐透投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_checkin', '每日签到', '每日签到', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_buy_goods', '购买商品赠送', '购买商品赠送', '0', '1', '1', unix_timestamp(now()), '0', '0');
-
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'gold_buy', '金币购买', '金币直接购买', '0', '1', '1', unix_timestamp(now()), '0', '0');
 
 INSERT INTO `ms_config` (`ctitle`, `cname`, `cvalue`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('金币与人民币兑换率', 'gold_ratio', '1000', '1元人民币兑换多少金币', '1', '1', unix_timestamp(now()), '0', '0');
 

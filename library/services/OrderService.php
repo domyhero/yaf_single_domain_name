@@ -41,18 +41,13 @@ class OrderService extends BaseService {
         2 => '单位'
     ];
 
-    const ORDER_STATUS_WAIT_PAY = 0;
-    // 待付款。
-    const ORDER_STATUS_PAY_OK = 1;
-    // 已付款。
-    const ORDER_STATUS_DELIVER = 2;
-    // 已发货。
-    const ORDER_STATUS_SUCCESS = 3;
-    // 交易成功。
-    const ORDER_STATUS_CLOSED = 4;
-    // 交易关闭。
-    const ORDER_STATUS_CANCELED = 5;
-    // 已取消。
+    const ORDER_STATUS_WAIT_PAY = 0;    // 待付款。
+    const ORDER_STATUS_PAY_OK   = 1;    // 已付款。
+    const ORDER_STATUS_DELIVER  = 2;    // 已发货。
+    const ORDER_STATUS_SUCCESS  = 3;    // 交易成功。
+    const ORDER_STATUS_CLOSED   = 4;    // 交易关闭。
+    const ORDER_STATUS_CANCELED = 5;    // 已取消。
+
     /**
      * 管理后台获取订单列表。
      *
@@ -937,6 +932,51 @@ class OrderService extends BaseService {
                 YCore::exception(-1, '订单取消失败');
             }
             self::writeLog($user_id, $order_id, 'canceled');
+            $order_model->commit();
+            return true;
+        } else {
+            $order_model->rollBack();
+            return false;
+        }
+    }
+
+    /**
+     * 订单确认支持。
+     * -- 1、只允许在线支付的回调调用。
+     * @param number $order_id 订单ID。
+     * @param string $payment_code 支付渠道编码。
+     * @return boolean
+     */
+    public static function paymentConfirmation($order_id, $payment_code) {
+        $order_model = new MallOrder();
+        $order_info = $order_model->fetchOne([], ['order_id' => $order_id, 'status' => 1]);
+        if (empty($order_info)) {
+            YCore::exception(-1, '订单不存在或已经删除');
+        }
+        if ($order_info['order_status'] == self::ORDER_STATUS_DELIVER) {
+            return true;
+        }
+        if ($order_info['order_status'] != self::ORDER_STATUS_WAIT_PAY) {
+            YCore::exception(-1, '只允许操作未付款的订单');
+        }
+        $update_data = [
+            'order_status'  => self::ORDER_STATUS_DELIVER,
+            'modified_by'   => 0, // 0 代表系统修改。
+            'modified_time' => $_SERVER['REQUEST_TIME'],
+            'pay_time'      => $_SERVER['REQUEST_TIME'],
+            'pay_status'    => 1,
+            'payment_type'  => 1,
+            'payment_code'  => $payment_code
+        ];
+        $where = [
+            'order_id' => $order_id,
+            'status'   => 1
+        ];
+        $order_model->beginTransaction();
+        $ok = $order_model->update($update_data, $where);
+        if ($ok) {
+            $log_content = '系统执行';
+            self::writeLog(0, $order_id, 'pay', $log_content);
             $order_model->commit();
             return true;
         } else {

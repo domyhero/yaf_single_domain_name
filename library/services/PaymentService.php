@@ -11,7 +11,11 @@ use models\User;
 use winer\Validator;
 use common\YCore;
 use models\DbBase;
+use models\MallPaymentLog;
 class PaymentService extends BaseService {
+
+    const PAYMENT_TYPE_GOLD  = 'gold';  // 金币直充支付类型。
+    const PAYMENT_TYPE_GOODS = 'goods'; // 商品购买支付类型。
 
     /**
      * 支付渠道。
@@ -23,6 +27,50 @@ class PaymentService extends BaseService {
         'weixin_app' => '微信APP',
         'weixin_wap' => '微信WAP'
     ];
+
+    public static function launchAlipayPay() {
+
+    }
+
+    public static function launchWeChatPay() {
+
+    }
+
+    public static function alipayNotifyUrlProcess() {
+
+    }
+
+    public static function wechatNotifyUrlProcess() {
+
+    }
+
+    /**
+     * 记录支付记录。
+     * @param number $user_id 用户ID。
+     * @param string $payment_code 支付渠道编码。
+     * @param number $order_id 订单ID。
+     * @param string $serial_number 渠道支付成功之后的流水号。
+     * @param float $amount 支付金额。
+     * @return boolean
+     */
+    public static function writePaymentLog($user_id, $payment_code, $order_id, $serial_number, $amount) {
+        $data = [
+            'user_id'       => $user_id,
+            'payment_code'  => $payment_code,
+            'order_id'      => $order_id,
+            'serial_number' => $serial_number,
+            'amount'        => $amount,
+            'created_time'  => $_SERVER['REQUEST_TIME']
+        ];
+        $payment_log_model = new MallPaymentLog();
+        $ok = $payment_log_model->insert($data);
+        if (!$ok) {
+            $data['errmsg'] = '支付记录写入失败';
+            YCore::log(-1, json_encode($data));
+            return false;
+        }
+        return true;
+    }
 
     /**
      * 获取支付记录。

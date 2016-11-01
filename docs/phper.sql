@@ -1203,4 +1203,52 @@ CREATE TABLE gm_lucky_prize(
 	KEY(goods_type)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖中奖记录表';
 
+
+# 竞猜活动表
+DROP TABLE IF EXISTS `gm_guess`;
+CREATE TABLE gm_guess(
+	guess_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
+	title CHAR(255) NOT NULL COMMENT '活动标题',
+	image_url CHAR(100) NOT NULL DEFAULT '' COMMENT '活动图片',
+	option_count SMALLINT(3) UNSIGNED NOT NULL COMMENT '选项数量',
+	option_a CHAR(100) NOT NULL DEFAULT '' COMMENT '选项A',
+	option_b CHAR(100) NOT NULL DEFAULT '' COMMENT '选项B',
+	option_c CHAR(100) NOT NULL DEFAULT '' COMMENT '选项C',
+	option_a_odds DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '选项A赔率',
+	option_b_odds DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '选项B赔率',
+	option_c_odds DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '选项C赔率',
+	deadline INT(11) UNSIGNED NOT NULL COMMENT '活动截止时间',
+	is_open TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否开奖：1是、0否',
+	open_result CHAR(1) NOT NULL DEFAULT '' COMMENT '开奖结果：a、b、c',
+	total_people INT(11) UNSIGNED NOT NULL COMMENT '活动参与总人数',
+	prize_people INT(11) UNSIGNED NOT NULL COMMENT '活动中奖总人数',
+	total_bet_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '活动投注金币总额',
+	total_prize_gold INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '活动中奖金币总额',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_by INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改人',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_by INT(11) UNSIGNED NOT NULL COMMENT '创建人',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(guess_id),
+	KEY(title)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '竞猜活动表';
+
+
+# 竞猜活动参与用户表
+DROP TABLE IF EXISTS `gm_guess_record`;
+CREATE TABLE gm_guess_record(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	guess_id INT(11) UNSIGNED NOT NULL COMMENT '竞猜活动ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	bet_gold INT(11) UNSIGNED NOT NULL COMMENT '投注金币',
+	is_prize TINYINT(1) NOT NULL COMMENT '是否中奖:0-否、1-是',
+	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖金币',
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id),
+	KEY(guess_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '竞猜活动参与用户表';
+
 # --------------- 游戏相关 end   ------------#

@@ -158,6 +158,22 @@ class YOffice {
      * @return array
      */
     public static function excelImport($filename) {
+        $objPHPExcel = \PHPExcel\IOFactory::load($filename);
+        $sheet = $objPHPExcel->getSheet(0);                                     // 读取第一個工作表
+        $highestRow = $sheet->getHighestRow();                                  // 取得总行数
+        $highestColumm = $sheet->getHighestColumn();                            // 取得总列数
+        $highestColumm = \PHPExcel\Cell::columnIndexFromString($highestColumm); // 字母列转换为数字列 如:AA变为27
+        $result = []; // 保存Excel表数据。
+        // 循环读取每个单元格的数据。
+        for ($row = 1; $row <= $highestRow; $row++) { // 行数是以第1行开始
+            $sheetRow = [];
+            for ($column = 0; $column < $highestColumm; $column++) { // 列数是以第0列开始
+                $columnName = \PHPExcel\Cell::stringFromColumnIndex($column);
+                $sheetRow[] = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+            }
+            $result[] = $sheetRow;
+        }
+        return $result;
     }
 
 }

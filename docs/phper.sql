@@ -1210,13 +1210,7 @@ CREATE TABLE gm_guess(
 	guess_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '活动ID',
 	title CHAR(255) NOT NULL COMMENT '活动标题',
 	image_url CHAR(100) NOT NULL DEFAULT '' COMMENT '活动图片',
-	option_count SMALLINT(3) UNSIGNED NOT NULL COMMENT '选项数量',
-	option_a CHAR(100) NOT NULL DEFAULT '' COMMENT '选项A',
-	option_b CHAR(100) NOT NULL DEFAULT '' COMMENT '选项B',
-	option_c CHAR(100) NOT NULL DEFAULT '' COMMENT '选项C',
-	option_a_odds DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '选项A赔率',
-	option_b_odds DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '选项B赔率',
-	option_c_odds DOUBLE(8,2) NOT NULL DEFAULT '0.00' COMMENT '选项C赔率',
+	option_data VARCHAR(5000) NOT NULL DEFAULT '' COMMENT '选项数据。json格式。',
 	deadline INT(11) UNSIGNED NOT NULL COMMENT '活动截止时间',
 	is_open TINYINT(1) NOT NULL DEFAULT '0' COMMENT '是否开奖：1是、0否',
 	open_result CHAR(1) NOT NULL DEFAULT '' COMMENT '开奖结果：a、b、c',
@@ -1250,5 +1244,23 @@ CREATE TABLE gm_guess_record(
 	KEY(user_id),
 	KEY(guess_id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '竞猜活动参与用户表';
+
+
+# 扑克王翻牌记录。
+DROP TABLE IF EXISTS `gm_poker_king_record`;
+CREATE TABLE gm_poker_king_record(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
+	bet_gold INT(11) UNSIGNED NOT NULL COMMENT '押注金币数量',
+	is_prize TINYINT(1) NOT NULL COMMENT '是否中奖:0-否、1-是',
+	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖金币',
+	poker CHAR(10) NOT NULL COMMENT '用户翻到的牌',
+	pokers CHAR(50) NOT NULL COMMENT '系统给出的5张牌',
+	poker_type SMALLINT(1) NOT NULL COMMENT '用户翻到的牌的类型：1大王、2小王、3普通牌', 
+	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
+	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
+	PRIMARY KEY(id),
+	KEY(user_id)
+) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '扑克王翻牌记录';
 
 # --------------- 游戏相关 end   ------------#

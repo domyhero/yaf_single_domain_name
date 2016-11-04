@@ -1,5 +1,5 @@
 <?php
-use common\YCore;
+use services\PokerKingService;
 /**
  * 首页。
  * @author winerQin
@@ -13,8 +13,8 @@ class IndexController extends \common\controllers\Guest {
      * -- 1、需要静态化处理。
      */
     public function indexAction() {
-        $ob = YCore::asterisk('东南方向');
-        print_r($ob);
+        $result = PokerKingService::startDo(1, 100, mt_rand(1, 5));
+        print_r($result);
         exit;
     }
 

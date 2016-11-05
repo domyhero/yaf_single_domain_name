@@ -615,12 +615,23 @@ INSERT INTO `ms_menu` VALUES ('7008', '彩票开奖结果', '7001', 'Result', 'l
 INSERT INTO `ms_menu` VALUES ('7009', '添加彩票开奖结果', '7001', 'Result', 'add', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7010', '编辑彩票开奖结果', '7001', 'Result', 'edit', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7011', '删除彩票开奖结果', '7001', 'Result', 'delete', '', '0', '0');
+
 INSERT INTO `ms_menu` VALUES ('7100', '抽奖活动', '7000', 'Lucky', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7101', '奖品列表', '7100', 'Lucky', 'list', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7102', '设置奖品', '7100', 'Lucky', 'set', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7103', '抽奖记录', '7100', 'Lucky', 'record', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7104', '抽奖记录删除', '7100', 'Lucky', 'deleteRecord', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7105', '发送奖品', '7100', 'Lucky', 'sendPrize', '', '0', '0');
+
+INSERT INTO `ms_menu` VALUES ('7200', '竞猜活动', '7000', 'Guess', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7201', '活动列表', '7200', 'Guess', 'list', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7202', '竞猜活动添加', '7200', 'Guess', 'add', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7203', '竞猜活动修改', '7200', 'Guess', 'edit', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7204', '竞猜活动删除', '7200', 'Guess', 'delete', '', '0', '0');
+INSERT INTO `ms_menu` VALUES ('7205', '用户竞猜记录', '7200', 'Guess', 'record', '', '0', '1');
+
+INSERT INTO `ms_menu` VALUES ('7300', '扑克王活动', '7000', 'Poker', '', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7301', '用户参与记录', '7300', 'Poker', 'record', '', '0', '1');
 
 INSERT INTO `ms_menu` VALUES ('8000', '消费明细', '0', '', '', '', '0', '1');
 
@@ -629,6 +640,8 @@ INSERT INTO `ms_menu` VALUES ('8002', '支付记录', '8001', 'Cash', 'payLog', 
 
 INSERT INTO `ms_menu` VALUES ('8100', '金币消费', '8000', 'Cash', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('8101', '金币记录', '8100', 'Cash', 'glodLog', '', '0', '1');
+
+
 
 
 # 商城字典初始化。

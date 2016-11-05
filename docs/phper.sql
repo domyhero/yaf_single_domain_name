@@ -628,7 +628,7 @@ INSERT INTO `ms_menu` VALUES ('7201', '活动列表', '7200', 'Guess', 'list', '
 INSERT INTO `ms_menu` VALUES ('7202', '竞猜活动添加', '7200', 'Guess', 'add', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7203', '竞猜活动修改', '7200', 'Guess', 'edit', '', '0', '0');
 INSERT INTO `ms_menu` VALUES ('7204', '竞猜活动删除', '7200', 'Guess', 'delete', '', '0', '0');
-INSERT INTO `ms_menu` VALUES ('7205', '用户竞猜记录', '7200', 'Guess', 'record', '', '0', '1');
+INSERT INTO `ms_menu` VALUES ('7205', '用户竞猜记录', '7200', 'Guess', 'record', '', '0', '0');
 
 INSERT INTO `ms_menu` VALUES ('7300', '扑克王活动', '7000', 'Poker', '', '', '0', '1');
 INSERT INTO `ms_menu` VALUES ('7301', '用户参与记录', '7300', 'Poker', 'record', '', '0', '1');

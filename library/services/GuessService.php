@@ -12,6 +12,7 @@ use winer\Validator;
 use models\GmGuess;
 use models\DbBase;
 use models\User;
+use common\YUrl;
 class GuessService extends BaseService {
     
     /**
@@ -190,12 +191,12 @@ class GuessService extends BaseService {
     public static function getAdminGuessList($title = '', $start_time = '', $end_time = '', $is_open = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM gm_guess ';
-        $columns = ' guess_id, title, image_url, deadline, is_open, open_result, total_people, total_bet_gold, total_prize_gold, modified_time, created_time ';
+        $columns = ' guess_id, title, image_url, deadline, is_open, open_result, total_people, prize_people, total_bet_gold, total_prize_gold, modified_time, created_time ';
         $where   = ' WHERE status = :status ';
         $params  = [
             ':status' => 1
         ];
-        if (strlen($$title) > 0) {
+        if (strlen($title) > 0) {
             $where .= ' AND title LIKE :title ';
             $params[':title'] = "%{$title}%";
         }
@@ -219,6 +220,7 @@ class GuessService extends BaseService {
         $sql   = "SELECT {$columns} {$from_table} {$where} {$order_by} LIMIT {$offset},{$count}";
         $list  = $default_db->rawQuery($sql, $params)->rawFetchAll();
         foreach ($list as $key => $item) {
+            $item['image_url']     = YUrl::filePath($item['image_url']);
             $item['deadline']      = YCore::format_timestamp($item['deadline']);
             $item['modified_time'] = YCore::format_timestamp($item['modified_time']);
             $item['created_time']  = YCore::format_timestamp($item['created_time']);

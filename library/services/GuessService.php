@@ -14,7 +14,7 @@ use models\DbBase;
 use models\User;
 use common\YUrl;
 class GuessService extends BaseService {
-    
+
     /**
      * 获取竞猜详情。
      * @param number $guess_id 竞猜ID。
@@ -83,7 +83,7 @@ class GuessService extends BaseService {
         ];
         return $result;
     }
-    
+
     /**
      * 用户获取当前竞猜活动。
      */
@@ -115,9 +115,10 @@ class GuessService extends BaseService {
         ];
         return $result;
     }
-    
+
     /**
      * 管理后台获取竞猜活动参与记录。
+     * @param number $guess_id 竞猜ID。
      * @param string $username 用户账号。
      * @param string $mobilephone 用户手机号。
      * @param number $is_prize 是否中奖。-1不限、1是、0否。
@@ -125,7 +126,7 @@ class GuessService extends BaseService {
      * @param number $count 每页显示条数。
      * @return array
      */
-    public static function getAdminGuessRecordList($username = '', $mobilephone = '', $is_prize = -1, $page = 1, $count = 20) {
+    public static function getAdminGuessRecordList($guess_id = -1, $username = '', $mobilephone = '', $is_prize = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM gm_guess_record ';
         $columns = ' guess_id, user_id, bet_gold, is_prize, prize_money, created_time ';
@@ -133,6 +134,10 @@ class GuessService extends BaseService {
         $params  = [
             ':status' => 1
         ];
+        if ($guess_id != -1) {
+            $where .= ' AND guess_id = :guess_id ';
+            $params[':guess_id'] = $guess_id;
+        }
         $user_model = new User();
         if (strlen($username) > 0) {
             $userinfo = $user_model->fetchOne([], ['username' => $username]);
@@ -371,7 +376,7 @@ class GuessService extends BaseService {
             }
         }
         $where = [
-            'guess_id' => $guess_id, 
+            'guess_id' => $guess_id,
             'status' => 1
         ];
         $guess_model = new GmGuess();
@@ -394,7 +399,7 @@ class GuessService extends BaseService {
         }
         return true;
     }
-    
+
     /**
      * 删除竞猜活动。
      * @param number $admin_id 管理员ID。

@@ -78,7 +78,7 @@ html {
 						<td align="center"><?php echo $item['created_time']; ?></td>
 						<td align="center">
 						  <a href="###" onclick="edit(<?php echo $item['guess_id'] ?>, '<?php echo htmlspecialchars($item['title']) ?>')" title="修改">修改</a> |
-						  <a href="javascript:postDialog('GuessUsers', '<?php echo YUrl::createBackendUrl('Lottery', 'record', ['guess_id' => $item['guess_id']]); ?>', '参与活动的用户列表', 600, 500)">参与列表</a>  |
+						  <a href="javascript:postDialog('GuessUsers', '<?php echo YUrl::createBackendUrl('Guess', 'record', ['guess_id' => $item['guess_id']]); ?>', '参与活动的用户列表', 800, 500)">参与列表</a>  |
 						  <a href="###" onclick="deleteDialog('deleteGuess', '<?php echo YUrl::createBackendUrl('Guess', 'delete', ['guess_id' => $item['guess_id']]); ?>', '<?php echo htmlspecialchars($item['title']) ?>')" title="删除">删除</a>
 						</td>
 			       </tr>

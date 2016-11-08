@@ -1,5 +1,4 @@
 <?php
-use common\YUrl;
 require_once (dirname(__DIR__) . '/common/header.php');
 ?>
 

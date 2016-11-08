@@ -73,7 +73,7 @@ class GuessController extends \common\controllers\Admin {
             $this->json(true, '删除成功');
         }
     }
-    
+
     /**
      * 参与记录。
      */
@@ -81,12 +81,14 @@ class GuessController extends \common\controllers\Admin {
         $username    = $this->getString('username', '');
         $mobilephone = $this->getString('mobilephone', '');
         $is_prize    = $this->getInt('is_prize', -1);
-        $page = $this->getInt(YCore::appconfig('pager'), 1);
-        $list = GuessService::getAdminGuessRecordList($username, $mobilephone, $is_prize, $page, 20);
+        $page        = $this->getInt(YCore::appconfig('pager'), 1);
+        $guess_id    = $this->getInt('guess_id');
+        $list = GuessService::getAdminGuessRecordList($guess_id, $username, $mobilephone, $is_prize, $page, 20);
         $paginator = new Paginator($list['total'], 20);
         $page_html = $paginator->backendPageShow();
         $this->_view->assign('page_html', $page_html);
         $this->_view->assign('list', $list['list']);
+        $this->_view->assign('guess_id', $guess_id);
         $this->_view->assign('username', $username);
         $this->_view->assign('mobilephone', $mobilephone);
         $this->_view->assign('is_prize', $is_prize);

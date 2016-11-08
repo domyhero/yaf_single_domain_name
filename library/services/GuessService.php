@@ -16,6 +16,18 @@ use common\YUrl;
 class GuessService extends BaseService {
 
     /**
+     * 选项。
+     * @var array
+     */
+    public static $options = [
+        'A' => 'A选项',
+        'B' => 'B选项',
+        'C' => 'C选项',
+        'D' => 'D选项',
+        'E' => 'E选项'
+    ];
+    
+    /**
      * 获取竞猜详情。
      * @param number $guess_id 竞猜ID。
      * @return array
@@ -260,9 +272,10 @@ class GuessService extends BaseService {
      * @param string $image_url 竞猜关联图片。
      * @param array $options_data 竞猜选项数据。
      * @param string $deadline 活动参与截止日期。
+     * @param string $open_result 开奖结果。
      * @return boolean
      */
-    public static function addGuess($admin_id, $title, $image_url, $options_data, $deadline) {
+    public static function addGuess($admin_id, $title, $image_url, $options_data, $deadline, $open_result = '') {
         if (strlen($title) === 0) {
             YCore::exception(-1, '竞猜标题必须填写');
         }
@@ -284,7 +297,18 @@ class GuessService extends BaseService {
         if (empty($options_data)) {
             YCore::exception(-1, '竞猜活动选项必须设置');
         }
-        foreach ($options_data as $item) {
+        if (strlen($open_result) > 0) {
+            $open_result = strtoupper($open_result);
+            if (!array_key_exists($open_result, self::$options)) {
+                YCore::exception(-1, '竞猜结果数据异常');
+            }
+        } else {
+            $open_result = '';
+        }
+        foreach ($options_data as $opk => $item) {
+            if (strlen($item['op_title']) === 0 && strlen($item['op_odds']) === 0) {
+                continue;
+            }
             if (!isset($item['op_title']) || strlen($item['op_title']) === 0) {
                 YCore::exception(-1, '选项标题必须填写');
             }
@@ -302,8 +326,9 @@ class GuessService extends BaseService {
             'title'        => $title,
             'image_url'    => $image_url,
             'option_data'  => json_encode($options_data),
-            'deadline'     => $deadline,
+            'deadline'     => strtotime($deadline),
             'status'       => 1,
+            'open_result'  => $open_result,
             'created_by'   => $admin_id,
             'created_time' => $_SERVER['REQUEST_TIME']
         ];
@@ -336,9 +361,10 @@ class GuessService extends BaseService {
      * @param string $image_url 竞猜关联图片。
      * @param array $options_data 竞猜选项数据。
      * @param string $deadline 活动参与截止日期。
+     * @param string $open_result 开奖结果。
      * @return boolean
      */
-    public static function editGuess($admin_id, $guess_id, $title, $image_url, $options_data, $deadline) {
+    public static function editGuess($admin_id, $guess_id, $title, $image_url, $options_data, $deadline, $open_result = '') {
         if (strlen($title) === 0) {
             YCore::exception(-1, '竞猜标题必须填写');
         }
@@ -360,7 +386,18 @@ class GuessService extends BaseService {
         if (empty($options_data)) {
             YCore::exception(-1, '竞猜活动选项必须设置');
         }
+        if (strlen($open_result) > 0) {
+            $open_result = strtoupper($open_result);
+            if (!array_key_exists($open_result, self::$options)) {
+                YCore::exception(-1, '竞猜结果数据异常');
+            }
+        } else {
+            $open_result = '';
+        }
         foreach ($options_data as $item) {
+            if (strlen($item['op_title']) === 0 && strlen($item['op_odds']) === 0) {
+                continue;
+            }
             if (!isset($item['op_title']) || strlen($item['op_title']) === 0) {
                 YCore::exception(-1, '选项标题必须填写');
             }
@@ -387,8 +424,9 @@ class GuessService extends BaseService {
             'title'         => $title,
             'image_url'     => $image_url,
             'option_data'   => json_encode($options_data),
-            'deadline'      => $deadline,
+            'deadline'      => strtotime($deadline),
             'status'        => 1,
+            'open_result'   => $open_result,
             'modified_by'   => $admin_id,
             'modified_time' => $_SERVER['REQUEST_TIME']
         ];

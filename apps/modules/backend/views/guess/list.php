@@ -6,7 +6,7 @@ require_once (dirname(__DIR__) . '/common/header.php');
 <div class="subnav">
 	<div class="content-menu ib-a blue line-x">
 		<a class="add fb"
-			href="javascript:postDialog('addLottery', '<?php echo YUrl::createBackendUrl('Guess', 'add'); ?>', '添加活动', 600, 350)"><em>添加活动</em></a>
+			href="javascript:postDialog('addLottery', '<?php echo YUrl::createBackendUrl('Guess', 'add'); ?>', '添加活动', 600, 550)"><em>添加活动</em></a>
 		<a href='javascript:;' class="on"><em>竞猜活动列表</em></a>
 	</div>
 </div>
@@ -118,7 +118,7 @@ Calendar.setup({
 function edit(id, name) {
 	var title = '修改『' + name + '』';
 	var page_url = "<?php echo YUrl::createBackendUrl('Guess', 'edit'); ?>?guess_id="+id;
-	postDialog('editGuess', page_url, title, 600, 350);
+	postDialog('editGuess', page_url, title, 600, 550);
 }
 </script>
 </body>

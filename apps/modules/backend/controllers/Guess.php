@@ -40,9 +40,11 @@ class GuessController extends \common\controllers\Admin {
             $image_url    = $this->getString('image_url');
             $options_data = $this->getArray('options_data');
             $deadline     = $this->getString('deadline');
-            GuessService::addGuess($this->admin_id, $title, $image_url, $options_data, $deadline);
+            $open_result  = $this->getString('open_result', '');
+            GuessService::addGuess($this->admin_id, $title, $image_url, $options_data, $deadline, $open_result);
             $this->json(true, '添加成功');
         }
+        $this->_view->assign('options', GuessService::$options);
     }
 
     /**
@@ -55,12 +57,14 @@ class GuessController extends \common\controllers\Admin {
             $image_url    = $this->getString('image_url');
             $options_data = $this->getArray('options_data');
             $deadline     = $this->getString('deadline');
-            GuessService::editGuess($this->admin_id, $guess_id, $title, $image_url, $options_data, $deadline);
+            $open_result  = $this->getString('open_result', '');
+            GuessService::editGuess($this->admin_id, $guess_id, $title, $image_url, $options_data, $deadline, $open_result);
             $this->json(true, '修改成功');
         }
         $guess_id = $this->getInt('guess_id');
         $detail = GuessService::getAdminGuessDetail($guess_id);
         $this->_view->assign('detail', $detail);
+        $this->_view->assign('options', GuessService::$options);
     }
 
     /**

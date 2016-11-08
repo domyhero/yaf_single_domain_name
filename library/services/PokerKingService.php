@@ -106,7 +106,7 @@ class PokerKingService extends BaseService {
     public static function getAdminPokerKingRecordList($username = '', $mobilephone = '', $poker_type = -1, $is_prize = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM gm_poker_king_record ';
-        $columns = ' user_id, bet_gold, is_prize, prize_money, poker, pokers, poker_type, created_time ';
+        $columns = ' id, user_id, bet_gold, is_prize, prize_money, poker, pokers, poker_type, created_time ';
         $where   = ' WHERE status = :status ';
         $params  = [
             ':status' => 1
@@ -121,11 +121,11 @@ class PokerKingService extends BaseService {
             $where .= ' AND user_id = :user_id ';
             $params[':user_id'] = $userinfo ? $userinfo['user_id'] : 0;
         }
-        if ($is_prize !=  -1) {
+        if ($is_prize != -1) {
             $where .= ' AND is_prize = :is_prize ';
             $params[':is_prize'] = $is_prize;
         }
-        if ($poker_type !=  -1) {
+        if ($poker_type != -1) {
             $where .= ' AND poker_type = :poker_type ';
             $params[':poker_type'] = $poker_type;
         }

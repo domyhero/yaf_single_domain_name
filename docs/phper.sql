@@ -1035,6 +1035,8 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_checkin', '每日签到', '每日签到', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'add_buy_goods', '购买商品赠送', '购买商品赠送', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'gold_buy', '金币购买', '金币直接购买', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'poker_king_cut', '扑克王投注', '扑克王投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'poker_king_add', '扑克王奖金', '扑克王奖金', '0', '1', '1', unix_timestamp(now()), '0', '0');
 
 INSERT INTO `ms_config` (`ctitle`, `cname`, `cvalue`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('金币与人民币兑换率', 'gold_ratio', '1000', '1元人民币兑换多少金币', '1', '1', unix_timestamp(now()), '0', '0');
 
@@ -1193,6 +1195,16 @@ CREATE TABLE gm_lucky_goods(
 	created_time INT(11) UNSIGNED NOT NULL COMMENT '创建时间戳',
 	PRIMARY KEY(id)
 ) ENGINE = InnoDB DEFAULT CHARSET UTF8 COMMENT '抽奖奖励表';
+
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('1', '耳机一副', '1', '1', '10', 'jb', '/upload/images/voucher/20161025/580ed39490fc4.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('2', '话费10元', '10', '11', '50', 'jb', '/upload/images/voucher/20161025/580ed4ed41c9e.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('3', '金币500两', '50', '51', '500', 'jb', '/upload/images/voucher/20161025/580ed4fd284ab.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('4', '金币300两', '100', '501', '1000', 'jb', '/upload/images/voucher/20161025/580ed4fad85ee.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('5', '金币200两', '200', '1001', '1500', 'jb', '/upload/images/voucher/20161025/580ed4f8c7f84.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('6', '金币100两', '300', '1501', '2500', 'jb', '/upload/images/voucher/20161025/580ed4f6c5feb.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('7', '金币50两', '500', '2501', '3500', 'jb', '/upload/images/voucher/20161025/580ed4f4c4201.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('8', '金币10两', '1000', '3501', '5000', 'jb', '/upload/images/voucher/20161025/580ed4f2d7336.jpg', '1', '1477378498');
+INSERT INTO `phper`.`gm_lucky_goods` (`id`, `goods_name`, `day_max`, `min_range`, `max_range`, `goods_type`, `image_url`, `created_by`, `created_time`) VALUES ('9', '未中奖', '10000', '5001', '10000', 'jb', '/upload/images/voucher/20161025/580ed4f0f31e7.jpg', '1', '1477378498');
 
 
 # 抽奖中奖记录表

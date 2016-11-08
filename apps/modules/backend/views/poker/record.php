@@ -22,15 +22,16 @@ html {
 					<td>
 						<div class="explain-col">
 							<p style="margin-top: 10px;">
-							    是否开奖：<select name="is_open">
-							        <option <?php echo $is_open==-1 ? 'selected="selected"' : ''; ?> value="-1">全部</option>
-							        <option <?php echo $is_open==0 ? 'selected="selected"' : ''; ?> value="0">否</option>
-							        <option <?php echo $is_open==1 ? 'selected="selected"' : ''; ?> value="1">是</option>
+							    是否开奖：<select name="is_prize">
+							        <option <?php echo $is_prize==-1 ? 'selected="selected"' : ''; ?> value="-1">全部</option>
+							        <option <?php echo $is_prize==0 ? 'selected="selected"' : ''; ?> value="0">否</option>
+							        <option <?php echo $is_prize==1 ? 'selected="selected"' : ''; ?> value="1">是</option>
 							    </select>
 							    用户牌型：<select name="poker_type">
 							        <option <?php echo $poker_type==-1 ? 'selected="selected"' : ''; ?> value="-1">全部</option>
-							        <option <?php echo $poker_type==0 ? 'selected="selected"' : ''; ?> value="0">否</option>
-							        <option <?php echo $poker_type==1 ? 'selected="selected"' : ''; ?> value="1">是</option>
+							        <option <?php echo $poker_type==1 ? 'selected="selected"' : ''; ?> value="0">大王</option>
+							        <option <?php echo $poker_type==2 ? 'selected="selected"' : ''; ?> value="1">小王</option>
+							        <option <?php echo $poker_type==3 ? 'selected="selected"' : ''; ?> value="1">普通牌</option>
 							    </select>
 							    用户名：<input type="text" name="username" value="" class="input text" />
 							    手机号：<input type="text" name="mobilephone" value="" class="input text" />
@@ -69,6 +70,7 @@ html {
 						<td align="center"><?php echo $item['is_prize'] ? '是' : '否'; ?></td>
 						<td align="center"><?php echo $item['prize_money']; ?></td>
 						<td align="center"><?php echo $item['poker']; ?></td>
+						<td align="center"><?php echo implode('、 ', $item['pokers']); ?></td>
 						<td align="center"><?php echo $item['created_time']; ?></td>
 			       </tr>
                 <?php endforeach; ?>

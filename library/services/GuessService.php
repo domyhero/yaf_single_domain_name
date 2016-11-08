@@ -169,7 +169,6 @@ class GuessService extends BaseService {
             }
             $item['username']     = $userinfo['username'];
             $item['mobilephone']  = $userinfo['mobilephone'];
-            $item['pokers']       = json_decode($item['pokers'], true);
             $item['created_time'] = YCore::format_timestamp($item['created_time']);
             $list[$key] = $item;
         }

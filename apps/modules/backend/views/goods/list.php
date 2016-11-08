@@ -5,8 +5,8 @@ require_once (dirname(__DIR__) . '/common/header.php');
 
 <div class="subnav">
 	<div class="content-menu ib-a blue line-x">
-		<a href='javascript:;' class="on"><em>商品列表</em></a> <a class="add fb"
-			href="javascript:postDialog('addGoods', '<?php echo YUrl::createBackendUrl('Goods', 'add'); ?>', '添加商品', 800, 500)"><em>添加商品</em></a>
+		<a class="add fb" href="javascript:postDialog('addGoods', '<?php echo YUrl::createBackendUrl('Goods', 'add'); ?>', '添加商品', 800, 500)"><em>添加商品</em></a>
+		<a href='javascript:;' class="on"><em>商品列表</em></a>
 	</div>
 </div>
 <style type="text/css">
@@ -25,33 +25,23 @@ html {
 						<div class="explain-col">
 							</select> 商品分类：<select name="cat_id">
 								<option value="-1">全部</option>
-     		<?php foreach ($cat_list as $cat): ?>
-     		<option value="<?php echo $cat['cat_id']; ?>"><?php echo $cat['cat_name']; ?></option>
-     		<?php endforeach; ?>
-     		</select> 商品名称：<input type="text"
-								value="<?php echo $goods_name; ?>" class="input-text"
-								name="shop_name" placeholder="商品名称" /> 商品价格：<input type="text"
-								value="<?php echo $start_price; ?>" class="input-text"
-								name="start_price" style="width: 50px;" placeholder="" /> ~ <input
-								type="text" value="<?php echo $end_price; ?>" class="input-text"
-								style="width: 50px;" name="end_price" placeholder="" /> 显示已删商品：<select
-								name="is_delete_show">
-								<option
-									<?php echo $is_delete_show==0 ? 'selected="selected"' : ''; ?>
-									value="0">否</option>
-								<option
-									<?php echo $is_delete_show==1 ? 'selected="selected"' : ''; ?>
-									value="1">是</option>
-							</select> 上下架：<select name="updown">
-								<option <?php echo $updown==-1 ? 'selected="selected"' : ''; ?>
-									value="-1">全部</option>
-								<option <?php echo $updown==1 ? 'selected="selected"' : ''; ?>
-									value="1">上架</option>
-								<option <?php echo $updown==0 ? 'selected="selected"' : ''; ?>
-									value="0">下架</option>
-							</select> <input type="submit" name="search" class="button"
-								value="搜索" />
-							</p>
+                         		<?php foreach ($cat_list as $cat): ?>
+                         		<option value="<?php echo $cat['cat_id']; ?>"><?php echo $cat['cat_name']; ?></option>
+                         		<?php endforeach; ?>
+                         		</select> 
+     							商品名称：<input type="text" value="<?php echo $goods_name; ?>" class="input-text" name="shop_name" placeholder="商品名称" /> 
+								商品价格：<input type="text" value="<?php echo $start_price; ?>" class="input-text" name="start_price" style="width: 50px;" placeholder="" /> ~ 
+								<input type="text" value="<?php echo $end_price; ?>" class="input-text" style="width: 50px;" name="end_price" placeholder="" /> 
+								显示已删商品：<select name="is_delete_show">
+									<option <?php echo $is_delete_show==0 ? 'selected="selected"' : ''; ?> value="0">否</option>
+									<option <?php echo $is_delete_show==1 ? 'selected="selected"' : ''; ?> value="1">是</option>
+								</select> 
+								上下架：<select name="updown">
+								<option <?php echo $updown==-1 ? 'selected="selected"' : ''; ?> value="-1">全部</option>
+								<option <?php echo $updown==1 ? 'selected="selected"' : ''; ?> value="1">上架</option>
+								<option <?php echo $updown==0 ? 'selected="selected"' : ''; ?> value="0">下架</option>
+								</select> 
+								<input type="submit" name="search" class="button" value="搜索" />
 						</div>
 					</td>
 				</tr>
@@ -79,8 +69,8 @@ html {
 					</tr>
 				</thead>
 				<tbody>
-    <?php foreach ($list as $item): ?>
-    	<tr>
+                <?php foreach ($list as $item): ?>
+                	<tr>
 						<td align="center"><img width="120"
 							src="<?php echo $item['goods_img']; ?>" /></td>
 						<td align="center"><?php echo $item['goods_name']; ?></td>
@@ -90,22 +80,22 @@ html {
 						<td align="center"><?php echo $item['month_buy_count']; ?></td>
 						<td align="center"><?php echo $item['marketable'] ? '上架' : '下架'; ?></td>
 						<td align="center"><?php
-        if ($item['status'] == 1) {
-            echo '正常';
-        } else if ($item['status'] == 2) {
-            echo '已删';
-        } else {
-            echo '无效';
-        }
-        ?></td>
+                        if ($item['status'] == 1) {
+                            echo '正常';
+                        } else if ($item['status'] == 2) {
+                            echo '已删';
+                        } else {
+                            echo '无效';
+                        }
+                        ?></td>
 						<td align="center"><?php echo $item['modified_time']; ?></td>
 						<td align="center"><?php echo $item['created_time']; ?></td>
-						<td align="center"><a href="###"
-							onclick="deleteDialog('deleteGoods', '<?php echo YUrl::createBackendUrl('Goods', 'delete', ['goods_id' => $item['goods_id']]); ?>', '<?php echo $item['goods_name'] ?>')"
-							title="删除">删除</a></td>
+						<td align="center">
+							<a href="###" onclick="deleteDialog('deleteGoods', '<?php echo YUrl::createBackendUrl('Goods', 'delete', ['goods_id' => $item['goods_id']]); ?>', '<?php echo $item['goods_name'] ?>')" title="删除">删除</a>
+						</td>
 					</tr>
-    <?php endforeach; ?>
-    </tbody>
+                <?php endforeach; ?>
+                </tbody>
 			</table>
 
 			<div id="pages">

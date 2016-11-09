@@ -9,6 +9,7 @@ namespace apis\v1;
 
 use apis\BaseApi;
 use services\UserService;
+use common\YUrl;
 
 class UserDetailApi extends BaseApi {
 
@@ -23,6 +24,7 @@ class UserDetailApi extends BaseApi {
         $userinfo = UserService::checkAuth(UserService::LOGIN_MODE_API, $token);
         $user_id  = $userinfo['user_id'];
         $detail   = UserService::getUserDetail($user_id);
+        $detail['avatar'] = YUrl::filePath($detail['avatar']);
         $this->render(0, 'success', $detail);
     }
 

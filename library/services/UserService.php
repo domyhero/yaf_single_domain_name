@@ -570,7 +570,6 @@ class UserService extends BaseService {
         if (empty($userinfo)) {
             YCore::exception(-1, '用户不存在或已经删除');
         }
-        $userinfo['avatar'] = YUrl::filePath($userinfo['avatar']);
         return $userinfo;
     }
 

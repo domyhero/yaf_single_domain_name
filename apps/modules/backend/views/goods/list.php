@@ -5,7 +5,7 @@ require_once (dirname(__DIR__) . '/common/header.php');
 
 <div class="subnav">
 	<div class="content-menu ib-a blue line-x">
-		<a class="add fb" href="javascript:postDialog('addGoods', '<?php echo YUrl::createBackendUrl('Goods', 'add'); ?>', '添加商品', 800, 500)"><em>添加商品</em></a>
+		<a class="add fb" href="javascript:postDialog('addGoods', '<?php echo YUrl::createBackendUrl('Goods', 'add'); ?>', '添加商品', 900, 500, '', 'yes')"><em>添加商品</em></a>
 		<a href='javascript:;' class="on"><em>商品列表</em></a>
 	</div>
 </div>
@@ -28,19 +28,19 @@ html {
                          		<?php foreach ($cat_list as $cat): ?>
                          		<option value="<?php echo $cat['cat_id']; ?>"><?php echo $cat['cat_name']; ?></option>
                          		<?php endforeach; ?>
-                         		</select> 
-     							商品名称：<input type="text" value="<?php echo $goods_name; ?>" class="input-text" name="shop_name" placeholder="商品名称" /> 
-								商品价格：<input type="text" value="<?php echo $start_price; ?>" class="input-text" name="start_price" style="width: 50px;" placeholder="" /> ~ 
-								<input type="text" value="<?php echo $end_price; ?>" class="input-text" style="width: 50px;" name="end_price" placeholder="" /> 
+                         		</select>
+     							商品名称：<input type="text" value="<?php echo $goods_name; ?>" class="input-text" name="shop_name" placeholder="商品名称" />
+								商品价格：<input type="text" value="<?php echo $start_price; ?>" class="input-text" name="start_price" style="width: 50px;" placeholder="" /> ~
+								<input type="text" value="<?php echo $end_price; ?>" class="input-text" style="width: 50px;" name="end_price" placeholder="" />
 								显示已删商品：<select name="is_delete_show">
 									<option <?php echo $is_delete_show==0 ? 'selected="selected"' : ''; ?> value="0">否</option>
 									<option <?php echo $is_delete_show==1 ? 'selected="selected"' : ''; ?> value="1">是</option>
-								</select> 
+								</select>
 								上下架：<select name="updown">
 								<option <?php echo $updown==-1 ? 'selected="selected"' : ''; ?> value="-1">全部</option>
 								<option <?php echo $updown==1 ? 'selected="selected"' : ''; ?> value="1">上架</option>
 								<option <?php echo $updown==0 ? 'selected="selected"' : ''; ?> value="0">下架</option>
-								</select> 
+								</select>
 								<input type="submit" name="search" class="button" value="搜索" />
 						</div>
 					</td>

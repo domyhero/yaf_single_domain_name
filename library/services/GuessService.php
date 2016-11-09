@@ -39,6 +39,16 @@ class guessservice extends BaseService {
     ];
 
     /**
+     * 中奖状态字典。
+     * @var array
+     */
+    public static $prize_status_dict = [
+        0 => '未开奖',
+        1 => '已中奖',
+        2 => '未中奖'
+    ];
+
+    /**
      * 获取竞猜详情。
      * @param number $guess_id 竞猜ID。
      * @return array
@@ -144,15 +154,15 @@ class guessservice extends BaseService {
      * @param number $guess_id 竞猜ID。
      * @param string $username 用户账号。
      * @param string $mobilephone 用户手机号。
-     * @param number $is_prize 是否中奖。-1不限、1是、0否。
+     * @param number $prize_status 中奖状态:0开奖中、1已中奖、2未中奖。
      * @param number $page 当前页码。
      * @param number $count 每页显示条数。
      * @return array
      */
-    public static function getAdminGuessRecordList($guess_id = -1, $username = '', $mobilephone = '', $is_prize = -1, $page = 1, $count = 20) {
+    public static function getAdminGuessRecordList($guess_id = -1, $username = '', $mobilephone = '', $prize_status = -1, $page = 1, $count = 20) {
         $offset = self::getPaginationOffset($page, $count);
         $from_table = ' FROM gm_guess_record ';
-        $columns = ' guess_id, user_id, bet_gold, is_prize, prize_money, created_time ';
+        $columns = ' guess_id, user_id, bet_gold, prize_status, prize_money, created_time ';
         $where   = ' WHERE status = :status ';
         $params  = [
             ':status' => 1
@@ -171,9 +181,9 @@ class guessservice extends BaseService {
             $where .= ' AND user_id = :user_id ';
             $params[':user_id'] = $userinfo ? $userinfo['user_id'] : 0;
         }
-        if ($is_prize !=  -1) {
-            $where .= ' AND is_prize = :is_prize ';
-            $params[':is_prize'] = $is_prize;
+        if ($prize_status !=  -1) {
+            $where .= ' AND prize_status = :prize_status ';
+            $params[':prize_status'] = $prize_status;
         }
         $order_by = ' ORDER BY id DESC ';
         $sql = "SELECT COUNT(1) AS count {$from_table} {$where}";
@@ -193,6 +203,7 @@ class guessservice extends BaseService {
             $item['username']     = $userinfo['username'];
             $item['mobilephone']  = $userinfo['mobilephone'];
             $item['created_time'] = YCore::format_timestamp($item['created_time']);
+            $item['prize_status'] = self::$prize_status_dict[$item['prize_status']];
             $list[$key] = $item;
         }
         $result = [

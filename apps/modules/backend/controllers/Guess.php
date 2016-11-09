@@ -82,12 +82,12 @@ class GuessController extends \common\controllers\Admin {
      * 参与记录。
      */
     public function recordAction() {
-        $username    = $this->getString('username', '');
-        $mobilephone = $this->getString('mobilephone', '');
-        $is_prize    = $this->getInt('is_prize', -1);
-        $page        = $this->getInt(YCore::appconfig('pager'), 1);
-        $guess_id    = $this->getInt('guess_id');
-        $list = GuessService::getAdminGuessRecordList($guess_id, $username, $mobilephone, $is_prize, $page, 20);
+        $username     = $this->getString('username', '');
+        $mobilephone  = $this->getString('mobilephone', '');
+        $prize_status = $this->getInt('prize_status', -1);
+        $page         = $this->getInt(YCore::appconfig('pager'), 1);
+        $guess_id     = $this->getInt('guess_id');
+        $list = GuessService::getAdminGuessRecordList($guess_id, $username, $mobilephone, $prize_status, $page, 20);
         $paginator = new Paginator($list['total'], 20);
         $page_html = $paginator->backendPageShow();
         $this->_view->assign('page_html', $page_html);
@@ -95,6 +95,6 @@ class GuessController extends \common\controllers\Admin {
         $this->_view->assign('guess_id', $guess_id);
         $this->_view->assign('username', $username);
         $this->_view->assign('mobilephone', $mobilephone);
-        $this->_view->assign('is_prize', $is_prize);
+        $this->_view->assign('prize_status', $prize_status);
     }
 }

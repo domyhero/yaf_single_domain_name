@@ -13,7 +13,8 @@ use models\GmGuess;
 use models\DbBase;
 use models\User;
 use common\YUrl;
-class GuessService extends BaseService {
+use models\GmGuessRecord;
+class guessservice extends BaseService {
 
     /**
      * 选项。
@@ -26,7 +27,17 @@ class GuessService extends BaseService {
         'D' => 'D选项',
         'E' => 'E选项'
     ];
-    
+
+    /**
+     * 投注金币等级。
+     * @var array
+     */
+    public static $gold_level = [
+        100,
+        200,
+        500
+    ];
+
     /**
      * 获取竞猜详情。
      * @param number $guess_id 竞猜ID。
@@ -463,5 +474,60 @@ class GuessService extends BaseService {
             YCore::exception(-1, '删除失败');
         }
         return true;
+    }
+
+    /**
+     * 用户竞猜。
+     * @param number $user_id 用户ID。
+     * @param number $guess_id 竞猜活动ID。
+     * @param string $option_index 用户选择的选项。
+     * @param unknown $bet_gold 投注金币。
+     * @return number 用户当前操作之后剩余的金币。
+     */
+    public static function startDo($user_id, $guess_id, $option_index, $bet_gold) {
+        if (!in_array($bet_gold, self::$gold_level)) {
+            YCore::exception(-1, '投注金币数错误');
+        }
+        $guess_model  = new GmGuess();
+        $guess_detail = $guess_model->fetchOne([], ['guess_id' => $guess_id, 'status' => 1]);
+        if (empty($guess_detail)) {
+            YCore::exception(-1, '活动不存在');
+        }
+        if ($guess_detail['deadline'] < $_SERVER['REQUEST_TIME']) {
+            YCore::exception(-1, '活动已经结束');
+        }
+        $default_db = new DbBase();
+        $default_db->beginTransaction();
+        try {
+            $user_gold = GoldService::goldConsume($user_id, $bet_gold, GoldService::CONSUME_TYPE_CUT, 'guess_cut');
+        } catch (\Exception $e) {
+            $default_db->rollBack();
+            YCore::exception($e->getCode(), $e->getMessage());
+        }
+        $guess_record_model = new GmGuessRecord();
+        $data = [
+            'guess_id'     => $guess_id,
+            'user_id'      => $user_id,
+            'bet_gold'     => $bet_gold,
+            'prize_status' => 0,
+            'status'       => 1,
+            'created_time' => $_SERVER['REQUEST_TIME']
+        ];
+        $ok = $guess_record_model->insert($data);
+        if (!$ok) {
+            $default_db->rollBack();
+            YCore::exception(-1, '投注失败');
+        }
+        $default_db->commit();
+        return $user_gold;
+    }
+
+    /**
+     * 统计竞猜相关数据。
+     * @param number $guess_id 竞猜ID。
+     * @return boolean
+     */
+    public static function stats($guess_id) {
+
     }
 }

@@ -1037,6 +1037,9 @@ INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`,
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'gold_buy', '金币购买', '金币直接购买', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'poker_king_cut', '扑克王投注', '扑克王投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
 INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'poker_king_add', '扑克王奖金', '扑克王奖金', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'guess_cut', '竞猜投注', '竞猜投注', '0', '1', '1', unix_timestamp(now()), '0', '0');
+INSERT INTO `ms_dict` (`dict_type_id`, `dict_code`, `dict_value`, `description`, `listorder`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('20', 'guess_add', '竞猜奖金', '竞猜奖金', '0', '1', '1', unix_timestamp(now()), '0', '0');
+
 
 INSERT INTO `ms_config` (`ctitle`, `cname`, `cvalue`, `description`, `status`, `created_by`, `created_time`, `modified_by`, `modified_time`) VALUES ('金币与人民币兑换率', 'gold_ratio', '1000', '1元人民币兑换多少金币', '1', '1', unix_timestamp(now()), '0', '0');
 
@@ -1260,7 +1263,7 @@ CREATE TABLE gm_guess_record(
 	guess_id INT(11) UNSIGNED NOT NULL COMMENT '竞猜活动ID',
 	user_id INT(11) UNSIGNED NOT NULL COMMENT '用户ID',
 	bet_gold INT(11) UNSIGNED NOT NULL COMMENT '投注金币',
-	is_prize TINYINT(1) NOT NULL COMMENT '是否中奖:0-否、1-是',
+	prize_status TINYINT(1) NOT NULL COMMENT '中奖状态:0开奖中、1已中奖、2未中奖',
 	prize_money INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '中奖金币',
 	status TINYINT(1) NOT NULL COMMENT '状态：0无效、1正常、2删除',
 	modified_time INT(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '修改时间戳',

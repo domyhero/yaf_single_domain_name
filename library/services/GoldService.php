@@ -29,17 +29,18 @@ class GoldService extends BaseService {
     const CONSUME_ORDER_PAY = 'order.pay'; // 订单支付。
 
     /**
-     * 金币消费明细[增加/扣除]。
+     * 金币消费[增加/扣除]。
      *
      * @param number $user_id 用户ID。
      * @param number $gold 金币数量。
      * @param number $consume_type 消费类型。1增加、2扣减。
      * @param number $consume_code 消费编码。
-     * @return boolean
+     * @return number 返回用户当前账户金币。
      */
     public static function goldConsume($user_id, $gold, $consume_type, $consume_code) {
         $gold_model = new GmGold();
         $user_gold_info = $gold_model->fetchOne([], ['user_id' => $user_id]);
+        $user_gold  = 0; // 用户账户当前金币。
         if ($consume_type == self::CONSUME_TYPE_ADD) {
             if (empty($user_gold_info)) {
                 $data = [
@@ -49,8 +50,9 @@ class GoldService extends BaseService {
                 ];
                 $ok = $gold_model->insert($data);
                 if (!$ok) {
-                    YCore::exception(- 1, '服务器繁忙,请稍候重试');
+                    YCore::exception(-1, '服务器繁忙,请稍候重试');
                 }
+                $user_gold = $gold;
             } else {
                 $data = [
                     'v'             => $user_gold_info['v'] + 1,
@@ -63,12 +65,13 @@ class GoldService extends BaseService {
                 ];
                 $ok = $gold_model->update($data, $where);
                 if (!$ok) {
-                    YCore::exception(- 1, '服务器繁忙,请稍候重试');
+                    YCore::exception(-1, '服务器繁忙,请稍候重试');
                 }
+                $user_gold = $data['gold'];
             }
         } else if ($consume_type == self::CONSUME_TYPE_CUT) {
             if (empty($user_gold_info) || $user_gold_info['gold'] < $gold) {
-                YCore::exception(- 1, '金币数量不足');
+                YCore::exception(-1, '金币数量不足');
             }
             $data = [
                 'v'             => $user_gold_info['v'] + 1,
@@ -81,8 +84,9 @@ class GoldService extends BaseService {
             ];
             $ok = $gold_model->update($data, $where);
             if (!$ok) {
-                YCore::exception(- 1, '服务器繁忙,请稍候重试');
+                YCore::exception(-1, '服务器繁忙,请稍候重试');
             }
+            $user_gold = $data['gold'];
         }
         $gold_consume_model = new GmGoldConsume();
         $data = [
@@ -94,9 +98,9 @@ class GoldService extends BaseService {
         ];
         $ok = $gold_consume_model->insert($data);
         if (!$ok) {
-            YCore::exception(- 1, '服务器繁忙,请稍候重试');
+            YCore::exception(-1, '服务器繁忙,请稍候重试');
         }
-        return true;
+        return $user_gold;
     }
 
     /**

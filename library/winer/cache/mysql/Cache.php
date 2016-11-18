@@ -19,11 +19,11 @@ class Cache {
 
     public function __construct() {
         $client_name = 'winer_cache_mysql';
-        if (\Yaf\Registry::has($client_name)) {
-            $this->client = \Yaf\Registry::get($client_name);
+        if (\Yaf_Registry::has($client_name)) {
+            $this->client = \Yaf_Registry::get($client_name);
         } else {
             $this->client = $this->connect();
-            \Yaf\Registry::set($client_name, $this->client);
+            \Yaf_Registry::set($client_name, $this->client);
         }
     }
 

@@ -15,16 +15,16 @@ $environ = 'dev';
 define('MICROTIME', microtime());
 
 // -- 取当前目录名称 --
-$pwd = trim(__DIR__, DIRECTORY_SEPARATOR);
-$arr_pwd = explode(DIRECTORY_SEPARATOR, $pwd);
+$pwd      = trim(__DIR__, DIRECTORY_SEPARATOR);
+$arr_pwd  = explode(DIRECTORY_SEPARATOR, $pwd);
 $app_name = array_pop($arr_pwd);
 define('APP_NAME', $app_name);
 define("APP_PATH", realpath(dirname(__FILE__) . '/../'));
-$app = new \Yaf\Application(APP_PATH . "/conf/application.ini", $environ);
+$app = new \Yaf_Application(APP_PATH . "/conf/application.ini", $environ);
 
 // 注册配置到全局环境。
-$config = \Yaf\Application::app()->getConfig();
-\Yaf\Registry::set("config", $config);
+$config = \Yaf_Application::app()->getConfig();
+\Yaf_Registry::set("config", $config);
 date_default_timezone_set($config->get('timezone'));
 
 // 调用要执行的程序。

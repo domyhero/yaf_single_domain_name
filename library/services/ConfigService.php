@@ -19,7 +19,7 @@ class ConfigService extends BaseService {
      */
     public static function getAllConfig() {
         $config_cache_key = 'config_service_system_configs';
-        $configs = \Yaf\Registry::get($config_cache_key);
+        $configs = \Yaf_Registry::get($config_cache_key);
         if ($configs !== null && $configs !== false) { // 保证每个请求只会调用一次Redis读取缓存的操作，节省Redis资源。
             return $configs;
         }
@@ -32,17 +32,17 @@ class ConfigService extends BaseService {
                 'status' => 1
             ];
             $order_by = ' config_id ASC ';
-            $result = $config_model->fetchAll($columns, $where, 0, $order_by);
-            $configs = [];
+            $result   = $config_model->fetchAll($columns, $where, 0, $order_by);
+            $configs  = [];
             foreach ($result as $val) {
                 $configs[$val['cname']] = $val['cvalue'];
             }
             $ok = $cache->set($config_cache_key, json_encode($configs));
-            \Yaf\Registry::set($config_cache_key, $configs);
+            \Yaf_Registry::set($config_cache_key, $configs);
             return $configs;
         } else {
             $configs = json_decode($configs_cache, true);
-            \Yaf\Registry::set($config_cache_key, $configs);
+            \Yaf_Registry::set($config_cache_key, $configs);
             return $configs;
         }
     }
@@ -56,7 +56,7 @@ class ConfigService extends BaseService {
         $config_cache_key = 'config_service_system_configs';
         $cache = YCore::getCache();
         $cache->delete($config_cache_key);
-        \Yaf\Registry::del($config_cache_key);
+        \Yaf_Registry::del($config_cache_key);
     }
 
     /**

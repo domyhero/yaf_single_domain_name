@@ -10,33 +10,33 @@ namespace common\controllers;
 use common\YCore;
 use winer\Validator;
 
-class Common extends \Yaf\Controller_Abstract {
+class Common extends \Yaf_Controller_Abstract {
 
     /**
      * 配置文件对象。
      *
-     * @var \Yaf\Config_Abstract
+     * @var \Yaf_Config_Abstract
      */
     protected $_config = null;
 
     /**
      * 请求对象。
      *
-     * @var \Yaf\Request_Http
+     * @var \Yaf_Request_Http
      */
     protected $_request = null;
 
     /**
      * 视图对象。
      *
-     * @var \Yaf\View_Simple
+     * @var \Yaf_View_Simple
      */
     protected $_view = null;
 
     /**
      * session对象。
      *
-     * @var \Yaf\Session
+     * @var \Yaf_Session
      */
     protected $_session = null;
 
@@ -53,9 +53,9 @@ class Common extends \Yaf\Controller_Abstract {
     public function init() {
         $this->_view    = $this->getView();
         $this->_request = $this->getRequest();
-        $this->_session = \Yaf\Registry::get('session');
-        $this->_config  = \Yaf\Registry::get('config');
-        $this->_mysql   = \Yaf\Registry::get('mysql');
+        $this->_session = \Yaf_Registry::get('session');
+        $this->_config  = \Yaf_Registry::get('config');
+        $this->_mysql   = \Yaf_Registry::get('mysql');
     }
 
     /**
@@ -73,13 +73,13 @@ class Common extends \Yaf\Controller_Abstract {
         if (is_null($gp_value)) {
             if (is_null($default_value)) {
                 YCore::exception(5009001, "{$name}值异常");
-            } else if (! Validator::is_integer($default_value)) {
+            } else if (!Validator::is_integer($default_value)) {
                 YCore::exception(5009002, "{$name}默认值不是整型");
             } else {
                 return $default_value;
             }
         } else {
-            if (! Validator::is_integer($gp_value)) {
+            if (!Validator::is_integer($gp_value)) {
                 YCore::exception(5009003, "{$name}值不是整型");
             } else {
                 return $gp_value;
@@ -102,13 +102,13 @@ class Common extends \Yaf\Controller_Abstract {
         if (is_null($gp_value)) {
             if (is_null($default_value)) {
                 YCore::exception(5009001, "{$name}值异常");
-            } else if (! is_array($default_value)) {
+            } else if (!is_array($default_value)) {
                 YCore::exception(5009002, "default_valuec参数不是数组");
             } else {
                 return $default_value;
             }
         } else {
-            if (! is_array($gp_value)) {
+            if (!is_array($gp_value)) {
                 YCore::exception(5009003, "{$name}值不是数组");
             } else {
                 return $gp_value;
@@ -131,13 +131,13 @@ class Common extends \Yaf\Controller_Abstract {
         if (is_null($gp_value)) {
             if (is_null($default_value)) {
                 YCore::exception(5009004, "{$name}值异常");
-            } else if (! Validator::is_float($default_value)) {
+            } else if (!Validator::is_float($default_value)) {
                 YCore::exception(5009005, "default_valuec参数不是浮点型");
             } else {
                 return $default_value;
             }
         } else {
-            if (! Validator::is_float($gp_value)) {
+            if (!Validator::is_float($gp_value)) {
                 YCore::exception(5009006, "{$name}值不是浮点型");
             } else {
                 return $gp_value;
@@ -195,7 +195,7 @@ class Common extends \Yaf\Controller_Abstract {
      * 关闭模板渲染。
      */
     public function end() {
-        \Yaf\Dispatcher::getInstance()->autoRender(FALSE);
+        \Yaf_Dispatcher::getInstance()->autoRender(FALSE);
     }
 
     /**

@@ -32,11 +32,11 @@ class RedisMutexLock {
     protected static $expire;
 
     public static function getRedis() {
-//         $ok = \\Yaf\Registry::has('redis');
+//         $ok = \Yaf_Registry::has('redis');
 //         if ($ok) {
-//             return \\Yaf\Registry::get('redis');
+//             return \Yaf_Registry::get('redis');
 //         } else {
-//             $config      = \\Yaf\Registry::get('config');
+//             $config      = \Yaf_Registry::get('config');
 //             $redis_host  = $config->database->redis->host;
 //             $redis_port  = $config->database->redis->port;
 //             $redis_pwd   = $config->database->redis->pwd;
@@ -45,7 +45,7 @@ class RedisMutexLock {
 //             $redis->connect($redis_host, $redis_port);
 //             $redis->auth($redis_pwd);
 //             $redis->select($redis_index);
-//             \\Yaf\Registry::set('redis', $redis);
+//             \\Yaf_Registry::set('redis', $redis);
 //             return $redis;
 //         }
         return YCore::getCache();
@@ -83,8 +83,8 @@ class RedisMutexLock {
                 break;
             }
             usleep(self::$sleep);
-        } while (! is_numeric($timeout) || time() < $start + $timeout );
-        if (! $acquired) {
+        } while (!is_numeric($timeout) || time() < $start + $timeout );
+        if (!$acquired) {
             return false;
         }
         return true;

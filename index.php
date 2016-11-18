@@ -20,5 +20,5 @@ $arr_pwd = explode(DIRECTORY_SEPARATOR, $pwd);
 
 define("APP_PATH", realpath(dirname(__FILE__)));
 
-$app = new \Yaf\Application(APP_PATH . "/apps/conf/application.ini", $evn_name);
+$app = new \Yaf_Application(APP_PATH . "/apps/conf/application.ini", $evn_name);
 $app->bootstrap()->run();

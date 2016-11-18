@@ -20,7 +20,7 @@ class DictService extends BaseService {
      */
     private static function getSystemAllDictType() {
         $cache_key = 'dict_service_system_dict_type';
-        $all_dict_type = \Yaf\Registry::get($cache_key);
+        $all_dict_type = \Yaf_Registry::get($cache_key);
         if ($all_dict_type !== null && $all_dict_type !== false) {
             return $all_dict_type;
         }
@@ -35,11 +35,11 @@ class DictService extends BaseService {
                 $all_dict_type[$dict_type['type_code']] = $dict_type['dict_type_id'];
             }
             $cache->set($cache_key, json_encode($all_dict_type));
-            \Yaf\Registry::set($cache_key, $all_dict_type);
+            \Yaf_Registry::set($cache_key, $all_dict_type);
             return $all_dict_type;
         } else {
             $all_dict_type = json_decode($result, true);
-            \Yaf\Registry::set($cache_key, $all_dict_type);
+            \Yaf_Registry::set($cache_key, $all_dict_type);
             return $all_dict_type;
         }
     }
@@ -52,7 +52,7 @@ class DictService extends BaseService {
      */
     private static function getSystemDictTypeValue() {
         $cache_key = 'dict_service_system_dict_type_value';
-        $all_dict_type_value = \Yaf\Registry::get($cache_key);
+        $all_dict_type_value = \Yaf_Registry::get($cache_key);
         if ($all_dict_type_value !== null && $all_dict_type_value !== false) {
             return $all_dict_type_value;
         }
@@ -75,11 +75,11 @@ class DictService extends BaseService {
                 $all_dict_type_value[$dict['dict_type_id']][$dict['dict_code']] = $dict['dict_value'];
             }
             $cache->set($cache_key, json_encode($all_dict_type_value));
-            \Yaf\Registry::set($cache_key, $all_dict_type_value);
+            \Yaf_Registry::set($cache_key, $all_dict_type_value);
             return $all_dict_type_value;
         } else {
             $all_dict_type_value = json_decode($result, true);
-            \Yaf\Registry::set($cache_key, $all_dict_type_value);
+            \Yaf_Registry::set($cache_key, $all_dict_type_value);
             return $all_dict_type_value;
         }
     }
@@ -94,11 +94,11 @@ class DictService extends BaseService {
         $config_cache_key = 'dict_service_system_dict_type';
         $cache = YCore::getCache();
         $cache->delete($config_cache_key);
-        \Yaf\Registry::del($config_cache_key);
+        \Yaf_Registry::del($config_cache_key);
         // [2] 清理字典值数据缓存。
         $config_cache_key = 'dict_service_system_dict_type_value';
         $cache->delete($config_cache_key);
-        \Yaf\Registry::del($config_cache_key);
+        \Yaf_Registry::del($config_cache_key);
     }
 
     /**

@@ -56,10 +56,10 @@ class DbBase {
      */
     public function __construct($db_options = 'default') {
         $registry_name = "mysql_{$db_options}";
-        if (\Yaf\Registry::has($registry_name) === false) {
+        if (\Yaf_Registry::has($registry_name) === false) {
             $this->connection($db_options);
         }
-        $this->link = \Yaf\Registry::get($registry_name);
+        $this->link = \Yaf_Registry::get($registry_name);
     }
 
     /**
@@ -70,10 +70,10 @@ class DbBase {
      */
     public function changeDb($db_options) {
         $registry_name = "mysql_{$db_options}";
-        if (\Yaf\Registry::has($registry_name) === false) {
+        if (\Yaf_Registry::has($registry_name) === false) {
             $this->connection($db_options);
         }
-        $this->link = \Yaf\Registry::get($registry_name);
+        $this->link = \Yaf_Registry::get($registry_name);
     }
 
     /**
@@ -93,7 +93,7 @@ class DbBase {
     protected function connection($db_options = 'default') {
         $registry_name = "mysql_{$db_options}";
         // [1] 传统初始化MySQL方式。
-        $config = \Yaf\Registry::get("config");
+        $config = \Yaf_Registry::get("config");
         $mysql_host = $config->database->mysql->$db_options->host;
         $mysql_port = $config->database->mysql->$db_options->port;
         $mysql_username = $config->database->mysql->$db_options->username;
@@ -111,7 +111,7 @@ class DbBase {
         // 以关联数组返回查询结果。
         $dbh->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
         $dbh->query("SET NAMES {$mysql_charset}");
-        \Yaf\Registry::set($registry_name, $dbh);
+        \Yaf_Registry::set($registry_name, $dbh);
     }
 
     /**

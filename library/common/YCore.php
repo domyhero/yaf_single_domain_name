@@ -65,13 +65,13 @@ class YCore {
      */
     public static function getWeChatApp() {
         $name = 'system_wechat_app_ojb';
-        if (\Yaf\Registry::has($name)) {
-            return \Yaf\Registry::get($name);
+        if (\Yaf_Registry::has($name)) {
+            return \Yaf_Registry::get($name);
         }
-        $config  = new \Yaf\Config\Ini(APP_PATH . DIRECTORY_SEPARATOR . '/conf/wxpay/wechat.ini', 'public');
+        $config  = new \Yaf_Config\Ini(APP_PATH . DIRECTORY_SEPARATOR . '/conf/wxpay/wechat.ini', 'public');
         $options = $config->wechat->toArray();
-        $app = new WeChatApp($options);
-        \Yaf\Registry::set($name, $app);
+        $app     = new WeChatApp($options);
+        \Yaf_Registry::set($name, $app);
         return $app;
     }
 
@@ -84,20 +84,20 @@ class YCore {
      * @return number
      */
     public static function getArray($data, $name, $default_value = null) {
-        if (empty($data) || ! is_array($data)) {
+        if (empty($data) || !is_array($data)) {
             self::exception(- 1, '值为空');
         }
-        if (! isset($data[$name])) {
+        if (!isset($data[$name])) {
             if (is_null($default_value)) {
                 YCore::exception(- 1, "{$name} cannot be empty");
-            } else if (! Validator::is_array($default_value)) {
+            } else if (!Validator::is_array($default_value)) {
                 YCore::exception(- 1, "{$name} of the default value is not a array");
             } else {
                 return $default_value;
             }
         } else {
             $value = $data[$name];
-            if (! Validator::is_array($value)) {
+            if (!Validator::is_array($value)) {
                 YCore::exception(5009003, "{$name} value is not a array");
             } else {
                 return $value;
@@ -114,20 +114,20 @@ class YCore {
      * @return number
      */
     public static function getInt($data, $name, $default_value = null) {
-        if (empty($data) || ! is_array($data)) {
+        if (empty($data) || !is_array($data)) {
             self::exception(- 1, '值为空');
         }
-        if (! isset($data[$name])) {
+        if (!isset($data[$name])) {
             if (is_null($default_value)) {
                 YCore::exception(- 1, "{$name} cannot be empty");
-            } else if (! Validator::is_integer($default_value)) {
+            } else if (!Validator::is_integer($default_value)) {
                 YCore::exception(- 1, "{$name} of the default value is not a integer");
             } else {
                 return $default_value;
             }
         } else {
             $value = $data[$name];
-            if (! Validator::is_integer($value)) {
+            if (!Validator::is_integer($value)) {
                 YCore::exception(5009003, "{$name} value is not a integer");
             } else {
                 return $value;
@@ -144,10 +144,10 @@ class YCore {
      * @return number
      */
     public static function getString($data, $name, $default_value = null) {
-        if (empty($data) || ! is_array($data)) {
+        if (empty($data) || !is_array($data)) {
             self::exception(- 1, '值为空');
         }
-        if (! isset($data[$name])) {
+        if (!isset($data[$name])) {
             if (is_null($default_value)) {
                 YCore::exception(- 1, "{$name} cannot be empty");
             } else {
@@ -167,20 +167,20 @@ class YCore {
      * @return float
      */
     public static function getFloat($data, $name, $default_value = null) {
-        if (empty($data) || ! is_array($data)) {
+        if (empty($data) || !is_array($data)) {
             self::exception(- 1, '值为空');
         }
-        if (! isset($data[$name])) {
+        if (!isset($data[$name])) {
             if (is_null($default_value)) {
                 YCore::exception(- 1, "{$name} cannot be empty");
-            } else if (! Validator::is_float($default_value)) {
+            } else if (!Validator::is_float($default_value)) {
                 YCore::exception(- 1, "{$name} of the default value is not a float");
             } else {
                 return $default_value;
             }
         } else {
             $value = $data[$name];
-            if (! Validator::is_integer($value)) {
+            if (!Validator::is_integer($value)) {
                 YCore::exception(5009003, "{$name} value is not a float");
             } else {
                 return $value;
@@ -194,12 +194,12 @@ class YCore {
      * @return \Redis
      */
     public static function getCache() {
-        $ok = \Yaf\Registry::has('__system__cache__');
+        $ok = \Yaf_Registry::has('__system__cache__');
         if ($ok) {
-            return \Yaf\Registry::get('__system__cache__');
+            return \Yaf_Registry::get('__system__cache__');
         } else {
            $system_cache = new \winer\cache\mysql\Cache();
-           \Yaf\Registry::set('__system__cache__', $system_cache);
+           \Yaf_Registry::set('__system__cache__', $system_cache);
            return $system_cache;
         }
     }
@@ -228,7 +228,7 @@ class YCore {
     public static function serviceDegradation($location) {
         $system_status = self::config('system_status');
         $system_service_level = self::config('system_service_level');
-        if (! $system_status) {
+        if (!$system_status) {
             // @todo 如果根据页面不同进行跳转。
             self::exception(- 1, '系统暂时关闭');
         }
@@ -348,7 +348,7 @@ class YCore {
      */
     public static function config($cname, $default_value = null) {
         $configs = ConfigService::getAllConfig();
-        if (! isset($configs[$cname])) {
+        if (!isset($configs[$cname])) {
             if (is_null($default_value)) {
                 self::exception(3001200, "系统配置（{$cname}）未设置");
             } else {
@@ -493,7 +493,7 @@ class YCore {
      * @return mixed
      */
     public static function appconfig($key, $val = null) {
-        $config = \Yaf\Registry::get("config");
+        $config = \Yaf_Registry::get("config");
         $cval = $config->get($key);
         if (is_string($cval)) {
             return $cval;
@@ -523,7 +523,7 @@ class YCore {
      * @return mixed
      */
     public static function new_addslashes($string) {
-        if (! is_array($string)) {
+        if (!is_array($string)) {
             return addslashes($string);
         }
         foreach ($string as $key => $val) {
@@ -539,7 +539,7 @@ class YCore {
      * @return mixed
      */
     public static function new_stripslashes($string) {
-        if (! is_array($string)) {
+        if (!is_array($string)) {
             return stripslashes($string);
         }
         foreach ($string as $key => $val) {
@@ -556,7 +556,7 @@ class YCore {
      */
     public static function new_html_special_chars($string) {
         $encoding = 'utf-8';
-        if (! is_array($string)) {
+        if (!is_array($string)) {
             return htmlspecialchars($string, ENT_QUOTES, $encoding);
         }
         foreach ($string as $key => $val) {
@@ -805,7 +805,7 @@ class YCore {
      * @param $filename 文件名称
      */
     public static function file_down($filepath, $filename = '') {
-        if (! $filename) {
+        if (!$filename) {
             $filename = basename($filepath);
         }
         if (self::is_ie()) {
@@ -837,7 +837,7 @@ class YCore {
      * @param string $output 转换后的编码
      */
     public static function array_iconv($data, $input = 'gbk', $output = 'utf-8') {
-        if (! is_array($data)) {
+        if (!is_array($data)) {
             return iconv($input, $output, $data);
         } else {
             foreach ($data as $key => $val) {
@@ -1234,12 +1234,12 @@ class YCore {
     public static function array_remove_equal(array $array1, array $array2) {
         $diff_array = [];
         foreach ($array1 as $val) {
-            if (! in_array($val, $array2)) {
+            if (!in_array($val, $array2)) {
                 $diff_array[] = $val;
             }
         }
         foreach ($array2 as $val) {
-            if (! in_array($val, $array1)) {
+            if (!in_array($val, $array1)) {
                 $diff_array[] = $val;
             }
         }
